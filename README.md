@@ -30,12 +30,12 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 * [Query bestesAngebot](#query-bestesAngebot)
     * [BestesAngebot - Request Format](#bestesangebot-request-format)
     * [BestesAngebot - Typen der Parameter](#bestesangebot-typen-der-parameter)
-    * [BestesAngebot - gewünschte Felder](#bestesangebot-gewnschte-felder)
+    * [BestesAngebot - gewünschte Felder](#bestesangebot-gewuenschte-felder)
     * [BestesAngebot - Response Format](#bestesangebot-response-format)
 * [Query grenzen](#query-grenzen)
     * [Grenzen - Request Format](#grenzen-request-format)
     * [Grenzen - Typen der Parameter](#grenzen-typen-der-parameter)
-    * [Grenzen - gewünschte Felder](#grenzen-gewnschte-felder)
+    * [Grenzen - gewünschte Felder](#grenzen-gewuenschte-felder)
     * [Grenzen - Response Format](#grenzen-response-format)
 * [Tools](#tools)
 
@@ -198,7 +198,7 @@ Die konkreten Argumente für die Anfrage werden im **variables**-Teil übergeben
     * "TESTUMGEBUNG"
   * wenn nicht angegeben, wird ECHTGESCHAEFT angenommen
 
-### BestesAngebot: gewünschte Felder
+### BestesAngebot: gewuenschte Felder
     
     Whitespace-separierte Liste folgender Felder
 
@@ -260,7 +260,7 @@ Die konkreten Argumente für die Anfrage werden im *variables*-Teil übergeben.
   * die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement
   * die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein.
 
-### Grenzen: gewünschte Felder
+### Grenzen: gewuenschte Felder
     
     Whitespace-separierte Liste folgender Felder
 
