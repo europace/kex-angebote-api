@@ -17,8 +17,27 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
  
 # Table of Contents
 
-
-
+* [Allgemeines](#allgemeines)
+* [Authentifizierung](#authentifizierung)
+* [TraceId zur Nachverfolgbarkeit von Requests](#traceid-zur-nachverfolgbarkeit-von-requests)
+* [Content-Type](#content-type)
+* [Beispiel](#beispiel)
+   * [POST Request](#post-request)
+   * [POST Response](#post-response)
+* [Fehlercodes](#fehlercodes)
+   * [HTTP-Status Errors](#http-status-errors)
+   * [weitere Fehler](#weitere-fehler)
+* [Query bestesAngebot](#query-bestesAngebot)
+    * [BestesAngebot - Request Format](#bestesangebot-request-format)
+    * [BestesAngebot - Typen der Parameter](#bestesangebot-typen-der-parameter)
+    * [BestesAngebot - gewünschte Felder](#bestesangebot-gewnschte-felder)
+    * [BestesAngebot - Response Format](#bestesangebot-response-format)
+* [Query grenzen](#query-grenzen)
+    * [Grenzen - Request Format](#grenzen-request-format)
+    * [Grenzen - Typen der Parameter](#grenzen-typen-der-parameter)
+    * [Grenzen - gewünschte Felder](#grenzen-gewnschte-felder)
+    * [Grenzen - Response Format](#grenzen-response-format)
+* [Tools](#tools)
 
 ## Allgemeines
 
@@ -64,6 +83,7 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
 | Content-Type        | application/json |
 
 ## Beispiel 
+
 ### POST Request
 
     POST https://kex-angebote.kreditsmart.api.europace.de/prod/angebote
@@ -130,11 +150,11 @@ Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnit
       ]
     }
 
-## query bestesAngebot  
+## Query bestesAngebot  
 
 Für einen Partner wird unter Berücksichtigung seiner Handelsbeziehungen das beste Angebot ermittelt.
 
-### Request Format  
+### BestesAngebot: Request Format  
 
 Die Angaben werden als JSON im Body des Requests gesendet.
 Die Attribute können in beliebiger Reihenfolge angegeben werden.  
@@ -156,7 +176,7 @@ Die konkreten Argumente für die Anfrage werden im **variables**-Teil übergeben
         }
     }
 
-### Typen der Parameter
+### BestesAngebot: Typen der Parameter
 
 * partnerId - String
   * die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement
@@ -178,7 +198,7 @@ Die konkreten Argumente für die Anfrage werden im **variables**-Teil übergeben
     * "TESTUMGEBUNG"
   * wenn nicht angegeben, wird ECHTGESCHAEFT angenommen
 
-### gewünschte Felder
+### BestesAngebot: gewünschte Felder
     
     Whitespace-separierte Liste folgender Felder
 
@@ -195,7 +215,7 @@ Die konkreten Argumente für die Anfrage werden im **variables**-Teil übergeben
        | letzteRate         | BigDecimal: Betrag in Euro            |    
        | ------------------ | ------------------------------------- |
     
-### Response Format
+### BestesAngebot: Response Format
 
 Die erfragten Felder werden - sofern vorhanden- als JSON im Body der Response gesendet. Nicht befüllte Felder werden nicht zurückgegeben.
 
@@ -215,7 +235,7 @@ Die erfragten Felder werden - sofern vorhanden- als JSON im Body der Response ge
 Ermittlung der gültigen Grenzen von Laufzeit und Auszahlungsbetrag.
 Die Grenzen können sich ändern - sie sind abhängig von den Handelsbeziehungen des Vertriebs und den konkreten Produkten der Bank-Partners.
 
-### Request Format  
+### Grenzen: Request Format  
 
 Die Angaben werden als JSON im Body des Requests gesendet.
 Die Attribute können in beliebiger Reihenfolge angegeben werden.  
@@ -234,13 +254,13 @@ Die konkreten Argumente für die Anfrage werden im *variables*-Teil übergeben.
         }
     }
 
-### Typen der Parameter
+### Grenzen: Typen der Parameter
 
 * partnerId - String
   * die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement
   * die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein.
 
-### gewünschte Felder
+### Grenzen: gewünschte Felder
     
     Whitespace-separierte Liste folgender Felder
 
@@ -254,7 +274,7 @@ Die konkreten Argumente für die Anfrage werden im *variables*-Teil übergeben.
        | laufzeitInMonatenMax          | Int                        | 
        | ----------------------------- | -------------------------- |
 
-### Response Format
+### Grenzen: Response Format
 
 Die erfragten Felder werden - sofern vorhanden- als JSON im Body der Response gesendet. Nicht befüllte Felder werden nicht zurückgegeben.
 
@@ -273,3 +293,6 @@ Die erfragten Felder werden - sofern vorhanden- als JSON im Body der Response ge
 
 Das GraphQL-Schema kann man z.B. mit dem Tool [GraphiQL](https://electronjs.org/apps/graphiql) analysieren 
 und sich per Autocomplete bequem die Query zusammenbauen.
+
+
+[]: #BestesAngebot-Request-Format
