@@ -30,19 +30,19 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 * [Query bestesAngebot](#query-bestesAngebot)
     * [BestesAngebot - Request Format](#bestesangebot-request-format)
     * [BestesAngebot - Typen der Parameter](#bestesangebot-typen-der-parameter)
-    * [BestesAngebot - gewünschte Felder](#bestesangebot-gewuenschte-felder)
+    * [BestesAngebot - gewünschte Felder](#bestesangebot-gewnschte-felder)
     * [BestesAngebot - Response Format](#bestesangebot-response-format)
 * [Query grenzen](#query-grenzen)
     * [Grenzen - Request Format](#grenzen-request-format)
     * [Grenzen - Typen der Parameter](#grenzen-typen-der-parameter)
-    * [Grenzen - gewünschte Felder](#grenzen-gewuenschte-felder)
+    * [Grenzen - gewünschte Felder](#grenzen-gewnschte-felder)
     * [Grenzen - Response Format](#grenzen-response-format)
 * [Tools](#tools)
 
 ## Allgemeines
 
 Angebote können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
-Die URL für das Auslesen von Vorgängen ist:
+Die URL für das Ermitteln von Angeboten ist:
 
     https://kex-angebote.kreditsmart.api.europace.de/prod/angebote
     
@@ -198,7 +198,7 @@ Die konkreten Argumente für die Anfrage werden im **variables**-Teil übergeben
     * "TESTUMGEBUNG"
   * wenn nicht angegeben, wird ECHTGESCHAEFT angenommen
 
-### BestesAngebot: gewuenschte Felder
+### BestesAngebot: gewünschte Felder
     
     Whitespace-separierte Liste folgender Felder
 
@@ -230,7 +230,7 @@ Die erfragten Felder werden - sofern vorhanden- als JSON im Body der Response ge
       ]
     }
 
-## query grenzen  
+## Query grenzen  
 
 Ermittlung der gültigen Grenzen von Laufzeit und Auszahlungsbetrag.
 Die Grenzen können sich ändern - sie sind abhängig von den Handelsbeziehungen des Vertriebs und den konkreten Produkten der Bank-Partners.
@@ -260,7 +260,7 @@ Die konkreten Argumente für die Anfrage werden im *variables*-Teil übergeben.
   * die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement
   * die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein.
 
-### Grenzen: gewuenschte Felder
+### Grenzen: gewünschte Felder
     
     Whitespace-separierte Liste folgender Felder
 
@@ -276,7 +276,7 @@ Die konkreten Argumente für die Anfrage werden im *variables*-Teil übergeben.
 
 ### Grenzen: Response Format
 
-Die erfragten Felder werden - sofern vorhanden- als JSON im Body der Response gesendet. Nicht befüllte Felder werden nicht zurückgegeben.
+Die erfragten Felder werden - sofern vorhanden - als JSON im Body der Response gesendet. Nicht befüllte Felder werden nicht zurückgegeben.
 
     { 
       "data": {
@@ -293,6 +293,3 @@ Die erfragten Felder werden - sofern vorhanden- als JSON im Body der Response ge
 
 Das GraphQL-Schema kann man z.B. mit dem Tool [GraphiQL](https://electronjs.org/apps/graphiql) analysieren 
 und sich per Autocomplete bequem die Query zusammenbauen.
-
-
-[]: #BestesAngebot-Request-Format
