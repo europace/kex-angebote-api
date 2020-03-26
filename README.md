@@ -65,8 +65,8 @@ Das API JWT (JSON Web Token) erhalten Sie von Ihrem Ansprechpartner im KreditSma
 ## TraceId zur Nachverfolgbarkeit von Requests
 
 Für jeden Request soll eine eindeutige ID generiert werden, die den Request im EUROPACE System nachverfolgbar macht und so bei etwaigen Problemen oder Fehlern die systemübergreifende Analyse erleichtert.  
-Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional,
-wenn er nicht gesetzt ist, wird eine ID vom System generiert.
+Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional. 
+Wenn er nicht gesetzt ist, wird eine ID vom System generiert.
 Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beginnt (im Beispiel unten 'sys').
 
 | Request Header Name | Beschreibung                    | Beispiel    |
@@ -196,7 +196,7 @@ Die konkreten Argumente für die Anfrage werden im **variables**-Teil übergeben
   * hierbei handelt es sich um eine Aufzählung (ENUM) mit folgenden Ausprägungen
     * "ECHTGESCHAEFT"
     * "TESTUMGEBUNG"
-  * wenn nicht angegeben, wird ECHTGESCHAEFT angenommen
+  * wenn nicht angegeben, wird TESTUMGEBUNG angenommen
 
 ### BestesAngebot: gewünschte Felder
     
@@ -233,7 +233,7 @@ Die erfragten Felder werden - sofern vorhanden- als JSON im Body der Response ge
 ## Query grenzen  
 
 Ermittlung der gültigen Grenzen von Laufzeit und Auszahlungsbetrag.
-Die Grenzen können sich ändern - sie sind abhängig von den Handelsbeziehungen des Vertriebs und den konkreten Produkten der Bank-Partners.
+Die Grenzen können sich ändern - sie sind abhängig von den Handelsbeziehungen des Vertriebs und den konkreten Produkten der Bank-Partner.
 
 ### Grenzen: Request Format  
 
@@ -267,7 +267,7 @@ Die konkreten Argumente für die Anfrage werden im *variables*-Teil übergeben.
        | Feldname                      | Typ                        |
        | ----------------------------- | -------------------------- |
        | auszahlungsbetragMin          | BigDecimal: Betrag in Euro |  
-       | laufzeitInMonatenSchrittweite | BigDecimal: Betrag in Euro |  
+       | auszahlungsbetragSchrittweite | BigDecimal: Betrag in Euro |  
        | auszahlungsbetragMax          | BigDecimal: Betrag in Euro |  
        | laufzeitInMonatenMin          | Int                        | 
        | laufzeitInMonatenSchrittweite | Int                        | 
