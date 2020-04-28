@@ -44,7 +44,7 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 Angebote können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
 Die URL für das Ermitteln von Angeboten ist:
 
-    https://kex-angebote.kreditsmart.api.europace.de/prod/angebote
+    https://kex-angebote.kreditsmart.api.europace.de/angebote
     
 Die gewünschten Properties werden als JSON im Body des POST Requests übermittelt.  
 Ein erfolgreicher Aufruf resultiert in einer Response mit dem HTTP Statuscode **200 SUCCESS**.  
@@ -86,7 +86,7 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
 
 ### POST Request
 
-    POST https://kex-angebote.kreditsmart.api.europace.de/prod/angebote
+    POST https://kex-angebote.kreditsmart.api.europace.de/angebote
     X-Authentication: xxxxxxx
     Content-Type: application/json;charset=utf-8
 
