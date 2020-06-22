@@ -277,11 +277,11 @@ Für einen erfolgreichen Request muss die Query in folgendem Format vorhanden se
 
 | Parametername| Typ | Bemerkung | 
 |--------------|-----|------------|
-| partnerId | String | Die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement. Die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein. |
+| partnerId | String | Die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement. <br/>Die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein. |
 | auszahlungsbetrag | BigDecimal|  Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.|
 | laufzeitInMonaten | Integer |  Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.|
-| finanzierungszweck | "UMSCHULDUNG" &#124; "FREIE_VERWENDUNG" &#124; "FAHRZEUGKAUF" &#124; "MODERNISIEREN" |  wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt
-| datenkontext | "ECHTGESCHAEFT" &#124; "TESTUMGEBUNG" |wenn nicht angegeben, wird TESTUMGEBUNG angenommen|
+| finanzierungszweck | "UMSCHULDUNG" <br/> "FREIE_VERWENDUNG" <br/> "FAHRZEUGKAUF" <br/> "MODERNISIEREN" |  wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt
+| datenkontext | "ECHTGESCHAEFT" <br/> "TESTUMGEBUNG" |wenn nicht angegeben, wird TESTUMGEBUNG angenommen|
   
 ### Gewünschte Felder
 
