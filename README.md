@@ -21,7 +21,7 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 * [Authentifizierung](#authentifizierung)
 * [TraceId zur Nachverfolgbarkeit von Requests](#traceid-zur-nachverfolgbarkeit-von-requests)
 * [Content-Type](#content-type)
-* [Beispiel](#beispiel)
+* [Beispiele](#beispiele)
    * [Query bestesAngebot](query-bestesAngebot)
        * [POST Request](#query-bestesAngebot-post-request)
        * [POST Response](#query-bestesAngebot-post-response)
@@ -98,7 +98,7 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
 |---------------------|------------------|
 | Content-Type        | application/json |
 
-## Beispiel 
+## Beispiele 
 
 ### Query bestesAngebot
 
