@@ -269,7 +269,7 @@ Für einen erfolgreichen Request muss die Query in folgendem Format vorhanden se
     
 **grenzen**
 
-    query(partnerId: <partnerId>){
+    grenzen(partnerId: <partnerId>){
         <gewünschte Felder>
     }
     
