@@ -25,6 +25,9 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
    * [Query bestesAngebot](query-bestesAngebot)
        * [POST Request](#query-bestesAngebot-post-request)
        * [POST Response](#query-bestesAngebot-post-response)
+   * [Query angebote](query-angebote)
+       * [POST Request](#query-angebote-post-request)
+       * [POST Response](#query-angebote-post-response)
 * [Fehlercodes](#fehlercodes)
    * [HTTP-Status Errors](#http-status-errors)
    * [weitere Fehler](#weitere-fehler)
@@ -136,6 +139,63 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
                     "gesamtbetrag": 10916.88
                 }
             }
+        }
+    }
+
+### Query angebote
+
+#### POST Request
+
+    POST https://kex-angebote.kreditsmart.api.europace.de/angebote
+    X-Authentication: xxxxxxx
+    Content-Type: application/json;charset=utf-8
+
+    {
+      "query": "query angebote($partnerId: String!, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int!) { 
+         angebote(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
+            ratenkredit {
+                produktanbietername
+            }
+            gesamtkonditionen {
+                sollzins
+                effektivzins
+                gesamtkreditbetrag
+            }
+         }
+      }",
+      "variables": {
+        "partnerId": "ABC12",
+        "auszahlungsbetrag": 10000,
+        "laufzeitInMonaten": 72
+      }
+    }
+        
+#### POST Response
+
+    {
+        "data": {
+            "angebote": [
+                {
+                    "ratenkredit" :{
+                        "produktanbietername": "Testbank1 AG",
+                    },
+                    "gesamtkonditionen": {
+                        "sollzins": 3.95,
+                        "effektivzins": 3.99,
+                        "gesamtbetrag": 10916.88
+                    }
+                },
+                {
+                    "ratenkredit" :{
+                        "produktanbietername": "Testbank2 AG",
+                    },
+                    "gesamtkonditionen": {
+                        "sollzins": 2.95,
+                        "effektivzins": 2.99,
+                        "gesamtbetrag": 10916.88
+                    }
+                }
+            ]
         }
     }
 
