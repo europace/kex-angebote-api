@@ -34,16 +34,13 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 * [Fehlercodes](#fehlercodes)
    * [HTTP-Status Errors](#http-status-errors)
    * [weitere Fehler](#weitere-fehler)
-* [Query bestesAngebot](#query-bestesAngebot)
-    * [BestesAngebot - Request Format](#bestesangebot-request-format)
-    * [BestesAngebot - Typen der Parameter](#bestesangebot-typen-der-parameter)
-    * [BestesAngebot - gewünschte Felder](#bestesangebot-gewnschte-felder)
-    * [BestesAngebot - Response Format](#bestesangebot-response-format)
-* [Query grenzen](#query-grenzen)
-    * [Grenzen - Request Format](#grenzen-request-format)
-    * [Grenzen - Typen der Parameter](#grenzen-typen-der-parameter)
-    * [Grenzen - gewünschte Felder](#grenzen-gewnschte-felder)
-    * [Grenzen - Response Format](#grenzen-response-format)
+* [Request Format](#request-format)
+    * [Antrag](#request-format-antrag)
+        * [Gesamtkonditionen](#request-format-antrag-gesamtkonditionen)
+            * [Zinsgrenzen](#request-format-antrag-gesamtkonditionen-zinsgrenzen)
+        * [Ratenkredit](#request-format-antrag-ratenkredit)
+    * [Grenzen](#request-format-grenzen)
+* [Response Format](#response-format)
 * [Tools](#tools)
 * [Nutzungsbedingungen](#nutzungsbedingungen)
 
@@ -257,143 +254,87 @@ Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnit
       ]
     }
 
-## Query bestesAngebot  
+## Request Format
 
-Für einen Partner wird unter Berücksichtigung seiner Handelsbeziehungen das beste Angebot ermittelt.
+Die Angaben werden als JSON im Body des Requests gesendet.  
+Die Attribute innerhalb eines Blocks können in beliebiger Reihenfolge angegeben werden.  
+Für einen erfolgreichen Request muss die Query in folgendem Format vorhanden sein (siehe auch den [Beispiel Requests](#beispiele)):
 
-### BestesAngebot: Request Format  
+**bestesAngebot** / **angebote**
 
-Die Angaben werden als JSON im Body des Requests gesendet.
-Die Attribute können in beliebiger Reihenfolge angegeben werden.  
-Die angegebenen Query-Parameter sind typisiert - ein Ausrufezeichen (!) kennzeichnet die Pflicht-Parameter.
-Die konkreten Argumente für die Anfrage werden im **variables**-Teil übergeben.  
+    query(partnerId: <partnerId>, auszahlungsbetrag: <auszahlungsbetrag>, laufzeitInMonaten: <laufzeitInMonaten>, finanzierungszweck: <finanzierungszweck>, datenkontext: <datenkontext>){
+        <gewünschte Felder>
+    }
+    
+**grenzen**
+
+    query(partnerId: <partnerId>){
+        <gewünschte Felder>
+    }
+    
+### Parameter
+
+| Parametername| Typ | Bemerkung | 
+|--------------|-----|------------|
+| partnerId | String | Die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement. Die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein. |
+| auszahlungsbetrag | BigDecimal|  Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.|
+| laufzeitInMonaten | Integer |  Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.|
+| finanzierungszweck | "UMSCHULDUNG" &#124; "FREIE_VERWENDUNG" &#124; "FAHRZEUGKAUF" &#124; "MODERNISIEREN" |  wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt
+| datenkontext | "ECHTGESCHAEFT" &#124; "TESTUMGEBUNG" |wenn nicht angegeben, wird TESTUMGEBUNG angenommen|
+  
+### Gewünschte Felder
+
+Für eine bessere Lesbarkeit wird das Gesamtformat in *Typen* aufgebrochen, die an anderer Stelle definiert sind, aber an verwendeter Stelle eingesetzt werden müssen.  
+Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal sind.
+
+    
+#### Angebot
+
+Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angebot erfragt werden.
 
     {
-        "query": "query bestesAngebot($partnerId: String!, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int!, $finanzierungszweck: Finanzierungszweck, $datenkontext: Datenkontext) { 
-            bestesAngebot(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten, finanzierungszweck: $finanzierungszweck, datenkontext: $datenkontext) {
-                <gewünschte Felder>
-            }
-        }",
-        "variables": {
-            "partnerId": "ABC12",
-            "auszahlungsbetrag": 10000,
-            "laufzeitInMonaten": 72,
-            "finanzierungszweck": "FREIE_VERWENDUNG",
-            "datenkontext": "TESTUMGEBUNG"
-        }
+        gesamtkonditionen: Gesamtkonditionen
+        ratenkredit: Ratenkredit
     }
 
-### BestesAngebot: Typen der Parameter
-
-* partnerId - String
-  * die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement
-  * die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein.
-* auszahlungsbetrag - BigDecimal
-  * die erlaubten Werte sind eingeschränkt - siehe dazu die Query *grenzen*  
-* laufzeitInMonaten - Int
-  * die erlaubten Werte sind eingeschränkt - siehe dazu die Query *grenzen*  
-* finanzierungszweck - String
-  * hierbei handelt es sich um eine Aufzählung (ENUM) mit folgenden Ausprägungen
-    * "UMSCHULDUNG"
-    * "FREIE_VERWENDUNG"
-    * "FAHRZEUGKAUF"
-    * "MODERNISIEREN"  
-  * wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt
-* datenkontext - String
-  * hierbei handelt es sich um eine Aufzählung (ENUM) mit folgenden Ausprägungen
-    * "ECHTGESCHAEFT"
-    * "TESTUMGEBUNG"
-  * wenn nicht angegeben, wird TESTUMGEBUNG angenommen
-
-### BestesAngebot: gewünschte Felder
-    
-    Whitespace-separierte Liste folgender Felder
-
-       | Feldname           | Typ                                   |
-       | ------------------ | ------------------------------------- |
-       | produktanbieter    | String                                |   
-       | produktbezeichnung | String                                |     
-       | gesamtbetrag       | BigDecimal: Betrag in Euro            |  
-       | nettokreditbetrag  | BigDecimal: Betrag in Euro            | 
-       | laufzeitInMonaten  | Int                                   | 
-       | sollzins           | BigDecimal: 100-basierter Prozentsatz |  
-       | effektivzins       | BigDecimal: 100-basierter Prozentsatz |  
-       | monatlicheRate     | BigDecimal: Betrag in Euro            |    
-       | letzteRate         | BigDecimal: Betrag in Euro            |    
-       | ------------------ | ------------------------------------- |
-    
-### BestesAngebot: Response Format
-
-Die erfragten Felder werden - sofern vorhanden- als JSON im Body der Response gesendet. Nicht befüllte Felder werden nicht zurückgegeben.
-
-    { 
-      "data": {
-        "bestesAngebot": {
-          << ANGEFRAGTE FELDER >>
-        }
-      },
-      "errors": [
-        << EVENTUELL AUFGETRETENE FEHLER >>
-      ]
-    }
-
-## Query grenzen  
-
-Ermittlung der gültigen Grenzen von Laufzeit und Auszahlungsbetrag.
-Die Grenzen können sich ändern - sie sind abhängig von den Handelsbeziehungen des Vertriebs und den konkreten Produkten der Bank-Partner.
-
-### Grenzen: Request Format  
-
-Die Angaben werden als JSON im Body des Requests gesendet.
-Die Attribute können in beliebiger Reihenfolge angegeben werden.  
-Die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein. 
-Die angegebenen Query-Parameter sind typisiert - ein Ausrufezeichen (!) kennzeichnet die Pflicht-Parameter.
-Die konkreten Argumente für die Anfrage werden im *variables*-Teil übergeben.  
+##### Gesamtkonditionen
 
     {
-        "query": "query grenzen($partnerId: String!) { 
-            grenzen(partnerId: $partnerId) { 
-                <gewünschte Felder>
-            }
-        }",
-        "variables": {
-            "partnerId": "ABC12"
-        }
+        effektivzins: Prozent,
+        gesamtkreditbetrag: Euro,
+        laufzeitInMonaten: Int,
+        nettokreditbetrag: Euro,
+        rateMonatlich: Euro,
+        sollzins: Prozent,
+        zinsgrenzen: Zinsgrenzen
     }
 
-### Grenzen: Typen der Parameter
+###### Zinsgrenzen
 
-* partnerId - String
-  * die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement
-  * die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein.
+    {
+        maximalerEffektivzins: Prozent,
+        maximalerSollzins: Prozent,
+        minimalerEffektivzins: Prozent,
+        minimalerSollzins: Prozent
+    }
 
-### Grenzen: gewünschte Felder
-    
-    Whitespace-separierte Liste folgender Felder
+##### Ratenkredit
 
-       | Feldname                      | Typ                        |
-       | ----------------------------- | -------------------------- |
-       | auszahlungsbetragMin          | BigDecimal: Betrag in Euro |  
-       | auszahlungsbetragSchrittweite | BigDecimal: Betrag in Euro |  
-       | auszahlungsbetragMax          | BigDecimal: Betrag in Euro |  
-       | laufzeitInMonatenMin          | Int                        | 
-       | laufzeitInMonatenSchrittweite | Int                        | 
-       | laufzeitInMonatenMax          | Int                        | 
-       | ----------------------------- | -------------------------- |
+    {
+        produktanbietername: String,
+        produktbezeichnung: String,
+        schlussrate: Euro
+    }
 
-### Grenzen: Response Format
+#### Grenzen
 
-Die erfragten Felder werden - sofern vorhanden - als JSON im Body der Response gesendet. Nicht befüllte Felder werden nicht zurückgegeben.
-
-    { 
-      "data": {
-        "grenzen": {
-          << ANGEFRAGTE FELDER >>
-        }
-      },
-      "errors": [
-        << EVENTUELL AUFGETRETENE FEHLER >>
-      ]
+    {
+        auszahlungsbetragMin: Euro,
+        auszahlungsbetragSchrittweite: Euro,
+        auszahlungsbetragMax: Euro,
+        laufzeitInMonatenMin: Integer,
+        laufzeitInMonatenSchrittweite: Integer,
+        laufzeitInMonatenMax: Integer
     }
 
 ## Tools
