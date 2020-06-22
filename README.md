@@ -328,6 +328,8 @@ Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angeb
 
 #### Grenzen
 
+Für die Queries **grenzen** können die Felder von den Grenzen erfragt werden.
+
     {
         auszahlungsbetragMin: Euro,
         auszahlungsbetragSchrittweite: Euro,
