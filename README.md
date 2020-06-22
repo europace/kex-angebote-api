@@ -28,6 +28,9 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
    * [Query angebote](query-angebote)
        * [POST Request](#query-angebote-post-request)
        * [POST Response](#query-angebote-post-response)
+   * [Query grenzen](query-grenzen)
+       * [POST Request](#query-grenzen-post-request)
+       * [POST Response](#query-grenzen-post-response)
 * [Fehlercodes](#fehlercodes)
    * [HTTP-Status Errors](#http-status-errors)
    * [weitere Fehler](#weitere-fehler)
@@ -196,6 +199,37 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
                     }
                 }
             ]
+        }
+    }
+
+### Query grenzen
+
+#### POST Request
+
+    POST https://kex-angebote.kreditsmart.api.europace.de/grenzen
+    X-Authentication: xxxxxxx
+    Content-Type: application/json;charset=utf-8
+
+    {
+      "query": "query grenzen($partnerId: String) { 
+        grenzen(partnerId: $partnerId) { 
+            auszahlungsbetragMin 
+            laufzeitInMonatenMin 
+        } 
+      }",
+      "variables": {
+        "partnerId": "ABC12"
+      }
+    }
+        
+#### POST Response
+
+    {
+        "data": {
+            "grenzen": {
+                "auszahlungsbetragMin": 1000.0,
+                "laufzeitInMonatenMin": 12,
+            }
         }
     }
 
