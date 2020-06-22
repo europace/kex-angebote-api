@@ -38,6 +38,7 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
     * [Grenzen - gewünschte Felder](#grenzen-gewnschte-felder)
     * [Grenzen - Response Format](#grenzen-response-format)
 * [Tools](#tools)
+* [Nutzungsbedingungen](#nutzungsbedingungen)
 
 ## Allgemeines
 
@@ -301,3 +302,7 @@ Die erfragten Felder werden - sofern vorhanden - als JSON im Body der Response g
 
 Das GraphQL-Schema kann man z.B. mit dem Tool [GraphiQL](https://electronjs.org/apps/graphiql) analysieren 
 und sich per Autocomplete bequem die Query zusammenbauen.
+
+
+## Nutzungsbedingungen
+Die APIs werden unter folgenden [Nutzungsbedingungen](https://developer.europace.de/terms/) zur Verfügung gestellt
