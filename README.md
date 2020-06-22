@@ -22,8 +22,9 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 * [TraceId zur Nachverfolgbarkeit von Requests](#traceid-zur-nachverfolgbarkeit-von-requests)
 * [Content-Type](#content-type)
 * [Beispiel](#beispiel)
-   * [POST Request](#post-request)
-   * [POST Response](#post-response)
+   * [Query bestesAngebot](query-bestesAngebot)
+       * [POST Request](#query-bestesAngebot-post-request)
+       * [POST Response](#query-bestesAngebot-post-response)
 * [Fehlercodes](#fehlercodes)
    * [HTTP-Status Errors](#http-status-errors)
    * [weitere Fehler](#weitere-fehler)
@@ -93,7 +94,9 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
 
 ## Beispiel 
 
-### POST Request
+### Query bestesAngebot
+
+#### POST Request
 
     POST https://kex-angebote.kreditsmart.api.europace.de/angebote
     X-Authentication: xxxxxxx
@@ -102,12 +105,14 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
     {
       "query": "query bestesAngebot($partnerId: String!, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int!) { 
          bestesAngebot(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
-           produktanbieter
-           gesamtbetrag
-           nettokreditbetrag
-           sollzins
-           effektivzins
-           monatlicheRate
+            ratenkredit {
+                produktanbietername
+            }
+            gesamtkonditionen {
+                sollzins
+                effektivzins
+                gesamtkreditbetrag
+            }
          }
       }",
       "variables": {
@@ -117,20 +122,19 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
       }
     }
         
-### POST Response
+#### POST Response
 
     {
         "data": {
             "bestesAngebot": {
-                "produktanbieter": "Testbank AG",
-                "produktbezeichnung": "Testprodukt Ratenkredit",
-                "gesamtbetrag": 10916.88,
-                "nettokreditbetrag": 10000.00,
-                "laufzeitInMonaten": 72,
-                "sollzins": 2.95,
-                "effektivzins": 2.99,
-                "monatlicheRate": 153.67,
-                "letzteRate": 153.42
+                "ratenkredit" :{
+                    "produktanbietername": "Testbank AG",
+                },
+                "gesamtkonditionen": {
+                    "sollzins": 2.95,
+                    "effektivzins": 2.99,
+                    "gesamtbetrag": 10916.88
+                }
             }
         }
     }
