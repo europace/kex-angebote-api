@@ -273,17 +273,17 @@ Für einen erfolgreichen Request muss die Query in folgendem Format vorhanden se
         <gewünschte Felder>
     }
     
-### Parameter
+### GraphQL Variablen
 
-| Parametername      | Typ                                                                               | Bemerkung                                                                                                                                                                                               |
+| Variablenname      | Typ                                                                               | Bemerkung                                                                                                                                                                                               |
 |--------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| partnerId          | String                                                                            | Die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement. <br/>Die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein. |
+| partnerId          | String                                                                            | Die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement. <br/>Die angegebene PartnerId muss unterhalb der PartnerId des API-Clients liegen oder mit ihr identisch sein. |
 | auszahlungsbetrag  | BigDecimal                                                                        | Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.                                                                                                                                    |
 | laufzeitInMonaten  | Integer                                                                           | Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.                                                                                                                                    |
 | finanzierungszweck | "UMSCHULDUNG" <br/> "FREIE_VERWENDUNG" <br/> "FAHRZEUGKAUF" <br/> "MODERNISIEREN" | wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt                                                                                                             |
 | datenkontext       | "ECHTGESCHAEFT" <br/> "TESTUMGEBUNG"                                              | wenn nicht angegeben, wird TESTUMGEBUNG angenommen                                                                                                                                                      |
   
-### Gewünschte Felder
+### Anfragbare Felder
 
 Für eine bessere Lesbarkeit wird das Gesamtformat in *Typen* aufgebrochen, die an anderer Stelle definiert sind, aber an verwendeter Stelle eingesetzt werden müssen.  
 Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal sind.
@@ -335,7 +335,7 @@ Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angeb
 
 #### Grenzen
 
-Für die Queries **grenzen** können die Felder von den Grenzen erfragt werden.
+Für die Query **grenzen** können die Felder von den Grenzen erfragt werden.
 
     {
         auszahlungsbetragMax: Euro,
