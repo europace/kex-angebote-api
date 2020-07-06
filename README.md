@@ -338,12 +338,12 @@ Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angeb
 Für die Queries **grenzen** können die Felder von den Grenzen erfragt werden.
 
     {
+        auszahlungsbetragMax: Euro,
         auszahlungsbetragMin: Euro,
         auszahlungsbetragSchrittweite: Euro,
-        auszahlungsbetragMax: Euro,
+        laufzeitInMonatenMax: Integer,
         laufzeitInMonatenMin: Integer,
-        laufzeitInMonatenSchrittweite: Integer,
-        laufzeitInMonatenMax: Integer
+        laufzeitInMonatenSchrittweite: Integer
     }
 
 ## Tools
