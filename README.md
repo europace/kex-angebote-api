@@ -322,9 +322,15 @@ Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angeb
 ##### Ratenkredit
 
     {
-        produktanbietername: String,
+        produktanbieter: Produktanbieter,
         produktbezeichnung: String,
         schlussrate: Euro
+    }
+
+###### Produktanbieter
+
+    {
+        name: String
     }
 
 #### Grenzen
