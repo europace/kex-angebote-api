@@ -103,7 +103,7 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
 #### POST Request
 
     POST https://kex-angebote.kreditsmart.api.europace.de/angebote
-    X-Authentication: xxxxxxx
+    Authorization: Bearer xxxx
     Content-Type: application/json;charset=utf-8
 
     {
@@ -148,7 +148,7 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
 #### POST Request
 
     POST https://kex-angebote.kreditsmart.api.europace.de/angebote
-    X-Authentication: xxxxxxx
+    Authorization: Bearer xxxx
     Content-Type: application/json;charset=utf-8
 
     {
@@ -205,7 +205,7 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
 #### POST Request
 
     POST https://kex-angebote.kreditsmart.api.europace.de/grenzen
-    X-Authentication: xxxxxxx
+    Authorization: Bearer xxxx
     Content-Type: application/json;charset=utf-8
 
     {
@@ -275,13 +275,13 @@ Für einen erfolgreichen Request muss die Query in folgendem Format vorhanden se
     
 ### Parameter
 
-| Parametername| Typ | Bemerkung | 
+| Parametername      | Typ                                                                               | Bemerkung                                                                                                                                                                                               |
 |--------------|-----|------------|
-| partnerId | String | Die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement. <br/>Die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein. |
-| auszahlungsbetrag | BigDecimal|  Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.|
-| laufzeitInMonaten | Integer |  Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.|
+| partnerId          | String                                                                            | Die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement. <br/>Die angegebene PartnerId muss unterhalb der PartnerId des JWTs liegen oder mit ihr identisch sein. |
+| auszahlungsbetrag  | BigDecimal                                                                        | Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.                                                                                                                                    |
+| laufzeitInMonaten  | Integer                                                                           | Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.                                                                                                                                    |
 | finanzierungszweck | "UMSCHULDUNG" <br/> "FREIE_VERWENDUNG" <br/> "FAHRZEUGKAUF" <br/> "MODERNISIEREN" |  wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt
-| datenkontext | "ECHTGESCHAEFT" <br/> "TESTUMGEBUNG" |wenn nicht angegeben, wird TESTUMGEBUNG angenommen|
+| datenkontext       | "ECHTGESCHAEFT" <br/> "TESTUMGEBUNG"                                              | wenn nicht angegeben, wird TESTUMGEBUNG angenommen                                                                                                                                                      |
   
 ### Gewünschte Felder
 
