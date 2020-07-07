@@ -1,19 +1,4 @@
 # KEX-Angebote-API
-
-Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
-
-> :warning: Diese Schnittstelle wird kontinuierlich weiterentwickelt. Daher erwarten wir 
-> von allen Nutzern dieser Schnittstelle, dass sie das "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)" nutzen, d.h. 
-> tolerant gegenüber kompatiblen API-Änderungen beim Lesen und Prozessieren der Daten sind:
->
-> 1. unbekannte Felder dürfen keine Fehler verursachen
->
-> 2. Strings mit eingeschränktem Wertebereich (Enums) müssen mit neuen, unbekannten Werten umgehen können
->
-> 3. sinnvoller Umgang mit HTTP-Statuscodes, die nicht explizit dokumentiert sind  
-> 
- 
-<!-- https://opensource.zalando.com/restful-api-guidelines/#108 -->
  
 # Table of Contents
 
@@ -54,14 +39,37 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 
 # Allgemeines
 
-Angebote können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
+Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
+
+> :warning: Diese Schnittstelle wird kontinuierlich weiterentwickelt. Daher erwarten wir 
+> von allen Nutzern dieser Schnittstelle, dass sie das "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)" nutzen, d.h. 
+> tolerant gegenüber kompatiblen API-Änderungen beim Lesen und Prozessieren der Daten sind:
+>
+> 1. unbekannte Felder dürfen keine Fehler verursachen
+>
+> 2. Strings mit eingeschränktem Wertebereich (Enums) müssen mit neuen, unbekannten Werten umgehen können
+>
+> 3. sinnvoller Umgang mit HTTP-Statuscodes, die nicht explizit dokumentiert sind  
+> 
+ 
+<!-- https://opensource.zalando.com/restful-api-guidelines/#108 -->
+
+## Angebote
+
+Angebote, sowohl das beste Angebot als auch die komplette Angebotsliste, können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
 Die URL für das Ermitteln von Angeboten ist:
 
     https://kex-angebote.kreditsmart.api.europace.de/angebote
     
-Die gewünschten Properties werden als JSON im Body des POST Requests übermittelt.  
-Ein erfolgreicher Aufruf resultiert in einer Response mit dem HTTP Statuscode **200 SUCCESS**.  
-Die angeforderten Daten werden ebenfalls als JSON übermittelt.
+## Grenzen
+
+Für ausgewählte Partner-IDs werden Angebote vorberechnet, um eine schnellere Antwortzeit zu gewährleisten.
+Die Vorberechnung passiert innerhalb dieser Grenzen für ausgewählte Partner-IDs. 
+Grenzen können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
+Die URL für das Ermitteln von Grenzen ist:
+
+    https://kex-angebote.kreditsmart.api.europace.de/grenzen
+    
 
 # Beispiele 
 
@@ -213,7 +221,6 @@ Die angeforderten Daten werden ebenfalls als JSON übermittelt.
 Die Angaben werden als JSON mit UTF-8 Encoding im Body des Requests gesendet.  
 Die Attribute innerhalb eines Blocks können in beliebiger Reihenfolge angegeben werden.  
 
-
 ## Authentifizierung
 
 Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierung erfolgt über den OAuth 2.0 Client-Credentials Flow. 
@@ -263,7 +270,7 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
     
 ## GraphQL Variablen
 
-### bestes Angebot
+### Bestes Angebot
 
 | Variablenname      | Typ                | Default                           | Bemerkung                                                                                    |
 |--------------------|--------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
@@ -367,9 +374,9 @@ Für die Query **grenzen** können die Felder von den Grenzen erfragt werden.
         auszahlungsbetragMax: Euro,
         auszahlungsbetragMin: Euro,
         auszahlungsbetragSchrittweite: Euro,
-        laufzeitInMonatenMax: Integer,
-        laufzeitInMonatenMin: Integer,
-        laufzeitInMonatenSchrittweite: Integer
+        laufzeitInMonatenMax: Int,
+        laufzeitInMonatenMin: Int,
+        laufzeitInMonatenSchrittweite: Int
     }
 
 
