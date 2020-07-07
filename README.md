@@ -110,7 +110,9 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
       "query": "query bestesAngebot($partnerId: String!, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int!) { 
          bestesAngebot(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
             ratenkredit {
-                produktanbietername
+                produktanbieter {
+                    name
+                }
             }
             gesamtkonditionen {
                 sollzins
@@ -131,8 +133,10 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
     {
         "data": {
             "bestesAngebot": {
-                "ratenkredit" :{
-                    "produktanbietername": "Testbank AG",
+                "ratenkredit": {
+                    "produktanbieter": {
+                        "name": "Testbank AG"
+                    }
                 },
                 "gesamtkonditionen": {
                     "sollzins": 2.95,
@@ -155,7 +159,9 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
       "query": "query angebote($partnerId: String!, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int!) { 
          angebote(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
             ratenkredit {
-                produktanbietername
+                produktanbieter {
+                    name
+                }
             }
             gesamtkonditionen {
                 sollzins
@@ -177,8 +183,10 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
         "data": {
             "angebote": [
                 {
-                    "ratenkredit" :{
-                        "produktanbietername": "Testbank1 AG",
+                    "ratenkredit": {
+                        "produktanbieter": {
+                            "name": "Testbank1 AG"
+                        }
                     },
                     "gesamtkonditionen": {
                         "sollzins": 3.95,
@@ -187,8 +195,10 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
                     }
                 },
                 {
-                    "ratenkredit" :{
-                        "produktanbietername": "Testbank2 AG",
+                    "ratenkredit": {
+                        "produktanbieter": {
+                            "name": "Testbank2 AG"
+                        }
                     },
                     "gesamtkonditionen": {
                         "sollzins": 2.95,
