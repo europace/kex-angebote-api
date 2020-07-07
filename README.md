@@ -17,40 +17,40 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
  
 # Table of Contents
 
-* [Allgemeines](#allgemeines)
-* [Authentifizierung](#authentifizierung)
-* [TraceId zur Nachverfolgbarkeit von Requests](#traceid-zur-nachverfolgbarkeit-von-requests)
-* [Beispiele](#beispiele)
-   * [Query bestesAngebot](#query-bestesangebot)
-      * [POST Request](#post-request)
-      * [POST Response](#post-response)
-   * [Query angebote](#query-angebote)
-      * [POST Request](#post-request-1)
-      * [POST Response](#post-response-1)
-   * [Query grenzen](#query-grenzen)
-      * [POST Request](#post-request-2)
-      * [POST Response](#post-response-2)
-* [Request](#request)
-   * [Format](#format)
-   * [GraphQL Variablen](#graphql-variablen)
-      * [bestes Angebot](#bestes-angebot)
-      * [Angebotsliste](#angebotsliste)
-      * [Grenzen](#grenzen)
-      * [Partner-ID](#partner-id)
-      * [Datenkontext](#datenkontext)
-      * [Finanzierungszweck](#finanzierungszweck)
-   * [Anfragbare Felder](#anfragbare-felder)
-      * [Angebot](#angebot)
-         * [Gesamtkonditionen](#gesamtkonditionen)
-            * [Zinsgrenzen](#zinsgrenzen)
-         * [Ratenkredit](#ratenkredit)
-            * [Produktanbieter](#produktanbieter)
-      * [Grenzen](#grenzen-1)
-* [Fehlercodes](#fehlercodes)
-   * [HTTP-Status Errors](#http-status-errors)
-   * [Weitere Fehler](#weitere-fehler)
-* [Tools](#tools)
-* [Nutzungsbedingungen](#nutzungsbedingungen)
+   * [Allgemeines](#allgemeines)
+   * [Beispiele](#beispiele)
+      * [Query bestesAngebot](#query-bestesangebot)
+         * [POST Request](#post-request)
+         * [POST Response](#post-response)
+      * [Query angebote](#query-angebote)
+         * [POST Request](#post-request-1)
+         * [POST Response](#post-response-1)
+      * [Query grenzen](#query-grenzen)
+         * [POST Request](#post-request-2)
+         * [POST Response](#post-response-2)
+   * [Request](#request)
+      * [Authentifizierung](#authentifizierung)
+      * [Nachverfolgbarkeit von Requests](#nachverfolgbarkeit-von-requests)
+      * [Format](#format)
+      * [GraphQL Variablen](#graphql-variablen)
+         * [bestes Angebot](#bestes-angebot)
+         * [Angebotsliste](#angebotsliste)
+         * [Grenzen](#grenzen)
+         * [Partner-ID](#partner-id)
+         * [Datenkontext](#datenkontext)
+         * [Finanzierungszweck](#finanzierungszweck)
+      * [Anfragbare Felder](#anfragbare-felder)
+         * [Angebot](#angebot)
+            * [Gesamtkonditionen](#gesamtkonditionen)
+               * [Zinsgrenzen](#zinsgrenzen)
+            * [Ratenkredit](#ratenkredit)
+               * [Produktanbieter](#produktanbieter)
+         * [Grenzen](#grenzen-1)
+   * [Fehlercodes](#fehlercodes)
+      * [HTTP-Status Errors](#http-status-errors)
+      * [Weitere Fehler](#weitere-fehler)
+   * [Tools](#tools)
+   * [Nutzungsbedingungen](#nutzungsbedingungen)
 
 # Allgemeines
 
@@ -63,49 +63,18 @@ Die gewünschten Properties werden als JSON im Body des POST Requests übermitte
 Ein erfolgreicher Aufruf resultiert in einer Response mit dem HTTP Statuscode **200 SUCCESS**.  
 Die angeforderten Daten werden ebenfalls als JSON übermittelt.
 
+# Beispiele 
 
-## Authentifizierung
+## Query bestesAngebot
 
-Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierung erfolgt über den OAuth 2.0 Client-Credentials Flow. 
-
-| Request Header Name | Beschreibung           |
-|---------------------|------------------------|
-| Authorization       | OAuth 2.0 Bearer Token |
-
-
-Das Bearer Token kann über die [Authorization-API](https://github.com/europace/authorization-api) angefordert werden. 
-Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde, 
-eine Anleitung dafür befindet sich im [Help Center](https://europace2.zendesk.com/hc/de/articles/360012514780).
-
-Damit der Client für diese API genutzt werden kann, muss im Partnermanagement die Berechtigung **Kreditsmartangebote ermitteln** aktiviert sein.  
- 
-Schlägt die Authentifizierung fehl, erhält der Aufrufer eine HTTP Response mit Statuscode **401 UNAUTHORIZED**.
-
-Hat der Client nicht die benötigte Berechtigung um die Resource abzurufen, erhält der Aufrufer eine HTTP Response mit Statuscode **403 FORBIDDEN**.
-
-## TraceId zur Nachverfolgbarkeit von Requests
-
-Für jeden Request soll eine eindeutige ID generiert werden, die den Request im EUROPACE System nachverfolgbar macht und so bei etwaigen Problemen oder Fehlern die systemübergreifende Analyse erleichtert.  
-Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional. 
-Wenn er nicht gesetzt ist, wird eine ID vom System generiert.
-Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beginnt (im Beispiel unten 'sys').
-
-| Request Header Name | Beschreibung                    | Beispiel    |
-|---------------------|---------------------------------|-------------|
-| X-TraceId           | eindeutige Id für jeden Request | sys12345678 |
-
-## Beispiele 
-
-### Query bestesAngebot
-
-#### POST Request
+### POST Request
 
     POST https://kex-angebote.kreditsmart.api.europace.de/angebote
     Authorization: Bearer xxxx
-    Content-Type: application/json;charset=utf-8
+    Content-Type: application/json
 
     {
-      "query": "query bestesAngebot($partnerId: String!, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int!) { 
+      "query": "query bestesAngebot($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) { 
          bestesAngebot(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
             ratenkredit {
                 produktanbieter {
@@ -126,7 +95,7 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
       }
     }
         
-#### POST Response
+### POST Response
 
     {
         "data": {
@@ -145,16 +114,16 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
         }
     }
 
-### Query angebote
+## Query angebote
 
-#### POST Request
+### POST Request
 
     POST https://kex-angebote.kreditsmart.api.europace.de/angebote
     Authorization: Bearer xxxx
-    Content-Type: application/json;charset=utf-8
+    Content-Type: application/json
 
     {
-      "query": "query angebote($partnerId: String!, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int!) { 
+      "query": "query angebote($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) { 
          angebote(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
             ratenkredit {
                 produktanbieter {
@@ -175,7 +144,7 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
       }
     }
         
-#### POST Response
+### POST Response
 
     {
         "data": {
@@ -208,13 +177,13 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
         }
     }
 
-### Query grenzen
+## Query grenzen
 
-#### POST Request
+### POST Request
 
     POST https://kex-angebote.kreditsmart.api.europace.de/grenzen
     Authorization: Bearer xxxx
-    Content-Type: application/json;charset=utf-8
+    Content-Type: application/json
 
     {
       "query": "query grenzen($partnerId: String) { 
@@ -228,7 +197,7 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
       }
     }
         
-#### POST Response
+### POST Response
 
     {
         "data": {
@@ -239,12 +208,44 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
         }
     }
 
-## Request
+# Request
 
 Die Angaben werden als JSON mit UTF-8 Encoding im Body des Requests gesendet.  
 Die Attribute innerhalb eines Blocks können in beliebiger Reihenfolge angegeben werden.  
 
-### Format
+
+## Authentifizierung
+
+Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierung erfolgt über den OAuth 2.0 Client-Credentials Flow. 
+
+| Request Header Name | Beschreibung           |
+|---------------------|------------------------|
+| Authorization       | OAuth 2.0 Bearer Token |
+
+
+Das Bearer Token kann über die [Authorization-API](https://github.com/europace/authorization-api) angefordert werden. 
+Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde, 
+eine Anleitung dafür befindet sich im [Help Center](https://europace2.zendesk.com/hc/de/articles/360012514780).
+
+Damit der Client für diese API genutzt werden kann, muss im Partnermanagement die Berechtigung **Kreditsmartangebote ermitteln** aktiviert sein.  
+ 
+Schlägt die Authentifizierung fehl, erhält der Aufrufer eine HTTP Response mit Statuscode **401 UNAUTHORIZED**.
+
+Hat der Client nicht die benötigte Berechtigung um die Resource abzurufen, erhält der Aufrufer eine HTTP Response mit Statuscode **403 FORBIDDEN**.
+
+## Nachverfolgbarkeit von Requests
+
+Für jeden Request soll eine eindeutige ID generiert werden, die den Request im EUROPACE System nachverfolgbar macht und so bei etwaigen Problemen oder Fehlern die systemübergreifende Analyse erleichtert.  
+Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional. 
+Wenn er nicht gesetzt ist, wird eine ID vom System generiert.
+Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beginnt (im Beispiel unten 'sys').
+
+| Request Header Name | Beschreibung                    | Beispiel    |
+|---------------------|---------------------------------|-------------|
+| X-TraceId           | eindeutige Id für jeden Request | sys12345678 |
+
+
+## Format
 Die Schnittstelle unterstützt alle gängigen GraphQL Formate.
 Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispiele)):
 
@@ -260,9 +261,9 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
         <gewünschte Felder>
     }
     
-### GraphQL Variablen
+## GraphQL Variablen
 
-#### bestes Angebot
+### bestes Angebot
 
 | Variablenname      | Typ                | Default                           | Bemerkung                                                                                    |
 |--------------------|--------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
@@ -272,7 +273,7 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
 | finanzierungszweck | Finanzierungszweck | -                                 | Wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt. |
 | datenkontext       | Datenkontext       | TESTUMGEBUNG                      |                                                                                              |
 
-#### Angebotsliste
+### Angebotsliste
 
 | Variablenname      | Typ                | Default                           | Bemerkung                                                             |
 |--------------------|--------------------|-----------------------------------|-----------------------------------------------------------------------|
@@ -282,24 +283,24 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
 | finanzierungszweck | Finanzierungszweck | FREIE_VERWENDUNG                  |                                                                       |
 | datenkontext       | Datenkontext       | TESTUMGEBUNG                      |                                                                       |
 
-#### Grenzen
+### Grenzen
 
 | Variablenname | Typ        | Default                            |
 |---------------|------------|------------------------------------|
 | partnerId     | Partner-ID | Die Partner-ID aus dem API-Client  |
 
-#### Partner-ID
+### Partner-ID
 
 Dieser Typ ist ein 5-stelliger String und identifiziert eine Plakette aus dem Europace-Partnermanagement.  
 Die angegebene Partner-ID muss unterhalb der Partner-ID des API-Clients liegen oder mit ihr identisch sein.
 
-#### Datenkontext 
+### Datenkontext 
 
 Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
 * TESTUMGEBUNG
 * ECHTGESCHAEFT
 
-#### Finanzierungszweck
+### Finanzierungszweck
 
 Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
 * UMSCHULDUNG
@@ -308,13 +309,13 @@ Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
 * MODERNISIEREN
 
 
-### Anfragbare Felder
+## Anfragbare Felder
 
 Für eine bessere Lesbarkeit wird das Gesamtformat in *Typen* aufgebrochen, die an anderer Stelle definiert sind, aber an verwendeter Stelle eingesetzt werden müssen.  
 Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal sind.
 
     
-#### Angebot
+### Angebot
 
 Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angebot erfragt werden.
 
@@ -323,7 +324,7 @@ Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angeb
         ratenkredit: Ratenkredit
     }
 
-##### Gesamtkonditionen
+#### Gesamtkonditionen
 
     {
         effektivzins: Prozent,
@@ -335,7 +336,7 @@ Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angeb
         zinsgrenzen: Zinsgrenzen
     }
 
-###### Zinsgrenzen
+##### Zinsgrenzen
 
     {
         maximalerEffektivzins: Prozent,
@@ -344,7 +345,7 @@ Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angeb
         minimalerSollzins: Prozent
     }
 
-##### Ratenkredit
+#### Ratenkredit
 
     {
         produktanbieter: Produktanbieter,
@@ -352,13 +353,13 @@ Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angeb
         schlussrate: Euro
     }
 
-###### Produktanbieter
+##### Produktanbieter
 
     {
         name: String
     }
 
-#### Grenzen
+### Grenzen
 
 Für die Query **grenzen** können die Felder von den Grenzen erfragt werden.
 
@@ -372,12 +373,12 @@ Für die Query **grenzen** können die Felder von den Grenzen erfragt werden.
     }
 
 
-## Fehlercodes
+# Fehlercodes
 
 Die Besonderheit in GraphQL ist u.a., dass die meisten Fehler nicht über HTTP-Fehlercodes wiedergegeben werden.
 In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufgetreten ist. Dafür gibt es das Attribut `errors` in der Response.
 
-### HTTP-Status Errors
+## HTTP-Status Errors
 
 | Fehlercode | Nachricht             | Erklärung                                                                                                   |
 |------------|-----------------------|-------------------------------------------------------------------------------------------------------------|
@@ -386,7 +387,7 @@ In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufget
 | 403        | Forbidden             | Der API-Client besitzt nicht den richtigen Scope                                                            |
 | 415        | Unsupported MediaType | Es wurde ein anderer content-type angegeben                                                                 |
 
-### Weitere Fehler
+## Weitere Fehler
 Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnittstelle eine 200, aber in dem Attribut `errors` sind Fehlerdetails zu finden
 
     {
@@ -399,11 +400,11 @@ Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnit
       ]
     }
     
-## Tools
+# Tools
 
 Das GraphQL-Schema kann man z.B. mit dem Tool [GraphiQL](https://electronjs.org/apps/graphiql) analysieren 
 und sich per Autocomplete bequem die Query zusammenbauen.
 
 
-## Nutzungsbedingungen
+# Nutzungsbedingungen
 Die APIs werden unter folgenden [Nutzungsbedingungen](https://developer.europace.de/terms/) zur Verfügung gestellt
