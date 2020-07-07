@@ -324,7 +324,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
     
 ### Angebot
 
-Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angebot erfragt werden.
+Dieser Datentyp wird für die GraphQL Queries **bestesAngebot** und **angebote** verwendet.
 
     {
         gesamtkonditionen: Gesamtkonditionen
@@ -368,7 +368,7 @@ Für die Queries **bestesAngebot** und **angebote** können die Felder vom Angeb
 
 ### Grenzen
 
-Für die Query **grenzen** können die Felder von den Grenzen erfragt werden.
+Dieser Datentyp wird für die GraphQL Query **grenzen** verwendet.
 
     {
         auszahlungsbetragMax: Euro,
