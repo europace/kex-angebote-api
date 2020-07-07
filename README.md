@@ -270,11 +270,11 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
         <gewünschte Felder>
     }
     
-## GraphQL Variablen
+## Request Parameter
 
 ### Bestes Angebot
 
-| Variablenname      | Typ                | Default                           | Bemerkung                                                                                    |
+| Parametername      | Typ                | Default                           | Bemerkung                                                                                    |
 |--------------------|--------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
 | partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client |                                                                                              |
 | auszahlungsbetrag  | Euro!              | Pflichtfeld                       | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein.                        |
@@ -284,7 +284,7 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
 
 ### Angebotsliste
 
-| Variablenname      | Typ                | Default                           | Bemerkung                                                             |
+| Parametername      | Typ                | Default                           | Bemerkung                                                             |
 |--------------------|--------------------|-----------------------------------|-----------------------------------------------------------------------|
 | partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client |                                                                       |
 | auszahlungsbetrag  | Euro!              | Pflichtfeld                       | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein. |
@@ -294,7 +294,7 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
 
 ### Grenzen
 
-| Variablenname | Typ        | Default                            |
+| Parametername | Typ        | Default                            |
 |---------------|------------|------------------------------------|
 | partnerId     | Partner-ID | Die Partner-ID aus dem API-Client  |
 
@@ -391,7 +391,7 @@ In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufget
 
 | Fehlercode | Nachricht             | Erklärung                                                                                                   |
 |------------|-----------------------|-------------------------------------------------------------------------------------------------------------|
-| 400        | Bad Request           | Request Format ist ungültig, z.B. Pflichtfelder fehlen, Variablennamen, -typen oder -werte sind falsch, ... |
+| 400        | Bad Request           | Request Format ist ungültig, z.B. Pflichtfelder fehlen, Parameternamen, -typen oder -werte sind falsch, ... |
 | 401        | Unauthorized          | Authentifizierung ist fehlgeschlagen                                                                        |
 | 403        | Forbidden             | Der API-Client besitzt nicht den richtigen Scope                                                            |
 | 415        | Unsupported MediaType | Es wurde ein anderer content-type angegeben                                                                 |
