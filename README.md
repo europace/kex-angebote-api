@@ -20,32 +20,39 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 * [Allgemeines](#allgemeines)
 * [Authentifizierung](#authentifizierung)
 * [TraceId zur Nachverfolgbarkeit von Requests](#traceid-zur-nachverfolgbarkeit-von-requests)
-* [Content-Type](#content-type)
 * [Beispiele](#beispiele)
-    * [Query bestesAngebot](#query-bestesangebot)
-        * [POST Request](#post-request)
-        * [POST Response](#post-response)
-    * [Query angebote](#query-angebote)
-        * [POST Request](#post-request-1)
-        * [POST Response](#post-response-1)
-    * [Query grenzen](#query-grenzen)
-        * [POST Request](#post-request-2)
-        * [POST Response](#post-response-2)
+   * [Query bestesAngebot](#query-bestesangebot)
+      * [POST Request](#post-request)
+      * [POST Response](#post-response)
+   * [Query angebote](#query-angebote)
+      * [POST Request](#post-request-1)
+      * [POST Response](#post-response-1)
+   * [Query grenzen](#query-grenzen)
+      * [POST Request](#post-request-2)
+      * [POST Response](#post-response-2)
+* [Request](#request)
+   * [Format](#format)
+   * [GraphQL Variablen](#graphql-variablen)
+      * [bestes Angebot](#bestes-angebot)
+      * [Angebotsliste](#angebotsliste)
+      * [Grenzen](#grenzen)
+      * [Partner-ID](#partner-id)
+      * [Datenkontext](#datenkontext)
+      * [Finanzierungszweck](#finanzierungszweck)
+   * [Anfragbare Felder](#anfragbare-felder)
+      * [Angebot](#angebot)
+         * [Gesamtkonditionen](#gesamtkonditionen)
+            * [Zinsgrenzen](#zinsgrenzen)
+         * [Ratenkredit](#ratenkredit)
+            * [Produktanbieter](#produktanbieter)
+      * [Grenzen](#grenzen-1)
 * [Fehlercodes](#fehlercodes)
- * [HTTP-Status Errors](#http-status-errors)
- * [Weitere Fehler](#weitere-fehler)
-* [Request Format](#request-format)
- * [Parameter](#parameter)
- * [Gewünschte Felder](#gewünschte-felder)
-    * [Angebot](#angebot)
-       * [Gesamtkonditionen](#gesamtkonditionen)
-          * [Zinsgrenzen](#zinsgrenzen)
-       * [Ratenkredit](#ratenkredit)
-    * [Grenzen](#grenzen)
+   * [HTTP-Status Errors](#http-status-errors)
+   * [Weitere Fehler](#weitere-fehler)
 * [Tools](#tools)
 * [Nutzungsbedingungen](#nutzungsbedingungen)
 
-## Allgemeines
+# Allgemeines
 
 Angebote können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
 Die URL für das Ermitteln von Angeboten ist:
@@ -86,15 +93,6 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
 | Request Header Name | Beschreibung                    | Beispiel    |
 |---------------------|---------------------------------|-------------|
 | X-TraceId           | eindeutige Id für jeden Request | sys12345678 |
-
-## Content-Type
-
-Die Schnittstelle akzeptiert Daten mit Content-Type "**application/json**".  
-Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich das Encoding, wenn es nicht UTF-8 ist.
-
-| Request Header Name |   Header Value   |
-|---------------------|------------------|
-| Content-Type        | application/json |
 
 ## Beispiele 
 
@@ -241,35 +239,14 @@ Entsprechend muss im Request der Content-Type Header gesetzt werden. Zusätzlich
         }
     }
 
-## Fehlercodes
+## Request
 
-Die Besonderheit in GraphQL ist u.a., dass die meisten Fehler nicht über HTTP-Fehlercodes wiedergegeben werden.
-In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufgetreten ist. Dafür gibt es das Attribut `errors` in der Response.
-
-### HTTP-Status Errors
-
-| Fehlercode | Nachricht       | weitere Attribute          | Erklärung                            |
-|------------|-----------------|----------------------------|--------------------------------------|
-| 401        | Unauthorized    | -                          | Authentifizierung ist fehlgeschlagen |
-
-### Weitere Fehler
-Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnittstelle eine 200, aber in dem Attribut `errors` sind Fehlerdetails zu finden
-
-    {
-      "data": {},
-      "errors": [
-        {
-          "message": MESSAGE,
-          "status": STATUS_CODE
-        }
-      ]
-    }
-
-## Request Format
-
-Die Angaben werden als JSON im Body des Requests gesendet.  
+Die Angaben werden als JSON mit UTF-8 Encoding im Body des Requests gesendet.  
 Die Attribute innerhalb eines Blocks können in beliebiger Reihenfolge angegeben werden.  
-Für einen erfolgreichen Request muss die Query in folgendem Format vorhanden sein (siehe auch den [Beispiel Requests](#beispiele)):
+
+### Format
+Die Schnittstelle unterstützt alle gängigen GraphQL Formate.
+Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispiele)):
 
 **bestesAngebot** / **angebote**
 
@@ -285,14 +262,52 @@ Für einen erfolgreichen Request muss die Query in folgendem Format vorhanden se
     
 ### GraphQL Variablen
 
-| Variablenname      | Typ                                                                               | Bemerkung                                                                                                                                                                                               |
-|--------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| partnerId          | String                                                                            | Die PartnerId ist 5-stellig und identifiziert eine Plakette aus dem Europace-Partnermanagement. <br/>Die angegebene PartnerId muss unterhalb der PartnerId des API-Clients liegen oder mit ihr identisch sein. |
-| auszahlungsbetrag  | BigDecimal                                                                        | Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.                                                                                                                                    |
-| laufzeitInMonaten  | Integer                                                                           | Die erlaubten Werte müssen innerhalb der Grenzen der partnerId sein.                                                                                                                                    |
-| finanzierungszweck | "UMSCHULDUNG" <br/> "FREIE_VERWENDUNG" <br/> "FAHRZEUGKAUF" <br/> "MODERNISIEREN" | wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt                                                                                                             |
-| datenkontext       | "ECHTGESCHAEFT" <br/> "TESTUMGEBUNG"                                              | wenn nicht angegeben, wird TESTUMGEBUNG angenommen                                                                                                                                                      |
-  
+#### bestes Angebot
+
+| Variablenname      | Typ                | Default                           | Bemerkung                                                                                    |
+|--------------------|--------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
+| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client |                                                                                              |
+| auszahlungsbetrag  | Euro!              | Pflichtfeld                       | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein.                        |
+| laufzeitInMonaten  | Int                | -                                 | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein.                        |
+| finanzierungszweck | Finanzierungszweck | -                                 | Wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt. |
+| datenkontext       | Datenkontext       | TESTUMGEBUNG                      |                                                                                              |
+
+#### Angebotsliste
+
+| Variablenname      | Typ                | Default                           | Bemerkung                                                             |
+|--------------------|--------------------|-----------------------------------|-----------------------------------------------------------------------|
+| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client |                                                                       |
+| auszahlungsbetrag  | Euro!              | Pflichtfeld                       | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein. |
+| laufzeitInMonaten  | Int                | -                                 | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein. |
+| finanzierungszweck | Finanzierungszweck | FREIE_VERWENDUNG                  |                                                                       |
+| datenkontext       | Datenkontext       | TESTUMGEBUNG                      |                                                                       |
+
+#### Grenzen
+
+| Variablenname | Typ        | Default                            |
+|---------------|------------|------------------------------------|
+| partnerId     | Partner-ID | Die Partner-ID aus dem API-Client  |
+
+#### Partner-ID
+
+Dieser Typ ist ein 5-stelliger String und identifiziert eine Plakette aus dem Europace-Partnermanagement.  
+Die angegebene Partner-ID muss unterhalb der Partner-ID des API-Clients liegen oder mit ihr identisch sein.
+
+#### Datenkontext 
+
+Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
+* TESTUMGEBUNG
+* ECHTGESCHAEFT
+
+#### Finanzierungszweck
+
+Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
+* UMSCHULDUNG
+* FREIE_VERWENDUNG
+* FAHRZEUGKAUF
+* MODERNISIEREN
+
+
 ### Anfragbare Felder
 
 Für eine bessere Lesbarkeit wird das Gesamtformat in *Typen* aufgebrochen, die an anderer Stelle definiert sind, aber an verwendeter Stelle eingesetzt werden müssen.  
@@ -356,6 +371,34 @@ Für die Query **grenzen** können die Felder von den Grenzen erfragt werden.
         laufzeitInMonatenSchrittweite: Integer
     }
 
+
+## Fehlercodes
+
+Die Besonderheit in GraphQL ist u.a., dass die meisten Fehler nicht über HTTP-Fehlercodes wiedergegeben werden.
+In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufgetreten ist. Dafür gibt es das Attribut `errors` in der Response.
+
+### HTTP-Status Errors
+
+| Fehlercode | Nachricht             | Erklärung                                                                                                   |
+|------------|-----------------------|-------------------------------------------------------------------------------------------------------------|
+| 400        | Bad Request           | Request Format ist ungültig, z.B. Pflichtfelder fehlen, Variablennamen, -typen oder -werte sind falsch, ... |
+| 401        | Unauthorized          | Authentifizierung ist fehlgeschlagen                                                                        |
+| 403        | Forbidden             | Der API-Client besitzt nicht den richtigen Scope                                                            |
+| 415        | Unsupported MediaType | Es wurde ein anderer content-type angegeben                                                                 |
+
+### Weitere Fehler
+Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnittstelle eine 200, aber in dem Attribut `errors` sind Fehlerdetails zu finden
+
+    {
+      "data": {},
+      "errors": [
+        {
+          "message": MESSAGE,
+          "status": STATUS_CODE
+        }
+      ]
+    }
+    
 ## Tools
 
 Das GraphQL-Schema kann man z.B. mit dem Tool [GraphiQL](https://electronjs.org/apps/graphiql) analysieren 
