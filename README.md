@@ -4,7 +4,6 @@
 
 * [Allgemeines](#allgemeines)
    * [Angebote](#angebote)
-   * [Grenzen](#grenzen)
 * [Beispiele](#beispiele)
    * [Query bestesAngebot](#query-bestesangebot)
       * [POST Request](#post-request)
@@ -12,17 +11,13 @@
    * [Query angebote](#query-angebote)
       * [POST Request](#post-request-1)
       * [POST Response](#post-response-1)
-   * [Query grenzen](#query-grenzen)
-      * [POST Request](#post-request-2)
-      * [POST Response](#post-response-2)
 * [Request](#request)
    * [Authentifizierung](#authentifizierung)
    * [Nachverfolgbarkeit von Requests](#nachverfolgbarkeit-von-requests)
    * [Format](#format)
-   * [GraphQL Variablen](#graphql-variablen)
+   * [Request Parameter](#request-parameter)
       * [Bestes Angebot](#bestes-angebot)
       * [Angebotsliste](#angebotsliste)
-      * [Grenzen](#grenzen-1)
       * [Partner-ID](#partner-id)
       * [Datenkontext](#datenkontext)
       * [Finanzierungszweck](#finanzierungszweck)
@@ -32,7 +27,6 @@
             * [Zinsgrenzen](#zinsgrenzen)
          * [Ratenkredit](#ratenkredit)
             * [Produktanbieter](#produktanbieter)
-      * [Grenzen](#grenzen-2)
 * [Fehlercodes](#fehlercodes)
    * [HTTP-Status Errors](#http-status-errors)
    * [Weitere Fehler](#weitere-fehler)
@@ -62,15 +56,6 @@ Angebote, sowohl das beste Angebot als auch die komplette Angebotsliste, können
 Die URL für das Ermitteln von Angeboten ist:
 
     https://kex-angebote.kreditsmart.api.europace.de/angebote
-    
-## Grenzen
-
-Für ausgewählte Partner-IDs werden Angebote vorberechnet, um eine schnellere Antwortzeit zu gewährleisten.
-Die Vorberechnung passiert innerhalb dieser Grenzen für ausgewählte Partner-IDs. 
-Grenzen können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
-Die URL für das Ermitteln von Grenzen ist:
-
-    https://kex-angebote.kreditsmart.api.europace.de/grenzen
     
 
 # Beispiele 
@@ -187,37 +172,6 @@ Die URL für das Ermitteln von Grenzen ist:
         }
     }
 
-## Query grenzen
-
-### POST Request
-
-    POST https://kex-angebote.kreditsmart.api.europace.de/grenzen
-    Authorization: Bearer xxxx
-    Content-Type: application/json
-
-    {
-      "query": "query grenzen($partnerId: String) { 
-        grenzen(partnerId: $partnerId) { 
-            auszahlungsbetragMin 
-            laufzeitInMonatenMin 
-        } 
-      }",
-      "variables": {
-        "partnerId": "ABC12"
-      }
-    }
-        
-### POST Response
-
-    {
-        "data": {
-            "grenzen": {
-                "auszahlungsbetragMin": 1000.0,
-                "laufzeitInMonatenMin": 12,
-            }
-        }
-    }
-
 # Request
 
 Die Angaben werden als JSON mit UTF-8 Encoding im Body des Requests gesendet.  
@@ -258,45 +212,32 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
 Die Schnittstelle unterstützt alle gängigen GraphQL Formate.
 Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispiele)):
 
-**bestesAngebot** / **angebote**
-
-    query(partnerId: <partnerId>, auszahlungsbetrag: <auszahlungsbetrag>, laufzeitInMonaten: <laufzeitInMonaten>, finanzierungszweck: <finanzierungszweck>, datenkontext: <datenkontext>){
+    <angebote/bestesAngebot>(partnerId: <partnerId>, auszahlungsbetrag: <auszahlungsbetrag>, laufzeitInMonaten: <laufzeitInMonaten>, finanzierungszweck: <finanzierungszweck>, datenkontext: <datenkontext>){
         <gewünschte Felder>
     }
     
-**grenzen**
-
-    grenzen(partnerId: <partnerId>){
-        <gewünschte Felder>
-    }
     
 ## Request Parameter
 
 ### Bestes Angebot
 
-| Parametername      | Typ                | Default                           | Bemerkung                                                                                    |
-|--------------------|--------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
-| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client |                                                                                              |
-| auszahlungsbetrag  | Euro!              | Pflichtfeld                       | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein.                        |
-| laufzeitInMonaten  | Int                | -                                 | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein.                        |
-| finanzierungszweck | Finanzierungszweck | -                                 | Wenn nicht angegeben, wird das beste Angebot über alle Finanzierungszwecke hinweg ermittelt. |
-| datenkontext       | Datenkontext       | TESTUMGEBUNG                      |                                                                                              |
+| Parametername      | Typ                | Default                           
+|--------------------|--------------------|-----------------------------------
+| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client 
+| auszahlungsbetrag  | Euro!              | Pflichtfeld                        
+| laufzeitInMonaten  | Int                | -                                  
+| finanzierungszweck | Finanzierungszweck | Alle Finanzierungszwecke          
+| datenkontext       | Datenkontext       | TESTUMGEBUNG                      
 
 ### Angebotsliste
 
-| Parametername      | Typ                | Default                           | Bemerkung                                                             |
-|--------------------|--------------------|-----------------------------------|-----------------------------------------------------------------------|
-| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client |                                                                       |
-| auszahlungsbetrag  | Euro!              | Pflichtfeld                       | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein. |
-| laufzeitInMonaten  | Int                | -                                 | Die erlaubten Werte müssen innerhalb der Grenzen der Partner-ID sein. |
-| finanzierungszweck | Finanzierungszweck | FREIE_VERWENDUNG                  |                                                                       |
-| datenkontext       | Datenkontext       | TESTUMGEBUNG                      |                                                                       |
-
-### Grenzen
-
-| Parametername | Typ        | Default                            |
-|---------------|------------|------------------------------------|
-| partnerId     | Partner-ID | Die Partner-ID aus dem API-Client  |
+| Parametername      | Typ                | Default                           
+|--------------------|--------------------|-----------------------------------
+| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client 
+| auszahlungsbetrag  | Euro!              | Pflichtfeld                       
+| laufzeitInMonaten  | Int                | -                                 
+| finanzierungszweck | Finanzierungszweck | FREIE_VERWENDUNG                  
+| datenkontext       | Datenkontext       | TESTUMGEBUNG                      
 
 ### Partner-ID
 
@@ -325,8 +266,6 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
 
     
 ### Angebot
-
-Dieser Datentyp wird für die GraphQL Queries **bestesAngebot** und **angebote** verwendet.
 
     {
         gesamtkonditionen: Gesamtkonditionen
@@ -367,20 +306,6 @@ Dieser Datentyp wird für die GraphQL Queries **bestesAngebot** und **angebote**
     {
         name: String
     }
-
-### Grenzen
-
-Dieser Datentyp wird für die GraphQL Query **grenzen** verwendet.
-
-    {
-        auszahlungsbetragMax: Euro,
-        auszahlungsbetragMin: Euro,
-        auszahlungsbetragSchrittweite: Euro,
-        laufzeitInMonatenMax: Int,
-        laufzeitInMonatenMin: Int,
-        laufzeitInMonatenSchrittweite: Int
-    }
-
 
 # Fehlercodes
 
