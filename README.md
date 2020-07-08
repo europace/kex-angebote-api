@@ -366,6 +366,16 @@ Dieser Datentyp wird für die GraphQL Queries **bestesAngebot** und **angebote**
 
     {
         name: String
+        anschrift: Anschrift
+    }
+
+##### Anschrift
+
+    {
+        strasse: String
+        hausnummer: String
+        plz: String
+        ort: String
     }
 
 ### Grenzen
