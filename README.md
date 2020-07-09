@@ -221,23 +221,23 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
 
 ### Bestes Angebot
 
-| Parametername      | Typ                | Default                           
-|--------------------|--------------------|-----------------------------------
-| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client 
-| auszahlungsbetrag  | Euro!              | Pflichtfeld                        
-| laufzeitInMonaten  | Int                | -                                  
-| finanzierungszweck | Finanzierungszweck | Alle Finanzierungszwecke          
-| datenkontext       | Datenkontext       | TESTUMGEBUNG                      
+| Parametername      | Typ                | Default                           |
+|--------------------|--------------------|-----------------------------------|
+| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client |
+| auszahlungsbetrag  | Euro!              | Pflichtfeld                       | 
+| laufzeitInMonaten  | Int                | -                                 | 
+| finanzierungszweck | Finanzierungszweck | Alle Finanzierungszwecke          |
+| datenkontext       | Datenkontext       | TESTUMGEBUNG                      |
 
 ### Angebotsliste
 
-| Parametername      | Typ                | Default                           
-|--------------------|--------------------|-----------------------------------
-| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client 
-| auszahlungsbetrag  | Euro!              | Pflichtfeld                       
-| laufzeitInMonaten  | Int                | -                                 
-| finanzierungszweck | Finanzierungszweck | FREIE_VERWENDUNG                  
-| datenkontext       | Datenkontext       | TESTUMGEBUNG                      
+| Parametername      | Typ                | Default                           |
+|--------------------|--------------------|-----------------------------------|
+| partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client |
+| auszahlungsbetrag  | Euro!              | Pflichtfeld                       |
+| laufzeitInMonaten  | Int                | -                                 |
+| finanzierungszweck | Finanzierungszweck | FREIE_VERWENDUNG                  |
+| datenkontext       | Datenkontext       | TESTUMGEBUNG                      |
 
 ### Partner-ID
 
