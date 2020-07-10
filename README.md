@@ -306,6 +306,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
     {
         name: String
         anschrift: Anschrift
+        logo: Logo
     }
 
 ##### Anschrift
@@ -316,6 +317,14 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         plz: String
         ort: String
     }
+    
+##### Logo
+    
+    {
+        svg: String
+    }    
+    
+Das Property `svg` enthält die URL auf das SVG.
 
 # Fehlercodes
 
