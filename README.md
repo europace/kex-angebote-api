@@ -1,5 +1,5 @@
 # KEX-Angebote-API
-
+ 
 # Table of Contents
 
 * [Allgemeines](#allgemeines)
@@ -37,8 +37,8 @@
 
 Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 
-> :warning: Diese Schnittstelle wird kontinuierlich weiterentwickelt. Daher erwarten wir
-> von allen Nutzern dieser Schnittstelle, dass sie das "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)" nutzen, d.h.
+> :warning: Diese Schnittstelle wird kontinuierlich weiterentwickelt. Daher erwarten wir 
+> von allen Nutzern dieser Schnittstelle, dass sie das "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)" nutzen, d.h. 
 > tolerant gegenüber kompatiblen API-Änderungen beim Lesen und Prozessieren der Daten sind:
 >
 > 1. unbekannte Felder dürfen keine Fehler verursachen
@@ -46,8 +46,8 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 > 2. Strings mit eingeschränktem Wertebereich (Enums) müssen mit neuen, unbekannten Werten umgehen können
 >
 > 3. sinnvoller Umgang mit HTTP-Statuscodes, die nicht explizit dokumentiert sind  
->
-
+> 
+ 
 <!-- https://opensource.zalando.com/restful-api-guidelines/#108 -->
 
 ## Angebote
@@ -56,9 +56,9 @@ Angebote, sowohl das beste Angebot als auch die komplette Angebotsliste, können
 Die URL für das Ermitteln von Angeboten ist:
 
     https://kex-angebote.kreditsmart.api.europace.de/angebote
+    
 
-
-# Beispiele
+# Beispiele 
 
 ## Query bestesAngebot
 
@@ -69,7 +69,7 @@ Die URL für das Ermitteln von Angeboten ist:
     Content-Type: application/json
 
     {
-      "query": "query bestesAngebot($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) {
+      "query": "query bestesAngebot($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) { 
          bestesAngebot(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
             ratenkredit {
                 produktanbieter {
@@ -89,7 +89,7 @@ Die URL für das Ermitteln von Angeboten ist:
         "laufzeitInMonaten": 72
       }
     }
-
+        
 ### POST Response
 
     {
@@ -118,7 +118,7 @@ Die URL für das Ermitteln von Angeboten ist:
     Content-Type: application/json
 
     {
-      "query": "query angebote($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) {
+      "query": "query angebote($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) { 
          angebote(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
             ratenkredit {
                 produktanbieter {
@@ -138,7 +138,7 @@ Die URL für das Ermitteln von Angeboten ist:
         "laufzeitInMonaten": 72
       }
     }
-
+        
 ### POST Response
 
     {
@@ -179,19 +179,19 @@ Die Attribute innerhalb eines Blocks können in beliebiger Reihenfolge angegeben
 
 ## Authentifizierung
 
-Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierung erfolgt über den OAuth 2.0 Client-Credentials Flow.
+Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierung erfolgt über den OAuth 2.0 Client-Credentials Flow. 
 
 | Request Header Name | Beschreibung           |
 |---------------------|------------------------|
 | Authorization       | OAuth 2.0 Bearer Token |
 
 
-Das Bearer Token kann über die [Authorization-API](https://github.com/europace/authorization-api) angefordert werden.
-Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde,
+Das Bearer Token kann über die [Authorization-API](https://github.com/europace/authorization-api) angefordert werden. 
+Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde, 
 eine Anleitung dafür befindet sich im [Help Center](https://europace2.zendesk.com/hc/de/articles/360012514780).
 
 Damit der Client für diese API genutzt werden kann, muss im Partnermanagement die Berechtigung **Kreditsmartangebote ermitteln** aktiviert sein.  
-
+ 
 Schlägt die Authentifizierung fehl, erhält der Aufrufer eine HTTP Response mit Statuscode **401 UNAUTHORIZED**.
 
 Hat der Client nicht die benötigte Berechtigung um die Resource abzurufen, erhält der Aufrufer eine HTTP Response mit Statuscode **403 FORBIDDEN**.
@@ -199,7 +199,7 @@ Hat der Client nicht die benötigte Berechtigung um die Resource abzurufen, erh�
 ## Nachverfolgbarkeit von Requests
 
 Für jeden Request soll eine eindeutige ID generiert werden, die den Request im EUROPACE System nachverfolgbar macht und so bei etwaigen Problemen oder Fehlern die systemübergreifende Analyse erleichtert.  
-Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional.
+Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional. 
 Wenn er nicht gesetzt ist, wird eine ID vom System generiert.
 Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beginnt (im Beispiel unten 'sys').
 
@@ -215,8 +215,8 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
     <angebote/bestesAngebot>(partnerId: <partnerId>, auszahlungsbetrag: <auszahlungsbetrag>, laufzeitInMonaten: <laufzeitInMonaten>, finanzierungszweck: <finanzierungszweck>, datenkontext: <datenkontext>){
         <gewünschte Felder>
     }
-
-
+    
+    
 ## Request Parameter
 
 ### Bestes Angebot
@@ -224,8 +224,8 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
 | Parametername      | Typ                | Default                           |
 |--------------------|--------------------|-----------------------------------|
 | partnerId          | Partner-ID         | Die Partner-ID aus dem API-Client |
-| auszahlungsbetrag  | Euro!              | Pflichtfeld                       |
-| laufzeitInMonaten  | Int                | -                                 |
+| auszahlungsbetrag  | Euro!              | Pflichtfeld                       | 
+| laufzeitInMonaten  | Int                | -                                 | 
 | finanzierungszweck | Finanzierungszweck | Alle Finanzierungszwecke          |
 | datenkontext       | Datenkontext       | TESTUMGEBUNG                      |
 
@@ -244,7 +244,7 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
 Dieser Typ ist ein 5-stelliger String und identifiziert eine Plakette aus dem Europace-Partnermanagement.  
 Die angegebene Partner-ID muss unterhalb der Partner-ID des API-Clients liegen oder mit ihr identisch sein.
 
-### Datenkontext
+### Datenkontext 
 
 Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
 * TESTUMGEBUNG
@@ -264,7 +264,7 @@ Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
 Für eine bessere Lesbarkeit wird das Gesamtformat in *Typen* aufgebrochen, die an anderer Stelle definiert sind, aber an verwendeter Stelle eingesetzt werden müssen.  
 Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal sind.
 
-
+    
 ### Angebot
 
     {
@@ -317,13 +317,13 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         plz: String
         ort: String
     }
-
+    
 ##### Logo
-
+    
     {
         svg: String
     }    
-
+    
 Das Property `svg` enthält die URL auf das SVG.
 
 # Fehlercodes
@@ -352,12 +352,12 @@ Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnit
         }
       ]
     }
-
+    
 # Tools
 
-Das GraphQL-Schema kann man z.B. mit dem Tool [GraphiQL](https://electronjs.org/apps/graphiql) analysieren
+Das GraphQL-Schema kann man z.B. mit dem Tool [GraphiQL](https://electronjs.org/apps/graphiql) analysieren 
 und sich per Autocomplete bequem die Query zusammenbauen.
 
 
 # Nutzungsbedingungen
-Die APIs werden unter folgenden [Nutzungsbedingungen](https://docs.api.europace.de/nutzungsbedingungen/) zur Verfügung gestellt
+Die APIs werden unter folgenden [Nutzungsbedingungen](https://developer.europace.de/terms/) zur Verfügung gestellt
