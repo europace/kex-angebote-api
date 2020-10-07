@@ -24,7 +24,8 @@
    * [Anfragbare Felder](#anfragbare-felder)
       * [Angebot](#angebot)
          * [Gesamtkonditionen](#gesamtkonditionen)
-            * [Zinsgrenzen](#zinsgrenzen)
+            * [Konditionsspanne](#konditionsspanne)
+              * [Konditionsgrenze](#konditionsgrenze)
          * [Ratenkredit](#ratenkredit)
             * [Produktanbieter](#produktanbieter)
 * [Fehlercodes](#fehlercodes)
@@ -281,16 +282,23 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         nettokreditbetrag: Euro,
         rateMonatlich: Euro,
         sollzins: Prozent,
-        zinsgrenzen: Zinsgrenzen
+        konditionsspanne: Konditionsspanne
     }
-
-##### Zinsgrenzen
+    
+##### Konditionsspanne
 
     {
-        maximalerEffektivzins: Prozent,
-        maximalerSollzins: Prozent,
-        minimalerEffektivzins: Prozent,
-        minimalerSollzins: Prozent
+        minimum: Konditionsgrenze
+        maximum: Konditionsgrenze
+    }
+
+###### Konditionsgrenze
+
+    {
+        sollzins: Prozent
+        effektivzins: Prozent
+        rateMonatlich: Euro
+        gesamtkreditbetrag: Euro
     }
 
 #### Ratenkredit
