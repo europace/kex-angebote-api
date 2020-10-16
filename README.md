@@ -219,7 +219,7 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
     
 ## Request Parameter
 
-### Top Schaufensterkondition
+### Top-Schaufensterkondition
 
 | Parametername      | Typ                | Default                           |
 |--------------------|--------------------|-----------------------------------|
