@@ -16,8 +16,8 @@
    * [Nachverfolgbarkeit von Requests](#nachverfolgbarkeit-von-requests)
    * [Format](#format)
    * [Request Parameter](#request-parameter)
-      * [Top Schaufensterkondition](#top-schaufensterkondition)
-      * [Schaufensterkonditionenliste](#schaufensterkonditionenliste)
+      * [Top Schaufensterkondition](#query-topSchaufensterkondition-1)
+      * [Schaufensterkonditionenliste](#query-schaufensterkonditionen-1)
       * [Partner-ID](#partner-id)
       * [Datenkontext](#datenkontext)
       * [Finanzierungszweck](#finanzierungszweck)
@@ -221,7 +221,7 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
     
 ## Request Parameter
 
-### Top-Schaufensterkondition
+### Query topSchaufensterkondition
 
 | Parametername      | Typ                | Default                           |
 |--------------------|--------------------|-----------------------------------|
@@ -231,7 +231,7 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
 | finanzierungszweck | Finanzierungszweck | Alle Finanzierungszwecke          |
 | datenkontext       | Datenkontext       | TESTUMGEBUNG                      |
 
-### Schaufensterkonditionenliste
+### Query schaufensterkonditionen
 
 | Parametername      | Typ                | Default                           |
 |--------------------|--------------------|-----------------------------------|
