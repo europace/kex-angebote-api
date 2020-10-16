@@ -69,8 +69,8 @@ Die URL für das Ermitteln von Schaufensterkonditionen ist:
     Content-Type: application/json
 
     {
-      "query": "query topSchaufensterkondition($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) { 
-         topSchaufensterkondition(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
+      "query": "query topSchaufensterkondition($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int, $finanzierungszweck: Finanzierungszweck) { 
+         topSchaufensterkondition(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten, finanzierungszweck: $finanzierungszweck) {
             ratenkredit {
                 produktanbieter {
                     name
@@ -86,7 +86,8 @@ Die URL für das Ermitteln von Schaufensterkonditionen ist:
       "variables": {
         "partnerId": "ABC12",
         "auszahlungsbetrag": 10000,
-        "laufzeitInMonaten": 72
+        "laufzeitInMonaten": 72,
+        "finanzierungszweck": "UMSCHULDUNG"
       }
     }
         
@@ -118,8 +119,8 @@ Die URL für das Ermitteln von Schaufensterkonditionen ist:
     Content-Type: application/json
 
     {
-      "query": "query schaufensterkonditionen($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) { 
-         schaufensterkonditionen(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
+      "query": "query schaufensterkonditionen($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int, $finanzierungszweck: Finanzierungszweck) { 
+         schaufensterkonditionen(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten, finanzierungszweck: $finanzierungszweck) {
             ratenkredit {
                 produktanbieter {
                     name
@@ -135,7 +136,8 @@ Die URL für das Ermitteln von Schaufensterkonditionen ist:
       "variables": {
         "partnerId": "ABC12",
         "auszahlungsbetrag": 10000,
-        "laufzeitInMonaten": 72
+        "laufzeitInMonaten": 72,
+        "finanzierungszweck": "UMSCHULDUNG"
       }
     }
         
