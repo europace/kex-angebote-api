@@ -3,12 +3,12 @@
 # Table of Contents
 
 * [Allgemeines](#allgemeines)
-   * [Angebote](#angebote)
+   * [Schaufensterkonditionen](#schaufensterkonditionen)
 * [Beispiele](#beispiele)
-   * [Query bestesAngebot](#query-bestesangebot)
+   * [Query topSchaufensterkondition](#query-topschaufensterkondition)
       * [POST Request](#post-request)
       * [POST Response](#post-response)
-   * [Query angebote](#query-angebote)
+   * [Query schaufensterkonditionen](#query-schaufensterkonditionen)
       * [POST Request](#post-request-1)
       * [POST Response](#post-response-1)
 * [Request](#request)
@@ -16,18 +16,20 @@
    * [Nachverfolgbarkeit von Requests](#nachverfolgbarkeit-von-requests)
    * [Format](#format)
    * [Request Parameter](#request-parameter)
-      * [Bestes Angebot](#bestes-angebot)
-      * [Angebotsliste](#angebotsliste)
+      * [Query topSchaufensterkondition](#query-topschaufensterkondition-1)
+      * [Query schaufensterkonditionen](#query-schaufensterkonditionen-1)
       * [Partner-ID](#partner-id)
       * [Datenkontext](#datenkontext)
       * [Finanzierungszweck](#finanzierungszweck)
    * [Anfragbare Felder](#anfragbare-felder)
-      * [Angebot](#angebot)
+      * [Schaufensterkondition](#schaufensterkondition)
          * [Gesamtkonditionen](#gesamtkonditionen)
             * [Konditionsspanne](#konditionsspanne)
               * [Konditionsgrenze](#konditionsgrenze)
          * [Ratenkredit](#ratenkredit)
             * [Produktanbieter](#produktanbieter)
+            * [Anschrift](#anschrift)
+            * [Logo](#logo)
 * [Fehlercodes](#fehlercodes)
    * [HTTP-Status Errors](#http-status-errors)
    * [Weitere Fehler](#weitere-fehler)
@@ -51,27 +53,27 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
  
 <!-- https://opensource.zalando.com/restful-api-guidelines/#108 -->
 
-## Angebote
+## Schaufensterkonditionen
 
-Angebote, sowohl das beste Angebot als auch die komplette Angebotsliste, können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
-Die URL für das Ermitteln von Angeboten ist:
+Schaufensterkonditionen, sowohl die Top-Schaufensterkondition als auch eine komplette Liste, können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
+Die URL für das Ermitteln von Schaufensterkonditionen ist:
 
-    https://kex-angebote.kreditsmart.api.europace.de/angebote
+    https://kex-angebote.ratenkredit.api.europace.de/schaufenster
     
 
 # Beispiele 
 
-## Query bestesAngebot
+## Query topSchaufensterkondition
 
 ### POST Request
 
-    POST https://kex-angebote.kreditsmart.api.europace.de/angebote
+    POST https://kex-angebote.ratenkredit.api.europace.de/schaufenster
     Authorization: Bearer xxxx
     Content-Type: application/json
 
     {
-      "query": "query bestesAngebot($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) { 
-         bestesAngebot(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
+      "query": "query topSchaufensterkondition($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int, $finanzierungszweck: Finanzierungszweck) { 
+         topSchaufensterkondition(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten, finanzierungszweck: $finanzierungszweck) {
             ratenkredit {
                 produktanbieter {
                     name
@@ -87,7 +89,8 @@ Die URL für das Ermitteln von Angeboten ist:
       "variables": {
         "partnerId": "ABC12",
         "auszahlungsbetrag": 10000,
-        "laufzeitInMonaten": 72
+        "laufzeitInMonaten": 72,
+        "finanzierungszweck": "UMSCHULDUNG"
       }
     }
         
@@ -95,7 +98,7 @@ Die URL für das Ermitteln von Angeboten ist:
 
     {
         "data": {
-            "bestesAngebot": {
+            "topSchaufensterkondition": {
                 "ratenkredit": {
                     "produktanbieter": {
                         "name": "Testbank AG"
@@ -110,17 +113,17 @@ Die URL für das Ermitteln von Angeboten ist:
         }
     }
 
-## Query angebote
+## Query schaufensterkonditionen
 
 ### POST Request
 
-    POST https://kex-angebote.kreditsmart.api.europace.de/angebote
+    POST https://kex-angebote.ratenkredit.api.europace.de/schaufenster
     Authorization: Bearer xxxx
     Content-Type: application/json
 
     {
-      "query": "query angebote($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int) { 
-         angebote(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten) {
+      "query": "query schaufensterkonditionen($partnerId: String, $auszahlungsbetrag: Euro!, $laufzeitInMonaten: Int, $finanzierungszweck: Finanzierungszweck) { 
+         schaufensterkonditionen(partnerId: $partnerId, auszahlungsbetrag: $auszahlungsbetrag, laufzeitInMonaten: $laufzeitInMonaten, finanzierungszweck: $finanzierungszweck) {
             ratenkredit {
                 produktanbieter {
                     name
@@ -136,7 +139,8 @@ Die URL für das Ermitteln von Angeboten ist:
       "variables": {
         "partnerId": "ABC12",
         "auszahlungsbetrag": 10000,
-        "laufzeitInMonaten": 72
+        "laufzeitInMonaten": 72,
+        "finanzierungszweck": "UMSCHULDUNG"
       }
     }
         
@@ -144,7 +148,7 @@ Die URL für das Ermitteln von Angeboten ist:
 
     {
         "data": {
-            "angebote": [
+            "schaufensterkonditionen": [
                 {
                     "ratenkredit": {
                         "produktanbieter": {
@@ -213,14 +217,14 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
 Die Schnittstelle unterstützt alle gängigen GraphQL Formate.
 Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispiele)):
 
-    <angebote/bestesAngebot>(partnerId: <partnerId>, auszahlungsbetrag: <auszahlungsbetrag>, laufzeitInMonaten: <laufzeitInMonaten>, finanzierungszweck: <finanzierungszweck>, datenkontext: <datenkontext>){
+    <schaufensterkonditionen/topSchaufensterkondition>(partnerId: <partnerId>, auszahlungsbetrag: <auszahlungsbetrag>, laufzeitInMonaten: <laufzeitInMonaten>, finanzierungszweck: <finanzierungszweck>, datenkontext: <datenkontext>){
         <gewünschte Felder>
     }
     
     
 ## Request Parameter
 
-### Bestes Angebot
+### Query topSchaufensterkondition
 
 | Parametername      | Typ                | Default                           |
 |--------------------|--------------------|-----------------------------------|
@@ -230,7 +234,7 @@ Ein Beispiel ist das folgende Format (siehe auch den [Beispiel Requests](#beispi
 | finanzierungszweck | Finanzierungszweck | Alle Finanzierungszwecke          |
 | datenkontext       | Datenkontext       | TESTUMGEBUNG                      |
 
-### Angebotsliste
+### Query schaufensterkonditionen
 
 | Parametername      | Typ                | Default                           |
 |--------------------|--------------------|-----------------------------------|
@@ -266,7 +270,7 @@ Für eine bessere Lesbarkeit wird das Gesamtformat in *Typen* aufgebrochen, die 
 Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal sind.
 
     
-### Angebot
+### Schaufensterkondition
 
     {
         gesamtkonditionen: Gesamtkonditionen
