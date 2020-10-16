@@ -52,7 +52,7 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 
 ## Schaufensterkonditionen
 
-Schaufensterkonditionen, sowohl die top Schaufensterkondition als auch eine komplette Liste, können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
+Schaufensterkonditionen, sowohl die Top-Schaufensterkondition als auch eine komplette Liste, können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
 Die URL für das Ermitteln von Schaufensterkonditionen ist:
 
     https://kex-angebote.ratenkredit.api.europace.de/schaufenster
