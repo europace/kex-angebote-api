@@ -23,12 +23,20 @@
     + [Beispiel](#beispiel-1)
       - [POST Request](#post-request-1)
       - [POST Response](#post-response-1)
+- [Angebote](#angebote)
+  * [Query Angebote ermitteln](#query-angebote-ermitteln)
+    + [Request](#request-3)
+    + [Response](#response-2)
+    + [Beispiel](#beispiel-2)
+      - [POST Request](#post-request-2)
+      - [POST Response](#post-response-2)
 - [Request-Datentypen](#request-datentypen)
   * [Partner-ID](#partner-id)
   * [Datenkontext](#datenkontext)
   * [Finanzierungszweck](#finanzierungszweck)
 - [Response-Datentypen](#response-datentypen)
   * [Schaufensterkondition](#schaufensterkondition)
+  * [Angebot](#angebot)
     + [Gesamtkonditionen](#gesamtkonditionen)
       - [Konditionsspanne](#konditionsspanne)
         * [Konditionsgrenze](#konditionsgrenze)
@@ -301,6 +309,76 @@ Diese Query liefert als Rückgabewert eine Liste [Schaufensterkondition](#schauf
    
     
 
+# Angebote
+
+Eine Liste von machbaren Angeboten auf Basis von Vorgangsdaten kann über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
+Die URL für das Ermitteln von Angeboten auf Basis von Vorgangsdaten ist:
+
+    https://kex-angebote.ratenkredit.api.europace.de/angebote  
+
+
+## Query Angebote ermitteln
+
+### Request
+
+Die GraphQL-Query heißt `angebote` und hat folgende Parameter:
+
+| Parametername      | Typ       | Default      |
+|--------------------|-----------|--------------|
+| vorgangsnummer     | String!   | Pflichtfeld  |
+
+
+### Response
+
+Diese Query liefert als Rückgabewert eine Liste von [Angebot](#angebot)
+
+### Beispiel
+
+#### POST Request
+
+    POST https://kex-angebote.ratenkredit.api.europace.de/angebote
+    Authorization: Bearer xxxx
+    Content-Type: application/json
+
+    {
+      "query": "query angebote($vorgangsnummer: String!) {
+        angebote(vorgangsnummer: $vorgangsnummer) {
+          ratenkredit {
+            produktanbieter {
+              name
+            }
+          }
+          gesamtkonditionen {
+            sollzins
+            effektivzins
+            gesamtkreditbetrag
+          }
+        }
+      }",
+      "variables": {
+        "vorgangsnummer": "ABC123"
+      }
+    }
+        
+#### POST Response
+
+    {
+        "data": {
+            "angbote": {
+                "ratenkredit": {
+                    "produktanbieter": {
+                        "name": "Testbank AG"
+                    }
+                },
+                "gesamtkonditionen": {
+                    "sollzins": 2.95,
+                    "effektivzins": 2.99,
+                    "gesamtbetrag": 10916.88
+                }
+            }
+        }
+    }
+
 # Request-Datentypen
 
 ## Partner-ID
@@ -329,6 +407,13 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
 
     
 ## Schaufensterkondition
+
+    {
+        gesamtkonditionen: Gesamtkonditionen
+        ratenkredit: Ratenkredit
+    }
+    
+## Angebot
 
     {
         gesamtkonditionen: Gesamtkonditionen
