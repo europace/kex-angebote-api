@@ -1,7 +1,5 @@
 # KEX-Angebote-API
  
-# Table of Contents
-
 - [Allgemeines](#allgemeines)
   * [Authentifizierung](#authentifizierung)
   * [Nachverfolgbarkeit von Requests](#nachverfolgbarkeit-von-requests)
@@ -24,7 +22,7 @@
       - [POST Request](#post-request-1)
       - [POST Response](#post-response-1)
 - [Angebote](#angebote)
-  * [Query Angebote ermitteln](#query-angebote-ermitteln)
+  * [Query Angebote](#query-angebote)
     + [Request](#request-3)
     + [Response](#response-2)
     + [Beispiel](#beispiel-2)
@@ -64,7 +62,7 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 <!-- https://opensource.zalando.com/restful-api-guidelines/#108 -->
 
 Alle hier dokumentierten Schnittstellen sind GraphQL-Schnittstellen, sie unterstützen u.a. Schema-Introspection
-und gängige [Tools](#tools). Eine Einführung zu GraphQL gibt es z.B. unter [https://graphql.org](https://graphql.org/)
+und gängige [Tools](#tools). Eine Einführung zu GraphQL gibt es z.B. unter [https://graphql.org](https://graphql.org/).
 
 ## Authentifizierung
 
@@ -76,8 +74,8 @@ Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierun
 
 
 Das Bearer Token kann über die [Authorization-API](https://github.com/europace/authorization-api) angefordert werden. 
-Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde, 
-eine Anleitung dafür befindet sich im [Help Center](https://europace2.zendesk.com/hc/de/articles/360012514780).
+Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde. 
+Eine Anleitung dafür befindet sich im [Help Center](https://europace2.zendesk.com/hc/de/articles/360012514780).
 
 Damit der Client für diese API genutzt werden kann, muss im Partnermanagement die Berechtigung **Kreditsmartangebote ermitteln** aktiviert sein.  
  
@@ -124,11 +122,11 @@ In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufget
 |------------|-----------------------|-------------------------------------------------------------------------------------------------------------|
 | 400        | Bad Request           | Request Format ist ungültig, z.B. Pflichtfelder fehlen, Parameternamen, -typen oder -werte sind falsch, ... |
 | 401        | Unauthorized          | Authentifizierung ist fehlgeschlagen                                                                        |
-| 403        | Forbidden             | Der API-Client besitzt nicht den richtigen Scope                                                            |
+| 403        | Forbidden             | Der API-Client besitzt einen falschen Scope                                                                 |
 | 415        | Unsupported MediaType | Es wurde ein anderer content-type angegeben                                                                 |
 
 ### Weitere Fehler
-Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnittstelle eine 200, aber in dem Attribut `errors` sind Fehlerdetails zu finden
+Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnittstelle eine 200, aber in dem Attribut `errors` sind Fehlerdetails zu finden:
 
     {
       "data": {},
@@ -162,16 +160,16 @@ Die GraphQL-Query heißt `topSchaufensterkondition` und hat folgende Parameter:
 | Parametername      | Typ                                        | Default                           |
 |--------------------|--------------------------------------------|-----------------------------------|
 | partnerId          | [Partner-ID](#partner-id)                  | Die Partner-ID aus dem API-Client |
-| auszahlungsbetrag  | Euro!                                      | Pflichtfeld                       | 
+| auszahlungsbetrag  | Euro!                                      | - (Pflichtfeld)                       | 
 | laufzeitInMonaten  | Int                                        | -                                 | 
 | finanzierungszweck | [Finanzierungszweck](#finanzierungszweck)  | Alle Finanzierungszwecke          |
 | datenkontext       | [Datenkontext](#datenkontext)              | TESTUMGEBUNG                      |
 
-Der Default-Wert wird verwenden, wenn der jeweilige Parameter nicht gesetzt ist.
+Der Default-Wert wird verwendet, wenn der jeweilige Parameter nicht gesetzt ist.
 
 ### Response
 
-Diese Query liefert als Rückgabewert eine [Schaufensterkondition](#schaufensterkondition)
+Diese Query liefert als Rückgabewert eine [Schaufensterkondition](#schaufensterkondition).
 
 ### Beispiel
 
@@ -232,16 +230,16 @@ Die GraphQL-Query heißt `schaufensterkonditionen` und hat folgende Parameter:
 | Parametername      | Typ                                       | Default                           |
 |--------------------|-------------------------------------------|-----------------------------------|
 | partnerId          | [Partner-ID](#partner-id)                 | Die Partner-ID aus dem API-Client |
-| auszahlungsbetrag  | Euro!                                     | Pflichtfeld                       |
+| auszahlungsbetrag  | Euro!                                     | - (Pflichtfeld)                   |
 | laufzeitInMonaten  | Int                                       | -                                 |
 | finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | FREIE_VERWENDUNG                  |
 | datenkontext       | [Datenkontext](#datenkontext)             | TESTUMGEBUNG                      |
 
-Der Default-Wert wird verwenden, wenn der jeweilige Parameter nicht gesetzt ist.
+Der Default-Wert wird verwendet, wenn der jeweilige Parameter nicht gesetzt ist.
 
 ### Response
 
-Diese Query liefert als Rückgabewert eine Liste [Schaufensterkondition](#schaufensterkondition)
+Diese Query liefert als Rückgabewert eine Liste [Schaufensterkonditionen](#schaufensterkondition).
 
 ### Beispiel
 
@@ -317,20 +315,20 @@ Die URL für das Ermitteln von Angeboten auf Basis von Vorgangsdaten ist:
     https://kex-angebote.ratenkredit.api.europace.de/angebote  
 
 
-## Query Angebote ermitteln
+## Query Angebote
 
 ### Request
 
 Die GraphQL-Query heißt `angebote` und hat folgende Parameter:
 
-| Parametername      | Typ       | Default      |
-|--------------------|-----------|--------------|
-| vorgangsnummer     | String!   | Pflichtfeld  |
+| Parametername      | Typ       | Default          |
+|--------------------|-----------|------------------|
+| vorgangsnummer     | String!   | - (Pflichtfeld)  |
 
 
 ### Response
 
-Diese Query liefert als Rückgabewert eine Liste von [Angebot](#angebot)
+Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 
 ### Beispiel
 
