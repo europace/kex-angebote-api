@@ -362,18 +362,20 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 
     {
         "data": {
-            "angbote": {
-                "ratenkredit": {
-                    "produktanbieter": {
-                        "name": "Testbank AG"
+            "angbote": [
+                {
+                    "gesamtkonditionen": {
+                        "effektivzins": 2.99,
+                        "gesamtbetrag": 10916.88,
+                        "sollzins": 2.95
+                    },
+                    "ratenkredit": {
+                        "produktanbieter": {
+                            "name": "Testbank AG"
+                        }
                     }
-                },
-                "gesamtkonditionen": {
-                    "sollzins": 2.95,
-                    "effektivzins": 2.99,
-                    "gesamtbetrag": 10916.88
                 }
-            }
+            ]
         }
     }
 
