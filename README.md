@@ -416,11 +416,11 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
 ## Angebot
 
     {
-        gesamtkonditionen: Gesamtkonditionen
+        gesamtkonditionen: AngebotGesamtkonditionen
         ratenkredit: Ratenkredit
     }
 
-### Gesamtkonditionen
+### Gesamtkonditionen | AngebotGesamtkonditionen
 
     {
         effektivzins: Prozent,
