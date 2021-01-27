@@ -28,6 +28,13 @@
     + [Beispiel](#beispiel-2)
       - [POST Request](#post-request-2)
       - [POST Response](#post-response-2)
+  * [Mutation Angebot-Annehmen](#mutation-angebot-annehmen)
+    + [Hinweise](#hinweise)
+    + [Request](#request-4)
+    + [Response](#response-3)
+    + [Beispiel](#beispiel-3)
+      - [POST Request](#post-request-3)
+      - [POST Response](#post-response-3)
 - [Request-Datentypen](#request-datentypen)
   * [Partner-ID](#partner-id)
   * [Datenkontext](#datenkontext)
@@ -42,6 +49,8 @@
       - [Produktanbieter](#produktanbieter)
       - [Anschrift](#anschrift)
       - [Logo](#logo)
+  * [Antrag](#antrag)
+    + [AntragGesamtkonditionen](#antraggesamtkonditionen)
 - [Nutzungsbedingungen](#nutzungsbedingungen)
 
 # Allgemeines
