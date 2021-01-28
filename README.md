@@ -398,6 +398,7 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 * Der authentifizierte Nutzermuss zum Zeitpunkt der Annahme eine Handelsbeziehung für die Bank besitzen, in der die Annahme erlaubt ist.  
   Andernfalls erhält der Nutzer einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `403`
 * Das annehmen von ermittelten Angeboten kann nur passieren, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `409`. Eine erneute Ermittlung ist in diesem Fall notwendig.
+* Zur Optimierung des Angebotsprozess ermitteln wir unter Umständen zusätzliche Alternativangebote unter Adjustierung der Kreditparameter.
 
 
 ### Request
