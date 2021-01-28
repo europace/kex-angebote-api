@@ -28,6 +28,13 @@
     + [Beispiel](#beispiel-2)
       - [POST Request](#post-request-2)
       - [POST Response](#post-response-2)
+  * [Mutation Angebot-Annehmen](#mutation-angebot-annehmen)
+    + [Hinweise](#hinweise)
+    + [Request](#request-4)
+    + [Response](#response-3)
+    + [Beispiel](#beispiel-3)
+      - [POST Request](#post-request-3)
+      - [POST Response](#post-response-3)
 - [Request-Datentypen](#request-datentypen)
   * [Partner-ID](#partner-id)
   * [Datenkontext](#datenkontext)
@@ -42,6 +49,8 @@
       - [Produktanbieter](#produktanbieter)
       - [Anschrift](#anschrift)
       - [Logo](#logo)
+  * [Antrag](#antrag)
+    + [AntragGesamtkonditionen](#antraggesamtkonditionen)
 - [Nutzungsbedingungen](#nutzungsbedingungen)
 
 # Allgemeines
@@ -77,7 +86,8 @@ Das Bearer Token kann über die [Authorization-API](https://github.com/europace/
 Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde. 
 Eine Anleitung dafür befindet sich im [Help Center](https://europace2.zendesk.com/hc/de/articles/360012514780).
 
-Damit der Client für diese API genutzt werden kann, muss im Partnermanagement die Berechtigung **Kreditsmartangebote ermitteln** aktiviert sein.  
+Damit der Client für die Schaufensterkonditionen-APIs und die Ermittlung von Angeboten genutzt werden können, muss im Partnermanagement die Berechtigung **Kreditsmartangebote ermitteln** aktiviert sein.  
+Damit der Client für das Annehmen von Angeboten genutzt werden kann, muss im Partnermanagement die Berechtigung **Kreditsmartanträge schreiben** aktiviert sein.  
  
 Schlägt die Authentifizierung fehl, erhält der Aufrufer eine HTTP Response mit Statuscode **401 UNAUTHORIZED**.
 
@@ -309,8 +319,9 @@ Diese Query liefert als Rückgabewert eine Liste [Schaufensterkonditionen](#scha
 
 # Angebote
 
-Eine Liste von machbaren Angeboten auf Basis von Vorgangsdaten kann über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
-Die URL für das Ermitteln von Angeboten auf Basis von Vorgangsdaten ist:
+Eine Liste von machbaren und vollständigen Angeboten auf Basis von Vorgangsdaten kann über unsere GraphQL-Schnittstelle via **HTTP POST** ermittelt werden.
+Mit der ID aus einem ermittelten Angebot kann dieses danach angenommen werden.
+Die URL für das Ermitteln und Annehmen auf Basis von Vorgangsdaten ist:
 
     https://kex-angebote.ratenkredit.api.europace.de/angebote  
 
@@ -357,7 +368,7 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
         "vorgangsnummer": "ABC123"
       }
     }
-        
+
 #### POST Response
 
     {
@@ -377,6 +388,77 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
                 }
             ]
         }
+    }
+
+## Mutation Angebot-Annehmen
+
+### Hinweise
+
+* Aktuell unterstützt die API nur das Fernabsatzgeschäft.
+* Der authentifizierte Nutzer muss zum Zeitpunkt der Annahme eine Handelsbeziehung für die Bank besitzen, in der die Annahme erlaubt ist.  
+  Andernfalls erhält der Nutzer einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `403`
+* Das Annehmen von ermittelten Angeboten ist nur möglich, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `409`. In diesem Fall ist eine erneute Ermittlung notwendig.
+* Zur Optimierung des Angebotsprozess ermitteln wir unter Umständen zusätzliche Alternativangebote unter Adjustierung der Kreditparameter.
+
+
+### Request
+
+Die GraphQL-Mutation heißt `angebotAnnehmen` und hat folgende Parameter:
+
+| Parametername      | Typ       | Default          | Kommentar                                                  |
+|--------------------|-----------|------------------|------------------------------------------------------------|
+| vorgangsnummer     | String!   | - (Pflichtfeld)  |                                                            |
+| angebotId          | String!   | - (Pflichtfeld)  | Die ID des ermittelten Angebots, das angenommen werden soll |
+
+### Response
+
+Diese Mutation liefert als Rückgabewert einen [Antrag](#antrag).
+
+### Beispiel
+
+#### POST Request
+
+    POST https://kex-angebote.ratenkredit.api.europace.de/angebote
+    Authorization: Bearer xxxx
+    Content-Type: application/json
+
+    {
+      "query": "mutation annehmen($vorgangsnummer: String!, $angebotId: String!) {  
+        angebotAnnehmen(angebotId: $angebotId,  vorgangsnummer: $vorgangsnummer ){
+          antragsnummer
+          gesamtkonditionen {
+            sollzins
+            effektivzins
+            laufzeitInMonaten
+            gesamtkreditbetrag
+            nettokreditbetrag
+            rateMonatlich
+          }
+        }
+      }",
+      "variables": {
+        "vorgangsnummer": "ABC123"
+        "angebotId": "angebotId"
+      }
+    }
+
+#### POST Response
+
+    {
+      "data": {
+        "angebotAnnehmen": {
+          "antragsnummer": "ABC123/1/1",
+          "gesamtkonditionen": {
+            "sollzins": 2.95,
+            "effektivzins": 2.99,
+            "laufzeitInMonaten": 60,
+            "gesamtkreditbetrag": 10762.19,
+            "nettokreditbetrag": 10000,
+            "rateMonatlich": 179.47
+          }
+        }
+      },
+      "errors": []
     }
 
 # Request-Datentypen
@@ -478,6 +560,24 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
     {
         svg: String
     }    
+
+## Antrag
+
+    {
+        antragsnummer: String!
+        gesamtkonditionen: AntragGesamtkonditionen
+    }
+
+### AntragGesamtkonditionen
+
+    {
+        effektivzins: Prozent,
+        gesamtkreditbetrag: Euro,
+        laufzeitInMonaten: Int,
+        nettokreditbetrag: Euro,
+        rateMonatlich: Euro,
+        sollzins: Prozent
+    }
     
 Das Property `svg` enthält die URL auf das SVG.
 
