@@ -319,8 +319,8 @@ Diese Query liefert als Rückgabewert eine Liste [Schaufensterkonditionen](#scha
 
 # Angebote
 
-Eine Liste von machbaren und vollständigen Angeboten auf Basis von Vorgangsdaten kann über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.
-Mit der ID aus einem ermittelten Angebot kann dieses außerdem angenommen werden.
+Eine Liste von machbaren und vollständigen Angeboten auf Basis von Vorgangsdaten kann über unsere GraphQL-Schnittstelle via **HTTP POST** ermittelt werden.
+Mit der ID aus einem ermittelten Angebot kann dieses danach angenommen werden.
 Die URL für das Ermitteln und Annehmen auf Basis von Vorgangsdaten ist:
 
     https://kex-angebote.ratenkredit.api.europace.de/angebote  
@@ -395,9 +395,9 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 ### Hinweise
 
 * Aktuell unterstützt die API nur das Fernabsatzgeschäft.
-* Der authentifizierte Nutzermuss zum Zeitpunkt der Annahme eine Handelsbeziehung für die Bank besitzen, in der die Annahme erlaubt ist.  
+* Der authentifizierte Nutzer muss zum Zeitpunkt der Annahme eine Handelsbeziehung für die Bank besitzen, in der die Annahme erlaubt ist.  
   Andernfalls erhält der Nutzer einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `403`
-* Das annehmen von ermittelten Angeboten kann nur passieren, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `409`. Eine erneute Ermittlung ist in diesem Fall notwendig.
+* Das Annehmen von ermittelten Angeboten ist nur möglich, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `409`. In diesem Fall ist eine erneute Ermittlung notwendig.
 * Zur Optimierung des Angebotsprozess ermitteln wir unter Umständen zusätzliche Alternativangebote unter Adjustierung der Kreditparameter.
 
 
@@ -408,7 +408,7 @@ Die GraphQL-Mutation heißt `angebotAnnehmen` und hat folgende Parameter:
 | Parametername      | Typ       | Default          | Kommentar                                                  |
 |--------------------|-----------|------------------|------------------------------------------------------------|
 | vorgangsnummer     | String!   | - (Pflichtfeld)  |                                                            |
-| angebotId          | String!   | - (Pflichtfeld)  | Die ID vom ermittelten Angebot, das angenommen werden soll |
+| angebotId          | String!   | - (Pflichtfeld)  | Die ID des ermittelten Angebots, das angenommen werden soll |
 
 ### Response
 
