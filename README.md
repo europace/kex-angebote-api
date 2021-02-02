@@ -6,8 +6,6 @@
   * [Request](#request)
   * [Fehlercodes](#fehlercodes)
     + [HTTP-Status Errors](#http-status-errors)
-    + [Weitere Fehler](#weitere-fehler)
-  * [Tools](#tools)
 - [Schaufensterkonditionen](#schaufensterkonditionen)
   * [Query Top-Schaufensterkondition](#query-top-schaufensterkondition)
     + [Request](#request-1)
@@ -55,7 +53,8 @@
 
 # Allgemeines
 
-Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
+Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.  
+Alle hier dokumentierten Schnittstellen sind [GraphQL-Schnittstellen](https://docs.api.europace.de/privatkredit/graphql/).
 
 > :warning: Diese Schnittstelle wird kontinuierlich weiterentwickelt. Daher erwarten wir 
 > von allen Nutzern dieser Schnittstelle, dass sie das "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)" nutzen, d.h. 
@@ -69,9 +68,6 @@ Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.
 > 
  
 <!-- https://opensource.zalando.com/restful-api-guidelines/#108 -->
-
-Alle hier dokumentierten Schnittstellen sind GraphQL-Schnittstellen, sie unterstützen u.a. Schema-Introspection
-und gängige [Tools](#tools). Eine Einführung zu GraphQL gibt es z.B. unter [https://graphql.org](https://graphql.org/).
 
 ## Authentifizierung
 
@@ -125,6 +121,7 @@ In unseren Beispielen nutzen wir die Notation mit Variablen.
 
 Die Besonderheit in GraphQL ist u.a., dass die meisten Fehler nicht über HTTP-Fehlercodes wiedergegeben werden.
 In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufgetreten ist. Dafür gibt es das Attribut `errors` in der Response.
+Weitere Infos gibt es [hier](https://docs.api.europace.de/privatkredit/graphql/)
 
 ### HTTP-Status Errors
 
@@ -134,24 +131,6 @@ In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufget
 | 401        | Unauthorized          | Authentifizierung ist fehlgeschlagen                                                                        |
 | 403        | Forbidden             | Der API-Client besitzt einen falschen Scope                                                                 |
 | 415        | Unsupported MediaType | Es wurde ein anderer content-type angegeben                                                                 |
-
-### Weitere Fehler
-Wenn der Request nicht erfolgreich verarbeitet werden konnte, liefert die Schnittstelle eine 200, aber in dem Attribut `errors` sind Fehlerdetails zu finden:
-
-    {
-      "data": {},
-      "errors": [
-        {
-          "message": MESSAGE,
-          "status": STATUS_CODE
-        }
-      ]
-    }
-
-## Tools
-
-Das GraphQL-Schema kann man z.B. mit dem Tool [GraphiQL](https://electronjs.org/apps/graphiql) analysieren 
-und sich per Autocomplete bequem die Query zusammenbauen.
 
 # Schaufensterkonditionen
 
