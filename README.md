@@ -352,7 +352,7 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 
     {
         "data": {
-            "angbote": [
+            "angebote": [
                 {
                     "gesamtkonditionen": {
                         "effektivzins": 2.99,
