@@ -478,6 +478,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
 ## Angebot
 
     {
+        id: String!
         gesamtkonditionen: AngebotGesamtkonditionen
         ratenkredit: Ratenkredit
     }
