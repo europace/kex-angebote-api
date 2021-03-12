@@ -1,55 +1,60 @@
 # KEX-Angebote-API
- 
-- [Allgemeines](#allgemeines)
-  * [Authentifizierung](#authentifizierung)
-  * [Nachverfolgbarkeit von Requests](#nachverfolgbarkeit-von-requests)
-  * [Request](#request)
-  * [Fehlercodes](#fehlercodes)
-    + [HTTP-Status Errors](#http-status-errors)
-- [Schaufensterkonditionen](#schaufensterkonditionen)
-  * [Query Top-Schaufensterkondition](#query-top-schaufensterkondition)
-    + [Request](#request-1)
-    + [Response](#response)
-    + [Beispiel](#beispiel)
-      - [POST Request](#post-request)
-      - [POST Response](#post-response)
-  * [Query Schaufensterkonditionen](#query-schaufensterkonditionen)
-    + [Request](#request-2)
-    + [Response](#response-1)
-    + [Beispiel](#beispiel-1)
-      - [POST Request](#post-request-1)
-      - [POST Response](#post-response-1)
-- [Angebote](#angebote)
-  * [Query Angebote](#query-angebote)
-    + [Request](#request-3)
-    + [Response](#response-2)
-    + [Beispiel](#beispiel-2)
-      - [POST Request](#post-request-2)
-      - [POST Response](#post-response-2)
-  * [Mutation Angebot-Annehmen](#mutation-angebot-annehmen)
-    + [Hinweise](#hinweise)
-    + [Request](#request-4)
-    + [Response](#response-3)
-    + [Beispiel](#beispiel-3)
-      - [POST Request](#post-request-3)
-      - [POST Response](#post-response-3)
-- [Request-Datentypen](#request-datentypen)
-  * [Partner-ID](#partner-id)
-  * [Datenkontext](#datenkontext)
-  * [Finanzierungszweck](#finanzierungszweck)
-- [Response-Datentypen](#response-datentypen)
-  * [Schaufensterkondition](#schaufensterkondition)
-  * [Angebot](#angebot)
-    + [Gesamtkonditionen](#gesamtkonditionen)
-      - [Konditionsspanne](#konditionsspanne)
-        * [Konditionsgrenze](#konditionsgrenze)
-    + [Ratenkredit](#ratenkredit)
-      - [Produktanbieter](#produktanbieter)
-      - [Anschrift](#anschrift)
-      - [Logo](#logo)
-  * [Antrag](#antrag)
-    + [AntragGesamtkonditionen](#antraggesamtkonditionen)
-- [Nutzungsbedingungen](#nutzungsbedingungen)
+
+* [Allgemeines](#allgemeines)
+    * [Authentifizierung](#authentifizierung)
+    * [Nachverfolgbarkeit von Requests](#nachverfolgbarkeit-von-requests)
+    * [Request](#request)
+    * [Fehlercodes](#fehlercodes)
+        * [HTTP-Status Errors](#http-status-errors)
+* [Schaufensterkonditionen](#schaufensterkonditionen)
+    * [Query Top-Schaufensterkondition](#query-top-schaufensterkondition)
+        * [Request](#request-1)
+        * [Response](#response)
+        * [Beispiel](#beispiel)
+            * [POST Request](#post-request)
+            * [POST Response](#post-response)
+    * [Query Schaufensterkonditionen](#query-schaufensterkonditionen)
+        * [Request](#request-2)
+        * [Response](#response-1)
+        * [Beispiel](#beispiel-1)
+            * [POST Request](#post-request-1)
+            * [POST Response](#post-response-1)
+* [Angebote](#angebote)
+    * [Query Angebote](#query-angebote)
+        * [Request](#request-3)
+        * [Response](#response-2)
+        * [Beispiel](#beispiel-2)
+            * [POST Request](#post-request-2)
+            * [POST Response](#post-response-2)
+    * [Mutation Angebot-Annehmen](#mutation-angebot-annehmen)
+        * [Hinweise](#hinweise)
+        * [Request](#request-4)
+        * [Response](#response-3)
+        * [Beispiel](#beispiel-3)
+            * [POST Request](#post-request-3)
+            * [POST Response](#post-response-3)
+* [Request-Datentypen](#request-datentypen)
+    * [Partner-ID](#partner-id)
+    * [Datenkontext](#datenkontext)
+    * [Finanzierungszweck](#finanzierungszweck)
+* [Response-Datentypen](#response-datentypen)
+    * [Schaufensterkondition](#schaufensterkondition)
+    * [Angebot](#angebot)
+        * [AngebotGesamtkonditionen](#angebotgesamtkonditionen)
+            * [Konditionsspanne](#konditionsspanne)
+                * [Konditionsgrenze](#konditionsgrenze)
+        * [Ratenkredit](#ratenkredit)
+            * [Produktanbieter](#produktanbieter)
+            * [Anschrift](#anschrift)
+            * [Logo](#logo)
+    * [Antrag](#antrag)
+        * [AntragGesamtkonditionen](#antraggesamtkonditionen)
+        * [AntragRatenkredit](#antragratenkredit)
+        * [AntragRatenschutz](#antragratenschutz)
+        * [VersichertesRisiko](#versichertesrisiko)
+        * [Dokument](#dokument)
+        * [Videolegitimation](#videolegitimation)
+* [Nutzungsbedingungen](#nutzungsbedingungen)
 
 # Allgemeines
 
@@ -483,15 +488,15 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         ratenkredit: Ratenkredit
     }
 
-### Gesamtkonditionen | AngebotGesamtkonditionen
+### AngebotGesamtkonditionen
 
     {
         effektivzins: Prozent,
-        gesamtkreditbetrag: Euro,
-        laufzeitInMonaten: Int,
-        nettokreditbetrag: Euro,
-        rateMonatlich: Euro,
-        sollzins: Prozent,
+        gesamtkreditbetrag: Euro
+        laufzeitInMonaten: Int
+        nettokreditbetrag: Euro
+        rateMonatlich: Euro
+        sollzins: Prozent
         konditionsspanne: Konditionsspanne
     }
     
@@ -514,8 +519,8 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
 ### Ratenkredit
 
     {
-        produktanbieter: Produktanbieter,
-        produktbezeichnung: String,
+        produktanbieter: Produktanbieter
+        produktbezeichnung: String
         schlussrate: Euro
     }
 
@@ -542,25 +547,64 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         svg: String
     }    
 
+Das Property `svg` enthält die URL auf das SVG.
+
 ## Antrag
 
     {
         antragsnummer: String!
         gesamtkonditionen: AntragGesamtkonditionen
+        ratenkredit: AntragRatenkredit
+        ratenschutz: AntragRatenschutz
+        dokumente: [Dokument!]
+        videolegitimation: Videolegitimation
     }
 
 ### AntragGesamtkonditionen
 
     {
-        effektivzins: Prozent,
-        gesamtkreditbetrag: Euro,
-        laufzeitInMonaten: Int,
-        nettokreditbetrag: Euro,
-        rateMonatlich: Euro,
+        effektivzins: Prozent
+        gesamtkreditbetrag: Euro
+        laufzeitInMonaten: Int
+        nettokreditbetrag: Euro
+        rateMonatlich: Euro
         sollzins: Prozent
     }
     
-Das Property `svg` enthält die URL auf das SVG.
+### AntragRatenkredit
+
+    {
+        schlussrate: Euro
+    }
+
+### AntragRatenschutz
+
+    {
+        praemieMonatlich: Euro
+        versicherteRisikenAntragsteller1: [VersichertesRisiko!]!
+        versicherteRisikenAntragsteller2: [VersichertesRisiko!]! 
+    }
+
+### VersichertesRisiko
+
+    {
+          ARBEITSLOSIGKEIT
+          ARBEITSUNFAEHIGKEIT
+          LEBEN
+    }
+
+### Dokument
+
+    {
+        url: String
+    }
+
+### Videolegitimation
+
+    {
+        url: String
+        referenznummer: String
+    }
 
 # Nutzungsbedingungen
 Die APIs werden unter folgenden [Nutzungsbedingungen](https://docs.api.europace.de/nutzungsbedingungen/) zur Verfügung gestellt
