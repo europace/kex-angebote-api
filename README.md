@@ -448,7 +448,7 @@ Diese Mutation liefert als Rückgabewert eine JobId.
 
 ### Request
 
-Die GraphQL-Query heißt `jobAnnahme` und hat folgende Parameter:
+Die GraphQL-Query heißt `annahmeJob` und hat folgende Parameter:
 
 | Parametername      | Typ       | Default          | Kommentar                                                  |
 |--------------------|-----------|------------------|------------------------------------------------------------|
