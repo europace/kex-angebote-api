@@ -50,7 +50,7 @@
         * [AngebotGesamtkonditionen](#angebotgesamtkonditionen)
             * [Konditionsspanne](#konditionsspanne)
                 * [Konditionsgrenze](#konditionsgrenze)
-        * [Ratenkredit](#ratenkredit)
+        * [AngebotRatenkredit](#angebotratenkredit)
             * [Produktanbieter](#produktanbieter)
             * [Anschrift](#anschrift)
             * [Logo](#logo)
@@ -581,7 +581,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         gesamtkreditbetrag: Euro
     }
 
-### Ratenkredit
+### AngebotRatenkredit
 
     {
         produktanbieter: Produktanbieter
