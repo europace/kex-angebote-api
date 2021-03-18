@@ -379,7 +379,7 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 * Das Annehmen von ermittelten Angeboten ist nur möglich, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `409`. In diesem Fall ist eine erneute Ermittlung notwendig.
 * Zur Optimierung des Angebotsprozess ermitteln wir unter Umständen zusätzliche Alternativangebote unter Adjustierung der Kreditparameter.
 * Der im Vorgang eingetragene Kundenbetreuer ist für die Annahme wichtig, da Name und Kontaktdaten an die Banken geschickt werden.
-* Wenn sich das Angebot im AnnahmeProzess als nicht machbar herausstellt, wird in der Schnittstelle null für den Antrag zurückgegeben.
+* Wenn sich das Angebot im Annahmeprozess als nicht machbar herausstellt, wird in der Schnittstelle kein Antrag zurückgegeben.
 
 
 ### Request
