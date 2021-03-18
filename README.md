@@ -1,55 +1,69 @@
 # KEX-Angebote-API
- 
-- [Allgemeines](#allgemeines)
-  * [Authentifizierung](#authentifizierung)
-  * [Nachverfolgbarkeit von Requests](#nachverfolgbarkeit-von-requests)
-  * [Request](#request)
-  * [Fehlercodes](#fehlercodes)
-    + [HTTP-Status Errors](#http-status-errors)
-- [Schaufensterkonditionen](#schaufensterkonditionen)
-  * [Query Top-Schaufensterkondition](#query-top-schaufensterkondition)
-    + [Request](#request-1)
-    + [Response](#response)
-    + [Beispiel](#beispiel)
-      - [POST Request](#post-request)
-      - [POST Response](#post-response)
-  * [Query Schaufensterkonditionen](#query-schaufensterkonditionen)
-    + [Request](#request-2)
-    + [Response](#response-1)
-    + [Beispiel](#beispiel-1)
-      - [POST Request](#post-request-1)
-      - [POST Response](#post-response-1)
-- [Angebote](#angebote)
-  * [Query Angebote](#query-angebote)
-    + [Request](#request-3)
-    + [Response](#response-2)
-    + [Beispiel](#beispiel-2)
-      - [POST Request](#post-request-2)
-      - [POST Response](#post-response-2)
-  * [Mutation Angebot-Annehmen](#mutation-angebot-annehmen)
-    + [Hinweise](#hinweise)
-    + [Request](#request-4)
-    + [Response](#response-3)
-    + [Beispiel](#beispiel-3)
-      - [POST Request](#post-request-3)
-      - [POST Response](#post-response-3)
-- [Request-Datentypen](#request-datentypen)
-  * [Partner-ID](#partner-id)
-  * [Datenkontext](#datenkontext)
-  * [Finanzierungszweck](#finanzierungszweck)
-- [Response-Datentypen](#response-datentypen)
-  * [Schaufensterkondition](#schaufensterkondition)
-  * [Angebot](#angebot)
-    + [Gesamtkonditionen](#gesamtkonditionen)
-      - [Konditionsspanne](#konditionsspanne)
-        * [Konditionsgrenze](#konditionsgrenze)
-    + [Ratenkredit](#ratenkredit)
-      - [Produktanbieter](#produktanbieter)
-      - [Anschrift](#anschrift)
-      - [Logo](#logo)
-  * [Antrag](#antrag)
-    + [AntragGesamtkonditionen](#antraggesamtkonditionen)
-- [Nutzungsbedingungen](#nutzungsbedingungen)
+
+* [Allgemeines](#allgemeines)
+    * [Authentifizierung](#authentifizierung)
+    * [Nachverfolgbarkeit von Requests](#nachverfolgbarkeit-von-requests)
+    * [Request](#request)
+    * [Fehlercodes](#fehlercodes)
+        * [HTTP-Status Errors](#http-status-errors)
+* [Schaufensterkonditionen](#schaufensterkonditionen)
+    * [Query Top-Schaufensterkondition](#query-top-schaufensterkondition)
+        * [Request](#request-1)
+        * [Response](#response)
+        * [Beispiel](#beispiel)
+            * [POST Request](#post-request)
+            * [POST Response](#post-response)
+    * [Query Schaufensterkonditionen](#query-schaufensterkonditionen)
+        * [Request](#request-2)
+        * [Response](#response-1)
+        * [Beispiel](#beispiel-1)
+            * [POST Request](#post-request-1)
+            * [POST Response](#post-response-1)
+* [Angebote](#angebote)
+    * [Query Angebote](#query-angebote)
+        * [Request](#request-3)
+        * [Response](#response-2)
+        * [Beispiel](#beispiel-2)
+            * [POST Request](#post-request-2)
+            * [POST Response](#post-response-2)
+    * [Mutation Angebot-Annehmen](#mutation-angebot-annehmen)
+        * [Hinweise](#hinweise)
+        * [Request](#request-4)
+        * [Response](#response-3)
+        * [Beispiel](#beispiel-3)
+            * [POST Request](#post-request-3)
+            * [POST Response](#post-response-3)
+    * [Query Annahme-Job](#query-annahme-job)
+        * [Hinweise](#hinweise-1)
+        * [Request](#request-5)
+        * [Response](#response-4)
+        * [Beispiel](#beispiel-4)
+            * [POST Request](#post-request-4)
+            * [POST Response](#post-response-4)
+* [Request-Datentypen](#request-datentypen)
+    * [Partner-ID](#partner-id)
+    * [Datenkontext](#datenkontext)
+    * [Finanzierungszweck](#finanzierungszweck)
+* [Response-Datentypen](#response-datentypen)
+    * [Schaufensterkondition](#schaufensterkondition)
+    * [Angebot](#angebot)
+        * [AngebotGesamtkonditionen](#angebotgesamtkonditionen)
+            * [Konditionsspanne](#konditionsspanne)
+                * [Konditionsgrenze](#konditionsgrenze)
+        * [AngebotRatenkredit](#angebotratenkredit)
+            * [Produktanbieter](#produktanbieter)
+            * [Anschrift](#anschrift)
+            * [Logo](#logo)
+    * [AnnahmeJob](#annahmejob)
+        * [JobStatus](#jobstatus)
+        * [Antrag](#antrag)
+            * [AntragGesamtkonditionen](#antraggesamtkonditionen)
+            * [AntragRatenkredit](#antragratenkredit)
+            * [AntragRatenschutz](#antragratenschutz)
+            * [VersichertesRisiko](#versichertesrisiko)
+            * [Dokument](#dokument)
+            * [Videolegitimation](#videolegitimation)
+* [Nutzungsbedingungen](#nutzungsbedingungen)
 
 # Allgemeines
 
@@ -393,7 +407,7 @@ Die GraphQL-Mutation heißt `angebotAnnehmen` und hat folgende Parameter:
 
 ### Response
 
-Diese Mutation liefert als Rückgabewert einen [Antrag](#antrag).
+Diese Mutation liefert als Rückgabewert eine JobId.
 
 ### Beispiel
 
@@ -406,14 +420,7 @@ Diese Mutation liefert als Rückgabewert einen [Antrag](#antrag).
     {
       "query": "mutation annehmen($vorgangsnummer: String!, $angebotId: String!) {  
         angebotAnnehmen(angebotId: $angebotId,  vorgangsnummer: $vorgangsnummer ){
-          antragsnummer
-          gesamtkonditionen {
-            sollzins
-            effektivzins
-            laufzeitInMonaten
-            gesamtkreditbetrag
-            nettokreditbetrag
-            rateMonatlich
+            jobId
           }
         }
       }",
@@ -428,14 +435,77 @@ Diese Mutation liefert als Rückgabewert einen [Antrag](#antrag).
     {
       "data": {
         "angebotAnnehmen": {
-          "antragsnummer": "ABC123/1/1",
-          "gesamtkonditionen": {
-            "sollzins": 2.95,
-            "effektivzins": 2.99,
-            "laufzeitInMonaten": 60,
-            "gesamtkreditbetrag": 10762.19,
-            "nettokreditbetrag": 10000,
-            "rateMonatlich": 179.47
+          "jobId": "AB12345678"
+        }
+      },
+      "errors": []
+    }
+
+## Query Annahme-Job
+
+### Hinweise
+
+* Wenn sich das Angebot im Annahmeprozess als nicht machbar herausstellt, wird in der Schnittstelle kein Antrag zurückgegeben.
+
+### Request
+
+Die GraphQL-Query heißt `annahmeJob` und hat folgende Parameter:
+
+| Parametername      | Typ       | Default          | Kommentar                                                  |
+|--------------------|-----------|------------------|------------------------------------------------------------|
+| jobId     | String!   | - (Pflichtfeld)  |   Die ID des Jobs, die bei der Initiierung der Annahme zurückgegeben wurde |
+
+### Response
+
+Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten sind der Status der Annahme und bei erfolgreicher Annahme der Antrag.
+
+### Beispiel
+
+#### POST Request
+
+    POST https://kex-angebote.ratenkredit.api.europace.de/angebote
+    Authorization: Bearer xxxx
+    Content-Type: application/json
+
+    {
+      "query": "query annahmeJob($jobId: String!) {  
+        annahmeJob(jobId: $jobId){
+          status
+          antrag{
+            antragsnummer
+            gesamtkonditionen {
+              sollzins
+              effektivzins
+              laufzeitInMonaten
+              gesamtkreditbetrag
+              nettokreditbetrag
+              rateMonatlich
+            }
+          }
+        }
+      }",
+      "variables": {
+        "vorgangsnummer": "ABC123"
+        "angebotId": "angebotId"
+      }
+    }
+
+#### POST Response
+
+    {
+      "data": {
+        "angebotAnnehmen": {
+          "status": "SUCCESS",
+          "antrag": {
+            "antragsnummer": "ABC123/1/1",
+            "gesamtkonditionen": {
+              "sollzins": 2.95,
+              "effektivzins": 2.99,
+              "laufzeitInMonaten": 60,
+              "gesamtkreditbetrag": 10762.19,
+              "nettokreditbetrag": 10000,
+              "rateMonatlich": 179.47
+            }
           }
         }
       },
@@ -484,15 +554,15 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         ratenkredit: Ratenkredit
     }
 
-### Gesamtkonditionen | AngebotGesamtkonditionen
+### AngebotGesamtkonditionen
 
     {
         effektivzins: Prozent,
-        gesamtkreditbetrag: Euro,
-        laufzeitInMonaten: Int,
-        nettokreditbetrag: Euro,
-        rateMonatlich: Euro,
-        sollzins: Prozent,
+        gesamtkreditbetrag: Euro
+        laufzeitInMonaten: Int
+        nettokreditbetrag: Euro
+        rateMonatlich: Euro
+        sollzins: Prozent
         konditionsspanne: Konditionsspanne
     }
     
@@ -512,11 +582,11 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         gesamtkreditbetrag: Euro
     }
 
-### Ratenkredit
+### AngebotRatenkredit
 
     {
-        produktanbieter: Produktanbieter,
-        produktbezeichnung: String,
+        produktanbieter: Produktanbieter
+        produktbezeichnung: String
         schlussrate: Euro
     }
 
@@ -543,25 +613,76 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         svg: String
     }    
 
-## Antrag
+Das Property `svg` enthält die URL auf das SVG.
+
+## AnnahmeJob
+
+    {
+        status: JobStatus!
+        antrag: Antrag
+    }
+
+### JobStatus
+
+    "FAILURE" | "PENDING" | "SUCCESS"
+
+
+### Antrag
 
     {
         antragsnummer: String!
         gesamtkonditionen: AntragGesamtkonditionen
+        ratenkredit: AntragRatenkredit
+        ratenschutz: AntragRatenschutz
+        dokumente: [Dokument!]
+        videolegitimation: Videolegitimation
     }
 
-### AntragGesamtkonditionen
+#### AntragGesamtkonditionen
 
     {
-        effektivzins: Prozent,
-        gesamtkreditbetrag: Euro,
-        laufzeitInMonaten: Int,
-        nettokreditbetrag: Euro,
-        rateMonatlich: Euro,
+        effektivzins: Prozent
+        gesamtkreditbetrag: Euro
+        laufzeitInMonaten: Int
+        nettokreditbetrag: Euro
+        rateMonatlich: Euro
         sollzins: Prozent
     }
     
-Das Property `svg` enthält die URL auf das SVG.
+#### AntragRatenkredit
+
+    {
+        schlussrate: Euro
+    }
+
+#### AntragRatenschutz
+
+    {
+        praemieMonatlich: Euro
+        versicherteRisikenAntragsteller1: [VersichertesRisiko!]!
+        versicherteRisikenAntragsteller2: [VersichertesRisiko!]! 
+    }
+
+#### VersichertesRisiko
+
+    {
+          ARBEITSLOSIGKEIT
+          ARBEITSUNFAEHIGKEIT
+          LEBEN
+    }
+
+#### Dokument
+
+    {
+        url: String
+    }
+
+#### Videolegitimation
+
+    {
+        url: String
+        referenznummer: String
+    }
 
 # Nutzungsbedingungen
 Die APIs werden unter folgenden [Nutzungsbedingungen](https://docs.api.europace.de/nutzungsbedingungen/) zur Verfügung gestellt
