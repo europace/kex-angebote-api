@@ -33,6 +33,13 @@
         * [Beispiel](#beispiel-3)
             * [POST Request](#post-request-3)
             * [POST Response](#post-response-3)
+    * [Query Annahme-Job](#query-annahme-job)
+        * [Hinweise](#hinweise-1)
+        * [Request](#request-5)
+        * [Response](#response-4)
+        * [Beispiel](#beispiel-4)
+            * [POST Request](#post-request-4)
+            * [POST Response](#post-response-4)
 * [Request-Datentypen](#request-datentypen)
     * [Partner-ID](#partner-id)
     * [Datenkontext](#datenkontext)
@@ -47,13 +54,15 @@
             * [Produktanbieter](#produktanbieter)
             * [Anschrift](#anschrift)
             * [Logo](#logo)
-    * [Antrag](#antrag)
-        * [AntragGesamtkonditionen](#antraggesamtkonditionen)
-        * [AntragRatenkredit](#antragratenkredit)
-        * [AntragRatenschutz](#antragratenschutz)
-        * [VersichertesRisiko](#versichertesrisiko)
-        * [Dokument](#dokument)
-        * [Videolegitimation](#videolegitimation)
+    * [AnnahmeJob](#annahmejob)
+        * [JobStatus](#jobstatus)
+        * [Antrag](#antrag)
+            * [AntragGesamtkonditionen](#antraggesamtkonditionen)
+            * [AntragRatenkredit](#antragratenkredit)
+            * [AntragRatenschutz](#antragratenschutz)
+            * [VersichertesRisiko](#versichertesrisiko)
+            * [Dokument](#dokument)
+            * [Videolegitimation](#videolegitimation)
 * [Nutzungsbedingungen](#nutzungsbedingungen)
 
 # Allgemeines
@@ -384,7 +393,6 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 * Das Annehmen von ermittelten Angeboten ist nur möglich, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `409`. In diesem Fall ist eine erneute Ermittlung notwendig.
 * Zur Optimierung des Angebotsprozess ermitteln wir unter Umständen zusätzliche Alternativangebote unter Adjustierung der Kreditparameter.
 * Der im Vorgang eingetragene Kundenbetreuer ist für die Annahme wichtig, da Name und Kontaktdaten an die Banken geschickt werden.
-* Wenn sich das Angebot im Annahmeprozess als nicht machbar herausstellt, wird in der Schnittstelle kein Antrag zurückgegeben.
 
 
 ### Request
@@ -398,7 +406,7 @@ Die GraphQL-Mutation heißt `angebotAnnehmen` und hat folgende Parameter:
 
 ### Response
 
-Diese Mutation liefert als Rückgabewert einen [Antrag](#antrag).
+Diese Mutation liefert als Rückgabewert eine JobId.
 
 ### Beispiel
 
@@ -411,14 +419,7 @@ Diese Mutation liefert als Rückgabewert einen [Antrag](#antrag).
     {
       "query": "mutation annehmen($vorgangsnummer: String!, $angebotId: String!) {  
         angebotAnnehmen(angebotId: $angebotId,  vorgangsnummer: $vorgangsnummer ){
-          antragsnummer
-          gesamtkonditionen {
-            sollzins
-            effektivzins
-            laufzeitInMonaten
-            gesamtkreditbetrag
-            nettokreditbetrag
-            rateMonatlich
+            jobId
           }
         }
       }",
@@ -433,14 +434,77 @@ Diese Mutation liefert als Rückgabewert einen [Antrag](#antrag).
     {
       "data": {
         "angebotAnnehmen": {
-          "antragsnummer": "ABC123/1/1",
-          "gesamtkonditionen": {
-            "sollzins": 2.95,
-            "effektivzins": 2.99,
-            "laufzeitInMonaten": 60,
-            "gesamtkreditbetrag": 10762.19,
-            "nettokreditbetrag": 10000,
-            "rateMonatlich": 179.47
+          "jobId": "AB12345678"
+        }
+      },
+      "errors": []
+    }
+
+## Query Annahme-Job
+
+### Hinweise
+
+* Wenn sich das Angebot im Annahmeprozess als nicht machbar herausstellt, wird in der Schnittstelle kein Antrag zurückgegeben.
+
+### Request
+
+Die GraphQL-Query heißt `jobAnnahme` und hat folgende Parameter:
+
+| Parametername      | Typ       | Default          | Kommentar                                                  |
+|--------------------|-----------|------------------|------------------------------------------------------------|
+| jobId     | String!   | - (Pflichtfeld)  |   Die ID des Jobs, die bei der Initiierung der Annahme zurückgegeben wurde |
+
+### Response
+
+Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten sind der Status der Annahme und bei erfolgreicher Annahme der Antrag.
+
+### Beispiel
+
+#### POST Request
+
+    POST https://kex-angebote.ratenkredit.api.europace.de/angebote
+    Authorization: Bearer xxxx
+    Content-Type: application/json
+
+    {
+      "query": "query annahmeJob($jobId: String!) {  
+        annahmeJob(jobId: $jobId){
+          status
+          antrag{
+            antragsnummer
+            gesamtkonditionen {
+              sollzins
+              effektivzins
+              laufzeitInMonaten
+              gesamtkreditbetrag
+              nettokreditbetrag
+              rateMonatlich
+            }
+          }
+        }
+      }",
+      "variables": {
+        "vorgangsnummer": "ABC123"
+        "angebotId": "angebotId"
+      }
+    }
+
+#### POST Response
+
+    {
+      "data": {
+        "angebotAnnehmen": {
+          "status": "SUCCESS",
+          "antrag": {
+            "antragsnummer": "ABC123/1/1",
+            "gesamtkonditionen": {
+              "sollzins": 2.95,
+              "effektivzins": 2.99,
+              "laufzeitInMonaten": 60,
+              "gesamtkreditbetrag": 10762.19,
+              "nettokreditbetrag": 10000,
+              "rateMonatlich": 179.47
+            }
           }
         }
       },
@@ -550,7 +614,19 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
 
 Das Property `svg` enthält die URL auf das SVG.
 
-## Antrag
+## AnnahmeJob
+
+    {
+        status: JobStatus!
+        antrag: Antrag
+    }
+
+### JobStatus
+
+    "FAILURE" | "PENDING" | "SUCCESS"
+
+
+### Antrag
 
     {
         antragsnummer: String!
@@ -561,7 +637,7 @@ Das Property `svg` enthält die URL auf das SVG.
         videolegitimation: Videolegitimation
     }
 
-### AntragGesamtkonditionen
+#### AntragGesamtkonditionen
 
     {
         effektivzins: Prozent
@@ -572,13 +648,13 @@ Das Property `svg` enthält die URL auf das SVG.
         sollzins: Prozent
     }
     
-### AntragRatenkredit
+#### AntragRatenkredit
 
     {
         schlussrate: Euro
     }
 
-### AntragRatenschutz
+#### AntragRatenschutz
 
     {
         praemieMonatlich: Euro
@@ -586,7 +662,7 @@ Das Property `svg` enthält die URL auf das SVG.
         versicherteRisikenAntragsteller2: [VersichertesRisiko!]! 
     }
 
-### VersichertesRisiko
+#### VersichertesRisiko
 
     {
           ARBEITSLOSIGKEIT
@@ -594,13 +670,13 @@ Das Property `svg` enthält die URL auf das SVG.
           LEBEN
     }
 
-### Dokument
+#### Dokument
 
     {
         url: String
     }
 
-### Videolegitimation
+#### Videolegitimation
 
     {
         url: String
