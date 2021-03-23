@@ -469,9 +469,9 @@ Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten
 
     {
       "query": "query annahmeJob($jobId: String!) {  
-        annahmeJob(jobId: $jobId){
+        annahmeJob(jobId: $jobId) {
           status
-          antrag{
+          antrag {
             antragsnummer
             gesamtkonditionen {
               sollzins
@@ -485,8 +485,7 @@ Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten
         }
       }",
       "variables": {
-        "vorgangsnummer": "ABC123"
-        "angebotId": "angebotId"
+        "$jobId": "$jobId"
       }
     }
 
