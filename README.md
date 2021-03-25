@@ -485,7 +485,7 @@ Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten
         }
       }",
       "variables": {
-        "$jobId": "$jobId"
+        "jobId": "$jobId"
       }
     }
 
