@@ -21,20 +21,21 @@
             * [POST Response](#post-response-1)
 * [Angebote](#angebote)
     * [Query Angebote](#query-angebote)
+        * [Hinweise](#hinweise)
         * [Request](#request-3)
         * [Response](#response-2)
         * [Beispiel](#beispiel-2)
             * [POST Request](#post-request-2)
             * [POST Response](#post-response-2)
     * [Mutation Angebot-Annehmen](#mutation-angebot-annehmen)
-        * [Hinweise](#hinweise)
+        * [Hinweise](#hinweise-1)
         * [Request](#request-4)
         * [Response](#response-3)
         * [Beispiel](#beispiel-3)
             * [POST Request](#post-request-3)
             * [POST Response](#post-response-3)
     * [Query Annahme-Job](#query-annahme-job)
-        * [Hinweise](#hinweise-1)
+        * [Hinweise](#hinweise-2)
         * [Request](#request-5)
         * [Response](#response-4)
         * [Beispiel](#beispiel-4)
@@ -144,6 +145,7 @@ Weitere Infos gibt es [hier](https://docs.api.europace.de/privatkredit/graphql/)
 | 400        | Bad Request           | Request Format ist ungültig, z.B. Pflichtfelder fehlen, Parameternamen, -typen oder -werte sind falsch, ... |
 | 401        | Unauthorized          | Authentifizierung ist fehlgeschlagen                                                                        |
 | 403        | Forbidden             | Der API-Client besitzt einen falschen Scope                                                                 |
+| 409        | Conflict              | Der Vorgang ist nicht aktuell                                                                               |
 | 415        | Unsupported MediaType | Es wurde ein anderer content-type angegeben                                                                 |
 
 # Schaufensterkonditionen
@@ -321,6 +323,11 @@ Die URL für das Ermitteln und Annehmen auf Basis von Vorgangsdaten ist:
 
 ## Query Angebote
 
+### Hinweise
+
+* Das Ermitteln von Angeboten ist nur möglich, wenn der Vorgang einen gültigen **Kreditbetrag** und **Laufzeit oder Rate** enthält. Sollte das nicht der Fall sein, so erhält der API-Nutzer einen [GraphQL-Error](#fehlercodes) mit dem Statuscode `400`. Der Vorgang muss dann zuerst entsprechend korrigiert werden.
+
+
 ### Request
 
 Die GraphQL-Query heißt `angebote` und hat folgende Parameter:
@@ -389,8 +396,8 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 
 * Aktuell unterstützt die API nur das Fernabsatzgeschäft.
 * Der authentifizierte Nutzer muss zum Zeitpunkt der Annahme eine Handelsbeziehung für die Bank besitzen, in der die Annahme erlaubt ist.  
-  Andernfalls erhält der Nutzer einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `403`
-* Das Annehmen von ermittelten Angeboten ist nur möglich, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#weitere-fehler) mit dem Statuscode `409`. In diesem Fall ist eine erneute Ermittlung notwendig.
+  Andernfalls erhält der Nutzer einen [GraphQL-Error](#fehlercodes) mit dem Statuscode `403`
+* Das Annehmen von ermittelten Angeboten ist nur möglich, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#fehlercodes) mit dem Statuscode `409`. In diesem Fall ist eine erneute Ermittlung notwendig.
 * Zur Optimierung des Angebotsprozess ermitteln wir unter Umständen zusätzliche Alternativangebote unter Adjustierung der Kreditparameter.
 * Der im Vorgang eingetragene Kundenbetreuer ist für die Annahme wichtig, da Name und Kontaktdaten an die Banken geschickt werden.
 * Wenn sich das Angebot im Annahmeprozess als nicht machbar herausstellt, wird in der Schnittstelle kein Antrag zurückgegeben.
