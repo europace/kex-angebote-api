@@ -18,7 +18,7 @@ Alle hier dokumentierten Schnittstellen sind [GraphQL-Schnittstellen](https://do
  
 <!-- https://opensource.zalando.com/restful-api-guidelines/#108 -->
 
-## Authentifizierung
+### Authentifizierung
 
 Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierung erfolgt über den OAuth 2.0 Client-Credentials Flow. 
 
@@ -38,7 +38,7 @@ Schlägt die Authentifizierung fehl, erhält der Aufrufer eine HTTP Response mit
 
 Hat der Client nicht die benötigte Berechtigung um die Resource abzurufen, erhält der Aufrufer eine HTTP Response mit Statuscode **403 FORBIDDEN**.
 
-## Nachverfolgbarkeit von Requests
+### Nachverfolgbarkeit von Requests
 
 Für jeden Request soll eine eindeutige ID generiert werden, die den Request im EUROPACE System nachverfolgbar macht und so bei etwaigen Problemen oder Fehlern die systemübergreifende Analyse erleichtert.  
 Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional. 
@@ -49,7 +49,7 @@ Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beg
 |---------------------|---------------------------------|-------------|
 | X-TraceId           | eindeutige ID für jeden Request | sys12345678 |
 
-## Request
+### Request
 
 Die Angaben werden als JSON mit UTF-8 Encoding im Body des Requests gesendet. 
 Die Attribute innerhalb eines Blocks können dabei in beliebiger Reihenfolge angegeben werden.  
@@ -66,7 +66,7 @@ In unseren Beispielen nutzen wir die Notation mit Variablen.
       "variables": { ... }
     }
 
-## Fehlercodes
+### Fehlercodes
 
 Die Besonderheit in GraphQL ist u.a., dass die meisten Fehler nicht über HTTP-Fehlercodes wiedergegeben werden.
 In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufgetreten ist. Dafür gibt es das Attribut `errors` in der Response.
@@ -82,7 +82,7 @@ Weitere Infos gibt es [hier](https://docs.api.europace.de/privatkredit/graphql/)
 | 409        | Conflict              | Der Vorgang ist nicht aktuell                                                                               |
 | 415        | Unsupported MediaType | Es wurde ein anderer content-type angegeben                                                                 |
 
-# Schaufensterkonditionen
+## Schaufensterkonditionen
 
 Schaufensterkonditionen, sowohl die Top-Schaufensterkondition als auch eine komplette Liste, können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
 Die URL für das Ermitteln von Schaufensterkonditionen ist:
@@ -90,9 +90,9 @@ Die URL für das Ermitteln von Schaufensterkonditionen ist:
     https://kex-angebote.ratenkredit.api.europace.de/schaufenster
     
 
-## Query Top-Schaufensterkondition
+### Query Top-Schaufensterkondition
 
-### Request
+#### Request
 
 Die GraphQL-Query heißt `topSchaufensterkondition` und hat folgende Parameter:
 
@@ -106,13 +106,13 @@ Die GraphQL-Query heißt `topSchaufensterkondition` und hat folgende Parameter:
 
 Der Default-Wert wird verwendet, wenn der jeweilige Parameter nicht gesetzt ist.
 
-### Response
+#### Response
 
 Diese Query liefert als Rückgabewert eine [Schaufensterkondition](#schaufensterkondition).
 
-### Beispiel
+#### Beispiel
 
-#### POST Request
+##### POST Request
 
     POST https://kex-angebote.ratenkredit.api.europace.de/schaufenster
     Authorization: Bearer xxxx
@@ -141,7 +141,7 @@ Diese Query liefert als Rückgabewert eine [Schaufensterkondition](#schaufenster
       }
     }
         
-#### POST Response
+##### POST Response
 
     {
         "data": {
@@ -160,9 +160,9 @@ Diese Query liefert als Rückgabewert eine [Schaufensterkondition](#schaufenster
         }
     }
 
-## Query Schaufensterkonditionen
+### Query Schaufensterkonditionen
 
-### Request
+#### Request
 
 Die GraphQL-Query heißt `schaufensterkonditionen` und hat folgende Parameter:
 
@@ -176,13 +176,13 @@ Die GraphQL-Query heißt `schaufensterkonditionen` und hat folgende Parameter:
 
 Der Default-Wert wird verwendet, wenn der jeweilige Parameter nicht gesetzt ist.
 
-### Response
+#### Response
 
 Diese Query liefert als Rückgabewert eine Liste [Schaufensterkonditionen](#schaufensterkondition).
 
-### Beispiel
+#### Beispiel
 
-#### POST Request
+##### POST Request
 
     POST https://kex-angebote.ratenkredit.api.europace.de/schaufenster
     Authorization: Bearer xxxx
@@ -211,7 +211,7 @@ Diese Query liefert als Rückgabewert eine Liste [Schaufensterkonditionen](#scha
       }
     }
         
-#### POST Response
+##### POST Response
 
     {
         "data": {
@@ -246,7 +246,7 @@ Diese Query liefert als Rückgabewert eine Liste [Schaufensterkonditionen](#scha
    
     
 
-# Angebote
+## Angebote
 
 Eine Liste von machbaren und vollständigen Angeboten auf Basis von Vorgangsdaten kann über unsere GraphQL-Schnittstelle via **HTTP POST** ermittelt werden.
 Mit der ID aus einem ermittelten Angebot kann dieses danach angenommen werden.
@@ -255,14 +255,14 @@ Die URL für das Ermitteln und Annehmen auf Basis von Vorgangsdaten ist:
     https://kex-angebote.ratenkredit.api.europace.de/angebote  
 
 
-## Query Angebote
+### Query Angebote
 
-### Hinweise
+#### Hinweise
 
 * Das Ermitteln von Angeboten ist nur möglich, wenn der Vorgang einen gültigen **Kreditbetrag** und **Laufzeit oder Rate** enthält. Sollte das nicht der Fall sein, so erhält der API-Nutzer einen [GraphQL-Error](#fehlercodes) mit dem Statuscode `400`. Der Vorgang muss dann zuerst entsprechend korrigiert werden.
 
 
-### Request
+#### Request
 
 Die GraphQL-Query heißt `angebote` und hat folgende Parameter:
 
@@ -271,13 +271,13 @@ Die GraphQL-Query heißt `angebote` und hat folgende Parameter:
 | vorgangsnummer     | String!   | - (Pflichtfeld)  |
 
 
-### Response
+#### Response
 
 Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 
-### Beispiel
+#### Beispiel
 
-#### POST Request
+##### POST Request
 
     POST https://kex-angebote.ratenkredit.api.europace.de/angebote
     Authorization: Bearer xxxx
@@ -303,7 +303,7 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
       }
     }
 
-#### POST Response
+##### POST Response
 
     {
         "data": {
@@ -324,9 +324,9 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
         }
     }
 
-## Mutation Angebot-Annehmen
+### Mutation Angebot-Annehmen
 
-### Hinweise
+#### Hinweise
 
 * Aktuell unterstützt die API nur das Fernabsatzgeschäft.
 * Der authentifizierte Nutzer muss zum Zeitpunkt der Annahme eine Handelsbeziehung für die Bank besitzen, in der die Annahme erlaubt ist.  
@@ -337,7 +337,7 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 * Wenn sich das Angebot im Annahmeprozess als nicht machbar herausstellt, wird in der Schnittstelle kein Antrag zurückgegeben.
 
 
-### Request
+#### Request
 
 Die GraphQL-Mutation heißt `angebotAnnehmen` und hat folgende Parameter:
 
@@ -346,13 +346,13 @@ Die GraphQL-Mutation heißt `angebotAnnehmen` und hat folgende Parameter:
 | vorgangsnummer     | String!   | - (Pflichtfeld)  |                                                            |
 | angebotId          | String!   | - (Pflichtfeld)  | Die ID des ermittelten Angebots, das angenommen werden soll |
 
-### Response
+#### Response
 
 Diese Mutation liefert als Rückgabewert eine JobId.
 
-### Beispiel
+#### Beispiel
 
-#### POST Request
+##### POST Request
 
     POST https://kex-angebote.ratenkredit.api.europace.de/angebote
     Authorization: Bearer xxxx
@@ -371,7 +371,7 @@ Diese Mutation liefert als Rückgabewert eine JobId.
       }
     }
 
-#### POST Response
+##### POST Response
 
     {
       "data": {
@@ -382,13 +382,13 @@ Diese Mutation liefert als Rückgabewert eine JobId.
       "errors": []
     }
 
-## Query Annahme-Job
+### Query Annahme-Job
 
-### Hinweise
+#### Hinweise
 
 * Wenn sich das Angebot im Annahmeprozess als nicht machbar herausstellt, wird in der Schnittstelle kein Antrag zurückgegeben.
 
-### Request
+#### Request
 
 Die GraphQL-Query heißt `annahmeJob` und hat folgende Parameter:
 
@@ -396,13 +396,13 @@ Die GraphQL-Query heißt `annahmeJob` und hat folgende Parameter:
 |--------------------|-----------|------------------|------------------------------------------------------------|
 | jobId     | String!   | - (Pflichtfeld)  |   Die ID des Jobs, die bei der Initiierung der Annahme zurückgegeben wurde |
 
-### Response
+#### Response
 
 Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten sind der Status der Annahme und bei erfolgreicher Annahme der Antrag.
 
-### Beispiel
+#### Beispiel
 
-#### POST Request
+##### POST Request
 
     POST https://kex-angebote.ratenkredit.api.europace.de/angebote
     Authorization: Bearer xxxx
@@ -430,7 +430,7 @@ Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten
       }
     }
 
-#### POST Response
+##### POST Response
 
     {
       "data": {
@@ -452,20 +452,20 @@ Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten
       "errors": []
     }
 
-# Request-Datentypen
+## Request-Datentypen
 
-## Partner-ID
+### Partner-ID
 
 Dieser Typ ist ein 5-stelliger String und identifiziert eine Plakette aus dem Europace-Partnermanagement.  
 Die angegebene Partner-ID muss unterhalb der Partner-ID des API-Clients liegen oder mit ihr identisch sein.
 
-## Datenkontext 
+### Datenkontext 
 
 Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
 * TESTUMGEBUNG
 * ECHTGESCHAEFT
 
-## Finanzierungszweck
+### Finanzierungszweck
 
 Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
 * UMSCHULDUNG
@@ -473,20 +473,20 @@ Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
 * FAHRZEUGKAUF
 * MODERNISIEREN
 
-# Response-Datentypen
+## Response-Datentypen
 
 Für eine bessere Lesbarkeit wird das Gesamtformat in *Typen* aufgebrochen, die an anderer Stelle definiert sind, aber an verwendeter Stelle eingesetzt werden müssen.  
 Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal sind.
 
     
-## Schaufensterkondition
+### Schaufensterkondition
 
     {
         gesamtkonditionen: Gesamtkonditionen
         ratenkredit: Ratenkredit
     }
     
-## Angebot
+### Angebot
 
     {
         id: String!
@@ -494,7 +494,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         ratenkredit: Ratenkredit
     }
 
-### AngebotGesamtkonditionen
+#### AngebotGesamtkonditionen
 
     {
         effektivzins: Prozent,
@@ -506,14 +506,14 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         konditionsspanne: Konditionsspanne
     }
     
-#### Konditionsspanne
+##### Konditionsspanne
 
     {
         minimum: Konditionsgrenze
         maximum: Konditionsgrenze
     }
 
-##### Konditionsgrenze
+###### Konditionsgrenze
 
     {
         sollzins: Prozent
@@ -522,7 +522,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         gesamtkreditbetrag: Euro
     }
 
-### AngebotRatenkredit
+#### AngebotRatenkredit
 
     {
         produktanbieter: Produktanbieter
@@ -530,7 +530,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         schlussrate: Euro
     }
 
-#### Produktanbieter
+##### Produktanbieter
 
     {
         name: String
@@ -538,7 +538,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         logo: Logo
     }
 
-#### Anschrift
+##### Anschrift
 
     {
         strasse: String
@@ -547,7 +547,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         ort: String
     }
     
-#### Logo
+##### Logo
     
     {
         svg: String
@@ -555,19 +555,19 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
 
 Das Property `svg` enthält die URL auf das SVG.
 
-## AnnahmeJob
+### AnnahmeJob
 
     {
         status: JobStatus!
         antrag: Antrag
     }
 
-### JobStatus
+#### JobStatus
 
     "FAILURE" | "PENDING" | "SUCCESS"
 
 
-### Antrag
+#### Antrag
 
     {
         antragsnummer: String!
@@ -578,7 +578,7 @@ Das Property `svg` enthält die URL auf das SVG.
         videolegitimation: Videolegitimation
     }
 
-#### AntragGesamtkonditionen
+##### AntragGesamtkonditionen
 
     {
         effektivzins: Prozent
@@ -589,13 +589,13 @@ Das Property `svg` enthält die URL auf das SVG.
         sollzins: Prozent
     }
     
-#### AntragRatenkredit
+##### AntragRatenkredit
 
     {
         schlussrate: Euro
     }
 
-#### AntragRatenschutz
+##### AntragRatenschutz
 
     {
         praemieMonatlich: Euro
@@ -603,7 +603,7 @@ Das Property `svg` enthält die URL auf das SVG.
         versicherteRisikenAntragsteller2: [VersichertesRisiko!]! 
     }
 
-#### VersichertesRisiko
+##### VersichertesRisiko
 
     {
           ARBEITSLOSIGKEIT
@@ -611,18 +611,18 @@ Das Property `svg` enthält die URL auf das SVG.
           LEBEN
     }
 
-#### Dokument
+##### Dokument
 
     {
         url: String
     }
 
-#### Videolegitimation
+##### Videolegitimation
 
     {
         url: String
         referenznummer: String
     }
 
-# Nutzungsbedingungen
+## Nutzungsbedingungen
 Die APIs werden unter folgenden [Nutzungsbedingungen](https://docs.api.europace.de/nutzungsbedingungen/) zur Verfügung gestellt
