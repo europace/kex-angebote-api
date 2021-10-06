@@ -575,7 +575,6 @@ Das Property `svg` enthält die URL auf das SVG.
         ratenkredit: AntragRatenkredit
         ratenschutz: AntragRatenschutz
         dokumente: [Dokument!]
-        videolegitimation: Videolegitimation
     }
 
 ##### AntragGesamtkonditionen
@@ -615,13 +614,6 @@ Das Property `svg` enthält die URL auf das SVG.
 
     {
         url: String
-    }
-
-##### Videolegitimation
-
-    {
-        url: String
-        referenznummer: String
     }
 
 ## Nutzungsbedingungen
