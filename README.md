@@ -575,7 +575,8 @@ Das Property `svg` enthält die URL auf das SVG.
         ratenkredit: AntragRatenkredit
         ratenschutz: AntragRatenschutz
         dokumente: [Dokument!]
-        videolegitimation: Videolegitimation
+        identifikationAntragsteller1: Identifikation
+        identifikationAntragsteller2: Identifikation
     }
 
 ##### AntragGesamtkonditionen
@@ -617,12 +618,18 @@ Das Property `svg` enthält die URL auf das SVG.
         url: String
     }
 
-##### Videolegitimation
+##### Identifikation
 
     {
-        url: String
+        antragstellername: String 
+        qesUrl: String
         referenznummer: String
+        videolegitimationUrl: String
     }
+
+Das Property `antragstellername` enthält den Namen im Format "<vorname> <nachname>".
+
+
 
 ## Nutzungsbedingungen
 Die APIs werden unter folgenden [Nutzungsbedingungen](https://docs.api.europace.de/nutzungsbedingungen/) zur Verfügung gestellt
