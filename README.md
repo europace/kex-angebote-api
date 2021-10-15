@@ -5,7 +5,7 @@
 Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.  
 Alle hier dokumentierten Schnittstellen sind [GraphQL-Schnittstellen](https://docs.api.europace.de/privatkredit/graphql/).
 
-> :warning: Diese Schnittstelle wird kontinuierlich weiterentwickelt. Daher erwarten wir 
+> ⚠️ Diese Schnittstelle wird kontinuierlich weiterentwickelt. Daher erwarten wir 
 > von allen Nutzern dieser Schnittstelle, dass sie das "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)" nutzen, d.h. 
 > tolerant gegenüber kompatiblen API-Änderungen beim Lesen und Prozessieren der Daten sind:
 >
