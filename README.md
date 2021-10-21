@@ -627,7 +627,7 @@ Das Property `svg` enthält die URL auf das SVG.
         videolegitimationUrl: String
     }
 
-Das Property `antragstellername` enthält den Namen im Format "<vorname> <nachname>".
+Das Property `antragstellername` enthält den Namen im Format "\<vorname\> \<nachname\>".
 
 
 
