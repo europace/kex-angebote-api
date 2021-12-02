@@ -329,6 +329,7 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 #### Hinweise
 
 * Aktuell unterstützt die API nur das Fernabsatzgeschäft.
+* Aktuell unterstützt die API nur den Vertriebskanal B2B2C.
 * Der authentifizierte Nutzer muss zum Zeitpunkt der Annahme eine Handelsbeziehung für die Bank besitzen, in der die Annahme erlaubt ist.  
   Andernfalls erhält der Nutzer einen [GraphQL-Error](#fehlercodes) mit dem Statuscode `403`
 * Das Annehmen von ermittelten Angeboten ist nur möglich, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#fehlercodes) mit dem Statuscode `409`. In diesem Fall ist eine erneute Ermittlung notwendig.
