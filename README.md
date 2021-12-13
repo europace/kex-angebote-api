@@ -367,7 +367,7 @@ This Mutation returns a jobId.
 
 #### Hints
 
-* If the offer cannot be accepted from the bank, the response will not contain any Antrag.
+* If the offer cannot be accepted from the bank, the response will contain status=SUCCESS but not contain any Antrag.
 
 #### Request
 
