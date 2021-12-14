@@ -64,7 +64,7 @@ More information about error codes can be found [here](https://docs.api.europace
 
 | Error Code | Message     | Description                                                                                     |
 |------------|-------------|-------------------------------------------------------------------------------------------------|
-| 400        | Bad Request | Request format ist invalid (mandatory fields are missind, wrong parameter names or values, ...) |
+| 400        | Bad Request | Request format is invalid (mandatory fields are missing, wrong parameter names or values, ...) |
 | 403        | Forbidden   | The authenticated user does not have sufficient rights                                          |
 | 409        | Conflict    | The Vorgang was updated after the offer was calculated and before the offer was accepted        |
 
@@ -241,7 +241,7 @@ The URL for calculating and accepting Angebote is:
 
 #### Hints
 
-* The calculation of Angebote is only possible, if the corresponding Vorgang includes a valid **Kreditbetrag** and **Laufzeit or Rate**. Should that not be the case  the API user receives a [GraphQL-Error](#graphql-errors) with the status code `400`. The Vorgang has to be corrected before you can continue.
+* The calculation of Angebote is only possible if the corresponding Vorgang includes a valid **Kreditbetrag** and **Laufzeit or Rate**. Should that not be the case the API user receives a [GraphQL-Error](#graphql-errors) with the status code `400`. The Vorgang has to be corrected before you can continue.
 
 
 #### Request
@@ -379,7 +379,7 @@ The GraphQL-Query is called `annahmeJob` and has the following parameter:
 
 #### Response
 
-This Query Returns a [AnnahmeJob](#annahmejob). It contains the Status of the acceptance process and the Antrag if the process was successful.
+This Query returns an [AnnahmeJob](#annahmejob). It contains the Status of the acceptance process and the Antrag if the process was successful.
 
 #### Example
 
@@ -442,13 +442,13 @@ The Partner-ID has to be underneath or identical to the Partner-ID of the API-Cl
 
 ### Datenkontext
 
-This type is a String which can currelty have the following values
+This type is a String which can currently have one of the following values
 * TESTUMGEBUNG
 * ECHTGESCHAEFT
 
 ### Finanzierungszweck
 
-This type is a String which can currelty have the following values
+This type is a String which can currently have one of the following values
 * UMSCHULDUNG
 * FREIE_VERWENDUNG
 * FAHRZEUGKAUF
