@@ -87,7 +87,7 @@ The GraphQL-Query is called `topSchaufensterkondition` and contains the followin
 | partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client |
 | auszahlungsbetrag  | Euro!                                     | - (mandatory field)              | 
 | laufzeitInMonaten  | Int                                       | -                                | 
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | All Finanzierungszwecke          |
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | Calculation over all values of Finanzierungszweck          |
 | datenkontext       | [Datenkontext](#datenkontext)             | TESTUMGEBUNG                     |
 
 #### Response
