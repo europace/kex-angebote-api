@@ -1,116 +1,100 @@
 # KEX-Angebote-API
 
-## Allgemeines
+> ⚠️ You'll find German domain-specific terms in the documentation, for translations and further explanations please refer to our [glossary](https://docs.api.europace.de/common/glossary/)
 
-Die Schnittstelle ermöglicht die Ermittlung von Ratenkredit-Angeboten.  
-Alle hier dokumentierten Schnittstellen sind [GraphQL-Schnittstellen](https://docs.api.europace.de/privatkredit/graphql/).
+## General
 
-> ⚠️ Diese Schnittstelle wird kontinuierlich weiterentwickelt. Daher erwarten wir 
-> von allen Nutzern dieser Schnittstelle, dass sie das "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)" nutzen, d.h. 
-> tolerant gegenüber kompatiblen API-Änderungen beim Lesen und Prozessieren der Daten sind:
+These APIs allow the calculation of Schaufensterkonditionen as well as calculating and accepting Angebote based on a Vorgang.
+All APIs documented here are [GraphQL-APIs](https://docs.api.europace.de/privatkredit/graphql/).
+
+> ⚠️ This API is continuously developed. Therefore we expect
+> all users to align with the "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)", which requires clients to be
+> tolerant towards compatible API-Changes when reading and processing the data. This means:
 >
-> 1. unbekannte Felder dürfen keine Fehler verursachen
+> 1. unknown properties must not result in errors
 >
-> 2. Strings mit eingeschränktem Wertebereich (Enums) müssen mit neuen, unbekannten Werten umgehen können
+> 2. Strings with a restricted set of values (Enums) must support new unknown values
 >
-> 3. sinnvoller Umgang mit HTTP-Statuscodes, die nicht explizit dokumentiert sind  
+> 3. sensible usage of HTTP-Statuscodes, even if they are not explicitly documented
 > 
  
 <!-- https://opensource.zalando.com/restful-api-guidelines/#108 -->
 
-### Authentifizierung
+### Authentication
 
-Für jeden Request ist eine Authentifizierung erforderlich. Die Authentifizierung erfolgt über den OAuth 2.0 Client-Credentials Flow. 
+These APIs are secured by the OAuth client credentials flow using the [Authorization-API](https://docs.api.europace.de/privatkredit/authentifizierung/).
+To use these APIs your OAuth2-Client needs the following Scopes:
 
-| Request Header Name | Beschreibung           |
-|---------------------|------------------------|
-| Authorization       | OAuth 2.0 Bearer Token |
+| Scope                          | Label in Partnermanagement            | Description                                                |
+|--------------------------------|---------------------------------------|------------------------------------------------------------|
+| privatkredit:angebot:ermitteln | KreditSmart-Angebote ermitteln        | Scope for calculating Schaufensterkonditionen and Angebote |
+| privatkredit:antrag:schreiben  | KreditSmart-Anträge anlegen/verändern | Scope for accepting an Angebot (creating an Antrag)        |
 
-
-Das Bearer Token kann über die [Authorization-API](https://docs.api.europace.de/privatkredit/authentifizierung/) angefordert werden. 
-Dazu wird ein Client benötigt der vorher von einer berechtigten Person über das Partnermanagement angelegt wurde. 
-Eine Anleitung dafür befindet sich im [Help Center](https://europace2.zendesk.com/hc/de/articles/360012514780).
-
-Damit der Client für die Schaufensterkonditionen-APIs und die Ermittlung von Angeboten genutzt werden können, muss im Partnermanagement die Berechtigung **KreditSmart-Angebote ermitteln** (Scope `privatkredit:angebot:ermitteln`) aktiviert sein.  
-Damit der Client für das Annehmen von Angeboten genutzt werden kann, muss im Partnermanagement die Berechtigung **KreditSmart-Anträge anlegen/verändern** (Scope `privatkredit:antrag:schreiben`) aktiviert sein.  
- 
-Schlägt die Authentifizierung fehl, erhält der Aufrufer eine HTTP Response mit Statuscode **401 UNAUTHORIZED**.
-
-Hat der Client nicht die benötigte Berechtigung um die Resource abzurufen, erhält der Aufrufer eine HTTP Response mit Statuscode **403 FORBIDDEN**.
-
-### Nachverfolgbarkeit von Requests
-
-Für jeden Request soll eine eindeutige ID generiert werden, die den Request im EUROPACE System nachverfolgbar macht und so bei etwaigen Problemen oder Fehlern die systemübergreifende Analyse erleichtert.  
-Die Übermittlung der X-TraceId erfolgt über einen HTTP-Header. Dieser Header ist optional. 
-Wenn er nicht gesetzt ist, wird eine ID vom System generiert.
-Hilfreich für die Analyse ist es, wenn die TraceId mit einem System-Kürzel beginnt (im Beispiel unten 'sys').
-
-| Request Header Name | Beschreibung                    | Beispiel    |
-|---------------------|---------------------------------|-------------|
-| X-TraceId           | eindeutige ID für jeden Request | sys12345678 |
 
 ### Request
 
-Die Angaben werden als JSON mit UTF-8 Encoding im Body des Requests gesendet. 
-Die Attribute innerhalb eines Blocks können dabei in beliebiger Reihenfolge angegeben werden.  
+These APIs accept data with the Content-Type "**application/json**" with UTF-8 encoding.
+The fields inside a block can be sent in any order.
 
-Die Schnittstelle unterstützt alle gängigen GraphQL Formate, genaueres kann man z.B. unter [https://graphql.org/learn/queries/](https://graphql.org/learn/queries/) nachlesen. 
+The APIs support all common GraphQL formats. More information can be found at [https://graphql.org/learn/queries/](https://graphql.org/learn/queries/).
 
-Im Body des Requests wird die GraphQL-Query als String im Property `query` mitgeschickt. Falls die Query
-Parameter enthält, können diese Werte direkt in der Query gesetzt werden oder es können in der Query 
-Variablen definiert werden, deren konkrete Werte dann im Property `variables` als Key-Value-Map übermittelt werden.
-In unseren Beispielen nutzen wir die Notation mit Variablen.  
+The body of a GraphQL request contains the field `query`, which includes the GraphQL query as a String. Parameters can be set directly in the query or defined as variables. The variables can be sent in the `variables` field of the body as a key-value-map.
+All our examples use variables.
 
     {
       "query": "...",
       "variables": { ... }
     }
 
-### Fehlercodes
+### Error codes
 
-Die Besonderheit in GraphQL ist u.a., dass die meisten Fehler nicht über HTTP-Fehlercodes wiedergegeben werden.
-In vielen Fällen bekommt man einen Status 200 zurück, obwohl ein Fehler aufgetreten ist. Dafür gibt es das Attribut `errors` in der Response.
-Weitere Infos gibt es [hier](https://docs.api.europace.de/privatkredit/graphql/)
+One of the special features in GraphQL is that most errors are not reflected via HTTP error codes.
+In many cases you receive a status code 200, even though an error has occurred. These GraphQL errors can be found in the `errors` field of the response body.
+More information about error codes can be found [here](https://docs.api.europace.de/privatkredit/graphql/#error-handling).
 
 ### HTTP-Status Errors
 
-| Fehlercode | Nachricht             | Erklärung                                                                                                   |
-|------------|-----------------------|-------------------------------------------------------------------------------------------------------------|
-| 400        | Bad Request           | Request Format ist ungültig, z.B. Pflichtfelder fehlen, Parameternamen, -typen oder -werte sind falsch, ... |
-| 401        | Unauthorized          | Authentifizierung ist fehlgeschlagen                                                                        |
-| 403        | Forbidden             | Der API-Client besitzt einen falschen Scope                                                                 |
-| 409        | Conflict              | Der Vorgang ist nicht aktuell                                                                               |
-| 415        | Unsupported MediaType | Es wurde ein anderer content-type angegeben                                                                 |
+| Error Code | Message               | Description                     |
+|------------|-----------------------|---------------------------------|
+| 401        | Unauthorized          | Authentication failed           |
+| 403        | Forbidden             | The API client misses a scope   |
+| 415        | Unsupported MediaType | The wrong content type was used |
+
+#### GraphQL Errors
+
+| Error Code | Message     | Description                                                                                     |
+|------------|-------------|-------------------------------------------------------------------------------------------------|
+| 400        | Bad Request | Request format is invalid (mandatory fields are missing, wrong parameter names or values, ...) |
+| 403        | Forbidden   | The authenticated user does not have sufficient rights                                          |
+| 409        | Conflict    | The Vorgang was updated after the offer was calculated and before the offer was accepted        |
 
 ## Schaufensterkonditionen
 
-Schaufensterkonditionen, sowohl die Top-Schaufensterkondition als auch eine komplette Liste, können über unsere GraphQL Schnittstelle via **HTTP POST** ermittelt werden.  
-Die URL für das Ermitteln von Schaufensterkonditionen ist:
+Schaufensterkonditionen, both the top Schaufensterkondition and a complete list, can be retrieved via our GraphQL API using **HTTP POST**.  
+The URL for the Schaufensterkonditionen is:
 
     https://kex-angebote.ratenkredit.api.europace.de/schaufenster
-    
+
 
 ### Query Top-Schaufensterkondition
 
 #### Request
 
-Die GraphQL-Query heißt `topSchaufensterkondition` und hat folgende Parameter:
+The GraphQL-Query is called `topSchaufensterkondition` and contains the following parameter:
 
-| Parametername      | Typ                                        | Default                           |
-|--------------------|--------------------------------------------|-----------------------------------|
-| partnerId          | [Partner-ID](#partner-id)                  | Die Partner-ID aus dem API-Client |
-| auszahlungsbetrag  | Euro!                                      | - (Pflichtfeld)                       | 
-| laufzeitInMonaten  | Int                                        | -                                 | 
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck)  | Alle Finanzierungszwecke          |
-| datenkontext       | [Datenkontext](#datenkontext)              | TESTUMGEBUNG                      |
-
-Der Default-Wert wird verwendet, wenn der jeweilige Parameter nicht gesetzt ist.
+| Parameter Name     | Type                                      | Default Value                    |
+|--------------------|-------------------------------------------|----------------------------------|
+| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client |
+| auszahlungsbetrag  | Euro!                                     | - (mandatory field)              | 
+| laufzeitInMonaten  | Int                                       | -                                | 
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | Calculation over all values of Finanzierungszweck          |
+| datenkontext       | [Datenkontext](#datenkontext)             | TESTUMGEBUNG                     |
 
 #### Response
 
-Diese Query liefert als Rückgabewert eine [Schaufensterkondition](#schaufensterkondition).
+The Query returns a [Schaufensterkondition](#schaufensterkondition).
 
-#### Beispiel
+#### Example
 
 ##### POST Request
 
@@ -140,7 +124,7 @@ Diese Query liefert als Rückgabewert eine [Schaufensterkondition](#schaufenster
         "finanzierungszweck": "UMSCHULDUNG"
       }
     }
-        
+
 ##### POST Response
 
     {
@@ -164,23 +148,21 @@ Diese Query liefert als Rückgabewert eine [Schaufensterkondition](#schaufenster
 
 #### Request
 
-Die GraphQL-Query heißt `schaufensterkonditionen` und hat folgende Parameter:
+The GraphQL-Query is called `schaufensterkonditionen` and has the following parameter:
 
-| Parametername      | Typ                                       | Default                           |
-|--------------------|-------------------------------------------|-----------------------------------|
-| partnerId          | [Partner-ID](#partner-id)                 | Die Partner-ID aus dem API-Client |
-| auszahlungsbetrag  | Euro!                                     | - (Pflichtfeld)                   |
-| laufzeitInMonaten  | Int                                       | -                                 |
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | FREIE_VERWENDUNG                  |
-| datenkontext       | [Datenkontext](#datenkontext)             | TESTUMGEBUNG                      |
-
-Der Default-Wert wird verwendet, wenn der jeweilige Parameter nicht gesetzt ist.
+| Parameter Name     | Type                                      | Default Value                    |
+|--------------------|-------------------------------------------|----------------------------------|
+| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client |
+| auszahlungsbetrag  | Euro!                                     | - (mandatory field)              |
+| laufzeitInMonaten  | Int                                       | -                                |
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | FREIE_VERWENDUNG                 |
+| datenkontext       | [Datenkontext](#datenkontext)             | TESTUMGEBUNG                     |
 
 #### Response
 
-Diese Query liefert als Rückgabewert eine Liste [Schaufensterkonditionen](#schaufensterkondition).
+The Query returns a list of [Schaufensterkonditionen](#schaufensterkondition).
 
-#### Beispiel
+#### Example
 
 ##### POST Request
 
@@ -210,7 +192,7 @@ Diese Query liefert als Rückgabewert eine Liste [Schaufensterkonditionen](#scha
         "finanzierungszweck": "UMSCHULDUNG"
       }
     }
-        
+
 ##### POST Response
 
     {
@@ -243,39 +225,39 @@ Diese Query liefert als Rückgabewert eine Liste [Schaufensterkonditionen](#scha
             ]
         }
     }
-   
-    
+
+
 
 ## Angebote
 
-Eine Liste von machbaren und vollständigen Angeboten auf Basis von Vorgangsdaten kann über unsere GraphQL-Schnittstelle via **HTTP POST** ermittelt werden.
-Mit der ID aus einem ermittelten Angebot kann dieses danach angenommen werden.
-Die URL für das Ermitteln und Annehmen auf Basis von Vorgangsdaten ist:
+You can calculate a list of machbare and vollständige Angebote using data of a Vorgang via our GraphQL-API using **HTTP POST**.
+Using the id of the corresponding Angebot you can accept it.  
+The URL for calculating and accepting Angebote is:
 
     https://kex-angebote.ratenkredit.api.europace.de/angebote  
 
 
 ### Query Angebote
 
-#### Hinweise
+#### Hints
 
-* Das Ermitteln von Angeboten ist nur möglich, wenn der Vorgang einen gültigen **Kreditbetrag** und **Laufzeit oder Rate** enthält. Sollte das nicht der Fall sein, so erhält der API-Nutzer einen [GraphQL-Error](#fehlercodes) mit dem Statuscode `400`. Der Vorgang muss dann zuerst entsprechend korrigiert werden.
+* The calculation of Angebote is only possible if the corresponding Vorgang includes a valid **Kreditbetrag** and **Laufzeit or Rate**. Should that not be the case the API user receives a [GraphQL-Error](#graphql-errors) with the status code `400`. The Vorgang has to be corrected before you can continue.
 
 
 #### Request
 
-Die GraphQL-Query heißt `angebote` und hat folgende Parameter:
+The GraphQL-Query is called `angebote` and has the following parameter:
 
-| Parametername      | Typ       | Default          |
-|--------------------|-----------|------------------|
-| vorgangsnummer     | String!   | - (Pflichtfeld)  |
+| Parameter Name | Type    | Default Value       |
+|----------------|---------|---------------------|
+| vorgangsnummer | String! | - (mandatory field) |
 
 
 #### Response
 
-Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
+The Query returns a list of [Angebote](#angebot).
 
-#### Beispiel
+#### Example
 
 ##### POST Request
 
@@ -326,32 +308,30 @@ Diese Query liefert als Rückgabewert eine Liste von [Angeboten](#angebot).
 
 ### Mutation Angebot-Annehmen
 
-#### Hinweise
+#### Hints
 
-* Aktuell unterstützt die API nur das Fernabsatzgeschäft.
-* Aktuell unterstützt die API nur den Vertriebskanal B2B2C.
-* Der authentifizierte Nutzer muss zum Zeitpunkt der Annahme eine Handelsbeziehung für die Bank besitzen, in der die Annahme erlaubt ist.  
-  Andernfalls erhält der Nutzer einen [GraphQL-Error](#fehlercodes) mit dem Statuscode `403`
-* Das Annehmen von ermittelten Angeboten ist nur möglich, wenn der Vorgang aktuell ist. Sollte nach der Ermittlung und vor der Annahme eine Änderung am Vorgang vorgenommen werden, so erhält der Nutzer der API einen [GraphQL-Error](#fehlercodes) mit dem Statuscode `409`. In diesem Fall ist eine erneute Ermittlung notwendig.
-* Zur Optimierung des Angebotsprozess ermitteln wir unter Umständen zusätzliche Alternativangebote unter Adjustierung der Kreditparameter.
-* Der im Vorgang eingetragene Kundenbetreuer ist für die Annahme wichtig, da Name und Kontaktdaten an die Banken geschickt werden.
-* Wenn sich das Angebot im Annahmeprozess als nicht machbar herausstellt, wird in der Schnittstelle kein Antrag zurückgegeben.
+* Currently the API only supports **Fernabsatzgeschäft**.
+* Currently the API only supports the Vertriebskanal **B2B2C**.
+* When accepting an offer the authenticated user needs to have a Handelsbeziehung for the corresponding bank, which allows the acceptance. Otherwise the user receives a [GraphQL-Error](#graphql-errors) with the status code `403`.
+* Accepting an offer is only possible if the Vorgang did not change in the meantime. Should there be updates between the calculation of offers and accepting an offer the user receives a [GraphQL-Error](#graphql-errors) with the status code `409`. In this case the calculation of the offers needs to be done again.
+* To optimize the process we might calculate alternative offers.
+* The Kundenbetreuer of a Vorgang is important for accepting an offer as the name and contact details will be sent to the bank.
 
 
 #### Request
 
-Die GraphQL-Mutation heißt `angebotAnnehmen` und hat folgende Parameter:
+The GraphQL-Mutation is called `angebotAnnehmen`and has the following parameter:
 
-| Parametername      | Typ       | Default          | Kommentar                                                  |
-|--------------------|-----------|------------------|------------------------------------------------------------|
-| vorgangsnummer     | String!   | - (Pflichtfeld)  |                                                            |
-| angebotId          | String!   | - (Pflichtfeld)  | Die ID des ermittelten Angebots, das angenommen werden soll |
+| Parameter Name | Type    | Default Value       | Comment                                               |
+|----------------|---------|---------------------|-------------------------------------------------------|
+| vorgangsnummer | String! | - (mandatory field) |                                                       |
+| angebotId      | String! | - (mandatory field) | The ID of the calculated offer that is to be accepted |
 
 #### Response
 
-Diese Mutation liefert als Rückgabewert eine JobId.
+This Mutation returns a jobId.
 
-#### Beispiel
+#### Example
 
 ##### POST Request
 
@@ -385,23 +365,23 @@ Diese Mutation liefert als Rückgabewert eine JobId.
 
 ### Query Annahme-Job
 
-#### Hinweise
+#### Hints
 
-* Wenn sich das Angebot im Annahmeprozess als nicht machbar herausstellt, wird in der Schnittstelle kein Antrag zurückgegeben.
+* If the offer cannot be accepted from the bank, the response will contain status=SUCCESS but not contain any Antrag.
 
 #### Request
 
-Die GraphQL-Query heißt `annahmeJob` und hat folgende Parameter:
+The GraphQL-Query is called `annahmeJob` and has the following parameter:
 
-| Parametername      | Typ       | Default          | Kommentar                                                  |
-|--------------------|-----------|------------------|------------------------------------------------------------|
-| jobId     | String!   | - (Pflichtfeld)  |   Die ID des Jobs, die bei der Initiierung der Annahme zurückgegeben wurde |
+| Parameter Name | Type    | Default Value       | Comment                                                                      |
+|----------------|---------|---------------------|------------------------------------------------------------------------------|
+| jobId          | String! | - (mandatory field) | The ID of the job, which was returned when initiating the acceptance process |
 
 #### Response
 
-Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten sind der Status der Annahme und bei erfolgreicher Annahme der Antrag.
+This Query returns an [AnnahmeJob](#annahmejob). It contains the Status of the acceptance process and the Antrag if the process was successful.
 
-#### Beispiel
+#### Example
 
 ##### POST Request
 
@@ -453,40 +433,40 @@ Diese Query liefert als Rückgabewert einen [AnnahmeJob](#annahmejob). Enthalten
       "errors": []
     }
 
-## Request-Datentypen
+## Request Datatypes
 
 ### Partner-ID
 
-Dieser Typ ist ein 5-stelliger String und identifiziert eine Plakette aus dem Europace-Partnermanagement.  
-Die angegebene Partner-ID muss unterhalb der Partner-ID des API-Clients liegen oder mit ihr identisch sein.
+This type is a 5-digit String and identifies a Plakette of the Europace-Partnermanagement.  
+The Partner-ID has to be underneath or identical to the Partner-ID of the API-Client.
 
-### Datenkontext 
+### Datenkontext
 
-Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
+This type is a String which can currently have one of the following values
 * TESTUMGEBUNG
 * ECHTGESCHAEFT
 
 ### Finanzierungszweck
 
-Dieser Typ ist ein String, der aktuell folgende Werte annehmen kann
+This type is a String which can currently have one of the following values
 * UMSCHULDUNG
 * FREIE_VERWENDUNG
 * FAHRZEUGKAUF
 * MODERNISIEREN
 
-## Response-Datentypen
+## Response Datatypes
 
-Für eine bessere Lesbarkeit wird das Gesamtformat in *Typen* aufgebrochen, die an anderer Stelle definiert sind, aber an verwendeter Stelle eingesetzt werden müssen.  
-Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal sind.
+For better readability, the overall format is broken down into *types* that are defined separately but should be used at the corresponding positions. The attributes within a block can be specified in any order.
+There are the scalars `Euro` and `Prozent`, which are wrappers for BigDecimal.
 
-    
+
 ### Schaufensterkondition
 
     {
         gesamtkonditionen: Gesamtkonditionen
         ratenkredit: Ratenkredit
     }
-    
+
 ### Angebot
 
     {
@@ -506,7 +486,7 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         sollzins: Prozent
         konditionsspanne: Konditionsspanne
     }
-    
+
 ##### Konditionsspanne
 
     {
@@ -547,14 +527,14 @@ Es gibt die Scalare `Euro` und `Prozent`, die jeweils Wrapper für BigDecimal si
         plz: String
         ort: String
     }
-    
+
 ##### Logo
-    
+
     {
         svg: String
     }    
 
-Das Property `svg` enthält die URL auf das SVG.
+The field `svg` contains the URL of the svg and not the content.
 
 ### AnnahmeJob
 
@@ -590,7 +570,7 @@ Das Property `svg` enthält die URL auf das SVG.
         rateMonatlich: Euro
         sollzins: Prozent
     }
-    
+
 ##### AntragRatenkredit
 
     {
@@ -628,9 +608,7 @@ Das Property `svg` enthält die URL auf das SVG.
         videolegitimationUrl: String
     }
 
-Das Property `antragstellername` enthält den Namen im Format "\<vorname\> \<nachname\>".
+The field `antragstellername` contains the name in the format "\<first name\> \<last name\>".
 
-
-
-## Nutzungsbedingungen
-Die APIs werden unter folgenden [Nutzungsbedingungen](https://docs.api.europace.de/nutzungsbedingungen/) zur Verfügung gestellt
+## Terms of use
+The APIs are made available under the following [Terms of Use](https://docs.api.europace.de/terms/).
