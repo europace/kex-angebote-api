@@ -9,21 +9,21 @@ All APIs documented here are [GraphQL-APIs](https://docs.api.europace.de/privatk
 
 > ⚠️ This API is continuously developed. Therefore we expect
 > all users to align with the "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)", which requires clients to be
-> tolerant towards compatible API-Changes when reading and processing the data. This means:
+> tolerant towards compatible API changes when reading and processing the data. This means:
 >
 > 1. unknown properties must not result in errors
 >
 > 2. Strings with a restricted set of values (Enums) must support new unknown values
 >
-> 3. sensible usage of HTTP-Statuscodes, even if they are not explicitly documented
-> 
- 
+> 3. sensible usage of HTTP status codes, even if they are not explicitly documented
+>
+
 <!-- https://opensource.zalando.com/restful-api-guidelines/#108 -->
 
 ### Authentication
 
-These APIs are secured by the OAuth client credentials flow using the [Authorization-API](https://docs.api.europace.de/privatkredit/authentifizierung/).
-To use these APIs your OAuth2-Client needs the following Scopes:
+These APIs are secured by the OAuth 2.0 client credentials flow using the [Authorization-API](https://docs.api.europace.de/privatkredit/authentifizierung/).
+To use these APIs your OAuth2-Client needs the following scopes:
 
 | Scope                          | Label in Partnermanagement            | Description                                                |
 |--------------------------------|---------------------------------------|------------------------------------------------------------|
@@ -33,12 +33,12 @@ To use these APIs your OAuth2-Client needs the following Scopes:
 
 ### Request
 
-These APIs accept data with the Content-Type "**application/json**" with UTF-8 encoding.
+These APIs accept data with the content-type **application/json** with UTF-8 encoding.
 The fields inside a block can be sent in any order.
 
 The APIs support all common GraphQL formats. More information can be found at [https://graphql.org/learn/queries/](https://graphql.org/learn/queries/).
 
-The body of a GraphQL request contains the field `query`, which includes the GraphQL query as a String. Parameters can be set directly in the query or defined as variables. The variables can be sent in the `variables` field of the body as a key-value-map.
+The body of a GraphQL request contains the field `query`, which includes the GraphQL query as a String. Parameters can be set directly in the query or defined as variables. The variables can be sent in the `variables` field of the body as a key-value map.
 All our examples use variables.
 
     {
@@ -70,7 +70,8 @@ More information about error codes can be found [here](https://docs.api.europace
 
 ## Schaufensterkonditionen
 
-Schaufensterkonditionen, both the top Schaufensterkondition and a complete list, can be retrieved via our GraphQL API using **HTTP POST**.  
+Schaufensterkonditionen, both the top Schaufensterkondition and a complete list, can be retrieved via our GraphQL API using **HTTP POST**.
+
 The URL for the Schaufensterkonditionen is:
 
     https://kex-angebote.ratenkredit.api.europace.de/schaufenster
@@ -231,7 +232,8 @@ The Query returns a list of [Schaufensterkonditionen](#schaufensterkondition).
 ## Angebote
 
 You can calculate a list of machbare and vollständige Angebote using data of a Vorgang via our GraphQL-API using **HTTP POST**.
-Using the id of the corresponding Angebot you can accept it.  
+Using the id of the corresponding Angebot you can accept it.
+
 The URL for calculating and accepting Angebote is:
 
     https://kex-angebote.ratenkredit.api.europace.de/angebote  
@@ -329,7 +331,7 @@ The GraphQL-Mutation is called `angebotAnnehmen`and has the following parameter:
 
 #### Response
 
-This Mutation returns a jobId.
+This Mutation returns a `jobId`.
 
 #### Example
 
@@ -367,7 +369,7 @@ This Mutation returns a jobId.
 
 #### Hints
 
-* If the offer cannot be accepted from the bank, the response will contain status=SUCCESS but not contain any Antrag.
+* If the offer cannot be accepted from the bank, the response will contain `status=SUCCESS` but not contain any Antrag.
 
 #### Request
 
@@ -457,7 +459,7 @@ This type is a String which can currently have one of the following values
 ## Response Datatypes
 
 For better readability, the overall format is broken down into *types* that are defined separately but should be used at the corresponding positions. The attributes within a block can be specified in any order.
-There are the scalars `Euro` and `Prozent`, which are wrappers for BigDecimal.
+There are the scalars `Euro` and `Prozent`, which are wrappers for `BigDecimal`.
 
 
 ### Schaufensterkondition
