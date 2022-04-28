@@ -370,6 +370,7 @@ This Mutation returns a `jobId`.
 #### Hints
 
 * If the offer cannot be accepted from the bank, the response will contain `status=SUCCESS` but not contain any Antrag.
+* A partner can only query jobs that were created by this partner otherwise a 403 FORBIDDEN is returned.
 
 #### Request
 
