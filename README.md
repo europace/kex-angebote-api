@@ -30,7 +30,6 @@ To use these APIs your OAuth2-Client needs the following scopes:
 | privatkredit:angebot:ermitteln | KreditSmart-Angebote ermitteln        | Scope for calculating Schaufensterkonditionen and Angebote |
 | privatkredit:antrag:schreiben  | KreditSmart-Anträge anlegen/verändern | Scope for accepting an Angebot (creating an Antrag)        |
 
-
 ### Request
 
 These APIs accept data with the content-type **application/json** with UTF-8 encoding.
@@ -38,8 +37,8 @@ The fields inside a block can be sent in any order.
 
 The APIs support all common GraphQL formats. More information can be found at [https://graphql.org/learn/queries/](https://graphql.org/learn/queries/).
 
-The body of a GraphQL request contains the field `query`, which includes the GraphQL query as a String. Parameters can be set directly in the query or defined as variables. The variables can be sent in the `variables` field of the body as a key-value map.
-All our examples use variables.
+The body of a GraphQL request contains the field `query`, which includes the GraphQL query as a String. Parameters can be set directly in the query or defined as variables. 
+The variables can be sent in the `variables` field of the body as a key-value map. All our examples use variables.
 
     {
       "query": "...",
@@ -76,20 +75,19 @@ The URL for the Schaufensterkonditionen is:
 
     https://kex-angebote.ratenkredit.api.europace.de/schaufenster
 
-
 ### Query Top-Schaufensterkondition
 
 #### Request
 
 The GraphQL-Query is called `topSchaufensterkondition` and contains the following parameter:
 
-| Parameter Name     | Type                                      | Default Value                    |
-|--------------------|-------------------------------------------|----------------------------------|
-| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client |
-| auszahlungsbetrag  | Euro!                                     | - (mandatory field)              | 
-| laufzeitInMonaten  | Int                                       | -                                | 
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | Calculation over all values of Finanzierungszweck          |
-| datenkontext       | [Datenkontext](#datenkontext)             | TESTUMGEBUNG                     |
+| Parameter Name     | Type                                      | Default Value                                     |
+|--------------------|-------------------------------------------|---------------------------------------------------|
+| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client                  |
+| auszahlungsbetrag  | Euro!                                     | - (mandatory field)                               | 
+| laufzeitInMonaten  | Int                                       | -                                                 | 
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | Calculation over all values of Finanzierungszweck |
+| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                                    |
 
 #### Response
 
@@ -156,8 +154,8 @@ The GraphQL-Query is called `schaufensterkonditionen` and has the following para
 | partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client |
 | auszahlungsbetrag  | Euro!                                     | - (mandatory field)              |
 | laufzeitInMonaten  | Int                                       | -                                |
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | FREIE_VERWENDUNG                 |
-| datenkontext       | [Datenkontext](#datenkontext)             | TESTUMGEBUNG                     |
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | `FREIE_VERWENDUNG`               |
+| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                   |
 
 #### Response
 
@@ -227,8 +225,6 @@ The Query returns a list of [Schaufensterkonditionen](#schaufensterkondition).
         }
     }
 
-
-
 ## Angebote
 
 You can calculate a list of machbare and vollständige Angebote using data of a Vorgang via our GraphQL-API using **HTTP POST**.
@@ -238,22 +234,22 @@ The URL for calculating and accepting Angebote is:
 
     https://kex-angebote.ratenkredit.api.europace.de/angebote  
 
-
 ### Query Angebote
 
 #### Hints
 
-* The calculation of Angebote is only possible if the corresponding Vorgang includes a valid **Kreditbetrag** and **Laufzeit or Rate**. Should that not be the case the API user receives a [GraphQL-Error](#graphql-errors) with the status code `400`. The Vorgang has to be corrected before you can continue.
-
+* The calculation of Angebote is only possible if the corresponding Vorgang includes a valid **Kreditbetrag** and **Laufzeit or Rate**. Should that not be the case the API user receives
+  a [GraphQL-Error](#graphql-errors) with the status code `400`. The Vorgang has to be corrected before you can continue.
 
 #### Request
 
-The GraphQL-Query is called `angebote` and has the following parameter:
+The GraphQL-Query is called `angebote` and has the following parameters.
+If only the vorgangsnummer is provided, only complete offers will be returned.
 
-| Parameter Name | Type    | Default Value       |
-|----------------|---------|---------------------|
-| vorgangsnummer | String! | - (mandatory field) |
-
+| Parameter Name | Type           | Default Value                                        |
+|----------------|----------------|------------------------------------------------------|
+| vorgangsnummer | String!        | - (mandatory field)                                  |
+| options        | AngebotOptions | `{ includeVollstaendigkeitsstatus: [VOLLSTAENDIG] }` |
 
 #### Response
 
@@ -314,11 +310,12 @@ The Query returns a list of [Angebote](#angebot).
 
 * Currently the API only supports **Fernabsatzgeschäft**.
 * Currently the API only supports the Vertriebskanal **B2B2C**.
-* When accepting an offer the authenticated user needs to have a Handelsbeziehung for the corresponding bank, which allows the acceptance. Otherwise the user receives a [GraphQL-Error](#graphql-errors) with the status code `403`.
-* Accepting an offer is only possible if the Vorgang did not change in the meantime. Should there be updates between the calculation of offers and accepting an offer the user receives a [GraphQL-Error](#graphql-errors) with the status code `409`. In this case the calculation of the offers needs to be done again.
+* When accepting an offer the authenticated user needs to have a Handelsbeziehung for the corresponding bank, which allows the acceptance. Otherwise the user receives
+  a [GraphQL-Error](#graphql-errors) with the status code `403`.
+* Accepting an offer is only possible if the Vorgang did not change in the meantime. Should there be updates between the calculation of offers and accepting an offer the user receives
+  a [GraphQL-Error](#graphql-errors) with the status code `409`. In this case the calculation of the offers needs to be done again.
 * To optimize the process we might calculate alternative offers.
 * The Kundenbetreuer of a Vorgang is important for accepting an offer as the name and contact details will be sent to the bank.
-
 
 #### Request
 
@@ -371,6 +368,7 @@ This Mutation returns a `jobId`.
 
 * If the offer cannot be accepted from the bank, the response will contain `status=SUCCESS` but not contain any Antrag.
 * A partner can only query jobs that were created by this partner otherwise a 403 FORBIDDEN is returned.
+* Only complete offers can be accepted, if an incomplete offer is requested, it will result in a 400 BAD REQUEST
 
 #### Request
 
@@ -446,12 +444,14 @@ The Partner-ID has to be underneath or identical to the Partner-ID of the API-Cl
 ### Datenkontext
 
 This type is a String which can currently have one of the following values
+
 * TESTUMGEBUNG
 * ECHTGESCHAEFT
 
 ### Finanzierungszweck
 
 This type is a String which can currently have one of the following values
+
 * UMSCHULDUNG
 * FREIE_VERWENDUNG
 * FAHRZEUGKAUF
@@ -459,9 +459,8 @@ This type is a String which can currently have one of the following values
 
 ## Response Datatypes
 
-For better readability, the overall format is broken down into *types* that are defined separately but should be used at the corresponding positions. The attributes within a block can be specified in any order.
-There are the scalars `Euro` and `Prozent`, which are wrappers for `BigDecimal`.
-
+For better readability, the overall format is broken down into *types* that are defined separately but should be used at the corresponding positions. 
+The attributes within a block can be specified in any order. There are the scalars `Euro` and `Prozent`, which are wrappers for `BigDecimal`.
 
 ### Schaufensterkondition
 
@@ -476,6 +475,7 @@ There are the scalars `Euro` and `Prozent`, which are wrappers for `BigDecimal`.
         id: String!
         gesamtkonditionen: AngebotGesamtkonditionen
         ratenkredit: Ratenkredit
+        vollstaendigkeit: Vollstaendigkeit
     }
 
 #### AngebotGesamtkonditionen
@@ -539,6 +539,12 @@ There are the scalars `Euro` and `Prozent`, which are wrappers for `BigDecimal`.
 
 The field `svg` contains the URL of the svg and not the content.
 
+### AngebotOptions
+
+    {
+        includeVollstaendigkeitsstatus: [VollstaendigkeitStatus]
+    }
+
 ### AnnahmeJob
 
     {
@@ -549,7 +555,6 @@ The field `svg` contains the URL of the svg and not the content.
 #### JobStatus
 
     "FAILURE" | "PENDING" | "SUCCESS"
-
 
 #### Antrag
 
@@ -611,7 +616,62 @@ The field `svg` contains the URL of the svg and not the content.
         videolegitimationUrl: String
     }
 
+#### Vollstaendigkeit
+
+    {
+        messages: [VollstaendigkeitMessage]
+        status: VollstaendigkeitStatus
+    }
+
+##### VollstaendigkeitMessage
+
+    {
+        category: VollstaendigkeitCategory
+        property: String
+        reason: VollstaendigkeitReason
+        text: String
+        type: VollstaendigkeitType
+    }
+
+###### VollstaendigkeitCategory
+
+    {
+        AUSGABEN
+        BESCHAEFTIGUNG
+        EINNAHMEN
+        HERKUNFT
+        IMMOBILIEN
+        KINDER
+        LEGITIMATION
+        PERSONENDATEN
+        VERBINDLICHKEITEN
+        VERMOEGEN
+        WOHNSITUATION
+    }
+
+###### VollstaendigkeitReason
+
+    {
+        VALUE_IS_EMPTY
+        VALUE_OUT_OF_RANGE
+    }
+
+###### VollstaendigkeitType
+
+    {
+        ANTRAGSTELLER
+        VERMITTLER
+    }
+
+#### VollstaendigkeitStatus
+
+    {
+        UNVOLLSTAENDIG
+        VOLLSTAENDIG
+    }
+
 The field `antragstellername` contains the name in the format "\<first name\> \<last name\>".
 
 ## Terms of use
+
 The APIs are made available under the following [Terms of Use](https://docs.api.europace.de/terms/).
