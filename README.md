@@ -37,7 +37,7 @@ The fields inside a block can be sent in any order.
 
 The APIs support all common GraphQL formats. More information can be found at [https://graphql.org/learn/queries/](https://graphql.org/learn/queries/).
 
-The body of a GraphQL request contains the field `query`, which includes the GraphQL query as a String. Parameters can be set directly in the query or defined as variables. 
+The body of a GraphQL request contains the field `query`, which includes the GraphQL query as a String. Parameters can be set directly in the query or defined as variables.
 The variables can be sent in the `variables` field of the body as a key-value map. All our examples use variables.
 
     {
@@ -246,10 +246,10 @@ The URL for calculating and accepting Angebote is:
 The GraphQL-Query is called `angebote` and has the following parameters.
 If only the vorgangsnummer is provided, only complete offers will be returned.
 
-| Parameter Name | Type           | Default Value                                        |
-|----------------|----------------|------------------------------------------------------|
-| vorgangsnummer | String!        | - (mandatory field)                                  |
-| options        | AngebotOptions | `{ includeVollstaendigkeitsstatus: [VOLLSTAENDIG] }` |
+| Parameter Name | Type           | Default Value                                                               |
+|----------------|----------------|-----------------------------------------------------------------------------|
+| vorgangsnummer | String!        | - (mandatory field)                                                         |
+| options        | AngebotOptions | `{ includeVollstaendigkeitsstatus: [VOLLSTAENDIG], vertriebskanal: B2B2C }` |
 
 #### Response
 
@@ -309,7 +309,7 @@ The Query returns a list of [Angebote](#angebot).
 #### Hints
 
 * Currently the API only supports **Fernabsatzgeschäft**.
-* Currently the API only supports the Vertriebskanal **B2B2C**.
+* The vertriebskanal that was used to query the offers will be used when an offer is accepted, if no vertriebskanal was provided the default value **B2B2C** is used.
 * When accepting an offer the authenticated user needs to have a Handelsbeziehung for the corresponding bank, which allows the acceptance. Otherwise the user receives
   a [GraphQL-Error](#graphql-errors) with the status code `403`.
 * Accepting an offer is only possible if the Vorgang did not change in the meantime. Should there be updates between the calculation of offers and accepting an offer the user receives
@@ -321,10 +321,10 @@ The Query returns a list of [Angebote](#angebot).
 
 The GraphQL-Mutation is called `angebotAnnehmen`and has the following parameter:
 
-| Parameter Name | Type    | Default Value       | Comment                                               |
-|----------------|---------|---------------------|-------------------------------------------------------|
-| vorgangsnummer | String! | - (mandatory field) |                                                       |
-| angebotId      | String! | - (mandatory field) | The ID of the calculated offer that is to be accepted |
+| Parameter Name | Type           | Default Value                 | Comment                                               |
+|----------------|----------------|-------------------------------|-------------------------------------------------------|
+| vorgangsnummer | String!        | - (mandatory field)           |                                                       |
+| angebotId      | String!        | - (mandatory field)           | The ID of the calculated offer that is to be accepted |
 
 #### Response
 
@@ -459,7 +459,7 @@ This type is a String which can currently have one of the following values
 
 ## Response Datatypes
 
-For better readability, the overall format is broken down into *types* that are defined separately but should be used at the corresponding positions. 
+For better readability, the overall format is broken down into *types* that are defined separately but should be used at the corresponding positions.
 The attributes within a block can be specified in any order. There are the scalars `Euro` and `Prozent`, which are wrappers for `BigDecimal`.
 
 ### Schaufensterkondition
@@ -543,6 +543,14 @@ The field `svg` contains the URL of the svg and not the content.
 
     {
         includeVollstaendigkeitsstatus: [VollstaendigkeitStatus]
+        vertriebskanal: Vertriebskanal
+    }
+
+#### Vertriebskanal
+
+    {
+        B2B2C
+        B2B
     }
 
 ### AnnahmeJob
