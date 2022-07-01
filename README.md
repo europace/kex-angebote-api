@@ -654,6 +654,7 @@ The field `svg` contains the URL of the svg and not the content.
     {
         VALUE_IS_EMPTY
         VALUE_OUT_OF_RANGE
+        VALUE_IS_INVALID
     }
 
 ###### VollstaendigkeitType
