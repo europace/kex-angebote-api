@@ -647,13 +647,12 @@ The field `svg` contains the URL of the svg and not the content.
         AUSGABEN
         BESCHAEFTIGUNG
         EINNAHMEN
+        FINANZBEDARF
         HERKUNFT
         IMMOBILIEN
         KINDER
-        LEGITIMATION
         PERSONENDATEN
         VERBINDLICHKEITEN
-        VERMOEGEN
         WOHNSITUATION
     }
 
@@ -661,8 +660,8 @@ The field `svg` contains the URL of the svg and not the content.
 
     {
         VALUE_IS_EMPTY
-        VALUE_OUT_OF_RANGE
         VALUE_IS_INVALID
+        VALUE_OUT_OF_RANGE
     }
 
 ###### VollstaendigkeitType
