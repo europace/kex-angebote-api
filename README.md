@@ -652,6 +652,7 @@ The field `svg` contains the URL of the svg and not the content.
         IMMOBILIEN
         KINDER
         PERSONENDATEN
+        SOFORTKREDIT
         VERBINDLICHKEITEN
         WOHNSITUATION
     }
