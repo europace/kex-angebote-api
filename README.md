@@ -475,6 +475,7 @@ The attributes within a block can be specified in any order. There are the scala
         id: String!
         gesamtkonditionen: AngebotGesamtkonditionen
         ratenkredit: Ratenkredit
+        sofortkredit: Boolean
         vollstaendigkeit: Vollstaendigkeit
     }
 
