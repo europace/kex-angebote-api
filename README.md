@@ -475,6 +475,7 @@ The attributes within a block can be specified in any order. There are the scala
         id: String!
         gesamtkonditionen: AngebotGesamtkonditionen
         ratenkredit: Ratenkredit
+        anpassungen: Anpassungen
         sofortkredit: Boolean
         vollstaendigkeit: Vollstaendigkeit
     }
@@ -505,6 +506,12 @@ The attributes within a block can be specified in any order. There are the scala
         effektivzins: Prozent
         rateMonatlich: Euro
         gesamtkreditbetrag: Euro
+    }
+
+#### Anpassungen
+
+    {
+        angepasst: Boolean
     }
 
 #### AngebotRatenkredit
