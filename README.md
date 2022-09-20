@@ -474,7 +474,8 @@ The attributes within a block can be specified in any order. There are the scala
     {
         id: String!
         gesamtkonditionen: AngebotGesamtkonditionen
-        ratenkredit: Ratenkredit
+        ratenkredit: AngebotRatenkredit
+        ratenschutz: Ratenschutz
         sofortkredit: Boolean
         vollstaendigkeit: Vollstaendigkeit
     }
@@ -540,91 +541,6 @@ The attributes within a block can be specified in any order. There are the scala
 
 The field `svg` contains the URL of the svg and not the content.
 
-### AngebotOptions
-
-    {
-        includeVollstaendigkeitsstatus: [VollstaendigkeitStatus]
-        vertriebskanal: Vertriebskanal
-    }
-
-#### Vertriebskanal
-
-    {
-        B2B2C
-        B2B
-    }
-
-### AnnahmeJob
-
-    {
-        status: JobStatus!
-        antrag: Antrag
-    }
-
-#### JobStatus
-
-    "FAILURE" | "PENDING" | "SUCCESS"
-
-#### Antrag
-
-    {
-        antragsnummer: String!
-        gesamtkonditionen: AntragGesamtkonditionen
-        ratenkredit: AntragRatenkredit
-        ratenschutz: AntragRatenschutz
-        dokumente: [Dokument!]
-        identifikationAntragsteller1: Identifikation
-        identifikationAntragsteller2: Identifikation
-    }
-
-##### AntragGesamtkonditionen
-
-    {
-        effektivzins: Prozent
-        gesamtkreditbetrag: Euro
-        laufzeitInMonaten: Int
-        nettokreditbetrag: Euro
-        rateMonatlich: Euro
-        sollzins: Prozent
-    }
-
-##### AntragRatenkredit
-
-    {
-        schlussrate: Euro
-    }
-
-##### AntragRatenschutz
-
-    {
-        praemieMonatlich: Euro
-        versicherteRisikenAntragsteller1: [VersichertesRisiko!]!
-        versicherteRisikenAntragsteller2: [VersichertesRisiko!]! 
-    }
-
-##### VersichertesRisiko
-
-    {
-          ARBEITSLOSIGKEIT
-          ARBEITSUNFAEHIGKEIT
-          LEBEN
-    }
-
-##### Dokument
-
-    {
-        url: String
-    }
-
-##### Identifikation
-
-    {
-        antragstellername: String 
-        qesUrl: String
-        referenznummer: String
-        videolegitimationUrl: String
-    }
-
 #### Vollstaendigkeit
 
     {
@@ -673,11 +589,98 @@ The field `svg` contains the URL of the svg and not the content.
         VERMITTLER
     }
 
-#### VollstaendigkeitStatus
+##### VollstaendigkeitStatus
 
     {
         UNVOLLSTAENDIG
         VOLLSTAENDIG
+    }
+
+### AngebotOptions
+
+    {
+        includeVollstaendigkeitsstatus: [VollstaendigkeitStatus]
+        vertriebskanal: Vertriebskanal
+    }
+
+#### Vertriebskanal
+
+    {
+        B2B2C
+        B2B
+    }
+
+### AnnahmeJob
+
+    {
+        status: JobStatus!
+        antrag: Antrag
+    }
+
+#### JobStatus
+
+    "FAILURE" | "PENDING" | "SUCCESS"
+
+#### Antrag
+
+    {
+        antragsnummer: String!
+        gesamtkonditionen: AntragGesamtkonditionen
+        ratenkredit: AntragRatenkredit
+        ratenschutz: Ratenschutz
+        dokumente: [Dokument!]
+        identifikationAntragsteller1: Identifikation
+        identifikationAntragsteller2: Identifikation
+    }
+
+##### AntragGesamtkonditionen
+
+    {
+        effektivzins: Prozent
+        gesamtkreditbetrag: Euro
+        laufzeitInMonaten: Int
+        nettokreditbetrag: Euro
+        rateMonatlich: Euro
+        sollzins: Prozent
+    }
+
+##### AntragRatenkredit
+
+    {
+        schlussrate: Euro
+    }
+
+##### Dokument
+
+    {
+        url: String
+    }
+
+##### Identifikation
+
+    {
+        antragstellername: String 
+        qesUrl: String
+        referenznummer: String
+        videolegitimationUrl: String
+    }
+
+### Common
+
+#### Ratenschutz
+
+    {
+        praemieMonatlich: Euro
+        versicherteRisikenAntragsteller1: [VersichertesRisiko!]!
+        versicherteRisikenAntragsteller2: [VersichertesRisiko!]! 
+    }
+
+#### VersichertesRisiko
+
+    {
+          ARBEITSLOSIGKEIT
+          ARBEITSUNFAEHIGKEIT
+          LEBEN
     }
 
 The field `antragstellername` contains the name in the format "\<first name\> \<last name\>".
