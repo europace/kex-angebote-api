@@ -555,7 +555,6 @@ The field `svg` contains the URL of the svg and not the content.
         property: String
         reason: VollstaendigkeitReason
         text: String
-        type: VollstaendigkeitType
     }
 
 ###### VollstaendigkeitCategory
