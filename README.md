@@ -472,11 +472,11 @@ The attributes within a block can be specified in any order. There are the scala
 ### Angebot
 
     {
-        id: String!
+        anpassungen: Anpassungen
         gesamtkonditionen: AngebotGesamtkonditionen
+        id: String!
         ratenkredit: AngebotRatenkredit
         ratenschutz: Ratenschutz
-        anpassungen: Anpassungen
         sofortkredit: Boolean
         vollstaendigkeit: Vollstaendigkeit
     }
@@ -486,33 +486,27 @@ The attributes within a block can be specified in any order. There are the scala
     {
         effektivzins: Prozent,
         gesamtkreditbetrag: Euro
+        konditionsspanne: Konditionsspanne
         laufzeitInMonaten: Int
         nettokreditbetrag: Euro
         rateMonatlich: Euro
         sollzins: Prozent
-        konditionsspanne: Konditionsspanne
     }
 
 ##### Konditionsspanne
 
     {
-        minimum: Konditionsgrenze
         maximum: Konditionsgrenze
+        minimum: Konditionsgrenze
     }
 
 ###### Konditionsgrenze
 
     {
-        sollzins: Prozent
         effektivzins: Prozent
-        rateMonatlich: Euro
         gesamtkreditbetrag: Euro
-    }
-
-#### Anpassungen
-
-    {
-        angepasst: Boolean
+        rateMonatlich: Euro
+        sollzins: Prozent
     }
 
 #### AngebotRatenkredit
@@ -526,18 +520,18 @@ The attributes within a block can be specified in any order. There are the scala
 ##### Produktanbieter
 
     {
-        name: String
         anschrift: Anschrift
         logo: Logo
+        name: String
     }
 
 ##### Anschrift
 
     {
-        strasse: String
         hausnummer: String
-        plz: String
+        strasse: String
         ort: String
+        plz: String
     }
 
 ##### Logo
@@ -547,6 +541,13 @@ The attributes within a block can be specified in any order. There are the scala
     }    
 
 The field `svg` contains the URL of the svg and not the content.
+
+#### Anpassungen
+
+    {
+        angepasst: Boolean
+    }
+
 
 #### Vollstaendigkeit
 
