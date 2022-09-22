@@ -560,6 +560,7 @@ The field `svg` contains the URL of the svg and not the content.
 
     {
         category: VollstaendigkeitCategory
+        identifier: VollstaendigkeitIdentifier
         property: String
         reason: VollstaendigkeitReason
         text: String
@@ -581,19 +582,26 @@ The field `svg` contains the URL of the svg and not the content.
         WOHNSITUATION
     }
 
+###### VollstaendigkeitIdentifier
+
+    {
+        ids: [String!]!
+        type: VollstaendigkeitIdentifierType!
+    }
+
+###### VollstaendigkeitIdentifierType
+
+    {
+        ANTRAGSTELLER
+        VERMITTLER
+    }
+
 ###### VollstaendigkeitReason
 
     {
         VALUE_IS_EMPTY
         VALUE_IS_INVALID
         VALUE_OUT_OF_RANGE
-    }
-
-###### VollstaendigkeitType
-
-    {
-        ANTRAGSTELLER
-        VERMITTLER
     }
 
 ##### VollstaendigkeitStatus
