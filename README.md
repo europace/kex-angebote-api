@@ -548,7 +548,6 @@ The field `svg` contains the URL of the svg and not the content.
         angepasst: Boolean
     }
 
-
 #### Vollstaendigkeit
 
     {
@@ -579,6 +578,8 @@ The field `svg` contains the URL of the svg and not the content.
         PERSONENDATEN
         SOFORTKREDIT
         VERBINDLICHKEITEN
+        VERMITTLER
+        VORGANG
         WOHNSITUATION
     }
 
