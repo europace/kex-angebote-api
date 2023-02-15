@@ -641,6 +641,7 @@ The field `svg` contains the URL of the svg and not the content.
 
     {
         antragsnummer: String!
+        produktanbieterantragsnummer: String
         gesamtkonditionen: AntragGesamtkonditionen
         ratenkredit: AntragRatenkredit
         ratenschutz: Ratenschutz
