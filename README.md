@@ -246,10 +246,10 @@ The URL for calculating and accepting Angebote is:
 The GraphQL-Query is called `angebote` and has the following parameters.
 If only the vorgangsnummer is provided, only complete offers will be returned.
 
-| Parameter Name | Type           | Default Value                                                               |
-|----------------|----------------|-----------------------------------------------------------------------------|
-| vorgangsnummer | String!        | - (mandatory field)                                                         |
-| options        | AngebotOptions | `{ includeVollstaendigkeitsstatus: [VOLLSTAENDIG], vertriebskanal: B2B2C }` |
+| Parameter Name | Type           | Default Value                                                                                                     |
+|----------------|----------------|-------------------------------------------------------------------------------------------------------------------|
+| vorgangsnummer | String!        | - (mandatory field)                                                                                               |
+| options        | AngebotOptions | `{ includeVollstaendigkeitsstatus: [VOLLSTAENDIG], includeMachbarkeitsstatus: [MACHBAR], vertriebskanal: B2B2C }` |
 
 #### Response
 
@@ -374,9 +374,11 @@ This Mutation returns a `jobId`.
 
 The GraphQL-Query is called `annahmeJob` and has the following parameter:
 
-| Parameter Name | Type    | Default Value       | Comment                                                                      |
-|----------------|---------|---------------------|------------------------------------------------------------------------------|
-| jobId          | String! | - (mandatory field) | The ID of the job, which was returned when initiating the acceptance process |
+| Parameter Name | Type           | Default Value                            | Comment                                                                      |
+|----------------|----------------|----------------------------------------- |------------------------------------------------------------------------------|
+| jobId          | String!        | - (mandatory field)                      | The ID of the job, which was returned when initiating the acceptance process |
+| jobOptions     | JobOptions     | `{ includeMachbarkeitsstatus: [MACHBAR]` |                                                                              |
+
 
 #### Response
 
@@ -475,6 +477,7 @@ The attributes within a block can be specified in any order. There are the scala
         anpassungen: Anpassungen
         gesamtkonditionen: AngebotGesamtkonditionen
         id: String!
+        machbarkeit: Machbarkeit
         ratenkredit: AngebotRatenkredit
         ratenschutz: Ratenschutz
         sofortkredit: Boolean
@@ -615,7 +618,8 @@ The field `svg` contains the URL of the svg and not the content.
 ### AngebotOptions
 
     {
-        includeVollstaendigkeitsstatus: [VollstaendigkeitStatus]
+        includeVollstaendigkeitsstatus: [VollstaendigkeitStatus],
+        includeMachbarkeitsstatus: [MachbarkeitStatus]
         vertriebskanal: Vertriebskanal
     }
 
@@ -648,6 +652,7 @@ The field `svg` contains the URL of the svg and not the content.
         dokumente: [Dokument!]
         identifikationAntragsteller1: Identifikation
         identifikationAntragsteller2: Identifikation
+        machbarkeit: Machbarkeit
     }
 
 ##### AntragGesamtkonditionen
@@ -682,7 +687,34 @@ The field `svg` contains the URL of the svg and not the content.
         videolegitimationUrl: String
     }
 
+#### JobOptions
+
+    {
+        includeMachbarkeitsstatus: [MachbarkeitStatus]
+    }
+
+
 ### Common
+
+#### Machbarkeit
+
+    {
+        messages: [MachbarkeitMessage]
+        status: MachbarkeitStatus!
+    }
+
+##### MachbarkeitMessage
+
+    {
+        text: String
+    }
+
+##### MachbarkeitStatus
+
+    {
+        MACHBAR
+        NICHT_MACHBAR
+    }
 
 #### Ratenschutz
 
