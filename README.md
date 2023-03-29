@@ -456,22 +456,25 @@ For possible value for `VollstaendigkeitStatus` see [here](#vollstaendigkeitstat
         B2B
     }
 
-
 ### Datenkontext
 
 This type is a String which can currently have one of the following values
 
-* `TESTUMGEBUNG`
-* `ECHTGESCHAEFT`
+    {
+        TESTUMGEBUNG
+        ECHTGESCHAEFT
+    }
 
 ### Finanzierungszweck
 
 This type is a String which can currently have one of the following values
 
-* `UMSCHULDUNG`
-* `FREIE_VERWENDUNG`
-* `FAHRZEUGKAUF`
-* `MODERNISIEREN`
+    {
+        UMSCHULDUNG
+        FREIE_VERWENDUNG
+        FAHRZEUGKAUF
+        MODERNISIEREN
+    }
 
 ### JobOptions
 
