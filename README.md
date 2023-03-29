@@ -246,10 +246,10 @@ The URL for calculating and accepting Angebote is:
 The GraphQL-Query is called `angebote` and has the following parameters.
 If only the vorgangsnummer is provided, only complete offers will be returned.
 
-| Parameter Name | Type           | Default Value                                                                                                     |
-|----------------|----------------|-------------------------------------------------------------------------------------------------------------------|
-| vorgangsnummer | String!        | - (mandatory field)                                                                                               |
-| options        | AngebotOptions | `{ includeVollstaendigkeitsstatus: [VOLLSTAENDIG], includeMachbarkeitsstatus: [MACHBAR], vertriebskanal: B2B2C }` |
+| Parameter Name | Type                              | Default Value                                                                                                     |
+|----------------|-----------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| vorgangsnummer | String!                           | - (mandatory field)                                                                                               |
+| options        | [AngebotOptions](#angebotoptions) | `{ includeVollstaendigkeitsstatus: [VOLLSTAENDIG], includeMachbarkeitsstatus: [MACHBAR], vertriebskanal: B2B2C }` |
 
 #### Response
 
@@ -374,11 +374,10 @@ This Mutation returns a `jobId`.
 
 The GraphQL-Query is called `annahmeJob` and has the following parameter:
 
-| Parameter Name | Type           | Default Value                            | Comment                                                                      |
-|----------------|----------------|----------------------------------------- |------------------------------------------------------------------------------|
-| jobId          | String!        | - (mandatory field)                      | The ID of the job, which was returned when initiating the acceptance process |
-| jobOptions     | JobOptions     | `{ includeMachbarkeitsstatus: [MACHBAR]` |                                                                              |
-
+| Parameter Name | Type                      | Default Value                            | Comment                                                                      |
+|----------------|---------------------------|----------------------------------------- |------------------------------------------------------------------------------|
+| jobId          | String!                   | - (mandatory field)                      | The ID of the job, which was returned when initiating the acceptance process |
+| jobOptions     | [JobOptions](#joboptions) | `{ includeMachbarkeitsstatus: [MACHBAR]` |                                                                              |
 
 #### Response
 
@@ -438,26 +437,55 @@ This Query returns an [AnnahmeJob](#annahmejob). It contains the Status of the a
 
 ## Request Datatypes
 
-### Partner-ID
+### AngebotOptions
 
-This type is a 5-digit String and identifies a Plakette of the Europace-Partnermanagement.  
-The Partner-ID has to be underneath or identical to the Partner-ID of the API-Client.
+    {
+        includeMachbarkeitsstatus: [MachbarkeitStatus]
+        includeVollstaendigkeitsstatus: [VollstaendigkeitStatus],
+        vertriebskanal: Vertriebskanal
+    }
+
+For possible value for `MachbarkeitStatus` see [here](#machbarkeitstatus).
+
+For possible value for `VollstaendigkeitStatus` see [here](#vollstaendigkeitstatus).
+
+#### Vertriebskanal
+
+    {
+        B2B2C
+        B2B
+    }
 
 ### Datenkontext
 
 This type is a String which can currently have one of the following values
 
-* TESTUMGEBUNG
-* ECHTGESCHAEFT
+    {
+        TESTUMGEBUNG
+        ECHTGESCHAEFT
+    }
 
 ### Finanzierungszweck
 
 This type is a String which can currently have one of the following values
 
-* UMSCHULDUNG
-* FREIE_VERWENDUNG
-* FAHRZEUGKAUF
-* MODERNISIEREN
+    {
+        UMSCHULDUNG
+        FREIE_VERWENDUNG
+        FAHRZEUGKAUF
+        MODERNISIEREN
+    }
+
+### JobOptions
+
+    {
+        includeMachbarkeitsstatus: [MachbarkeitStatus]
+    }
+
+### Partner-ID
+
+This type is a 5-digit String and identifies a Plakette of the Europace-Partnermanagement.  
+The Partner-ID has to be underneath or identical to the Partner-ID of the API-Client.
 
 ## Response Datatypes
 
@@ -615,21 +643,6 @@ The field `svg` contains the URL of the svg and not the content.
         VOLLSTAENDIG
     }
 
-### AngebotOptions
-
-    {
-        includeVollstaendigkeitsstatus: [VollstaendigkeitStatus],
-        includeMachbarkeitsstatus: [MachbarkeitStatus]
-        vertriebskanal: Vertriebskanal
-    }
-
-#### Vertriebskanal
-
-    {
-        B2B2C
-        B2B
-    }
-
 ### AnnahmeJob
 
     {
@@ -686,13 +699,6 @@ The field `svg` contains the URL of the svg and not the content.
         referenznummer: String
         videolegitimationUrl: String
     }
-
-#### JobOptions
-
-    {
-        includeMachbarkeitsstatus: [MachbarkeitStatus]
-    }
-
 
 ### Common
 
