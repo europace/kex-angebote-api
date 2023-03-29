@@ -482,6 +482,8 @@ This type is a String which can currently have one of the following values
         includeMachbarkeitsstatus: [MachbarkeitStatus]
     }
 
+For possible value for `MachbarkeitStatus` see [here](#machbarkeitstatus).
+
 ### Partner-ID
 
 This type is a 5-digit String and identifies a Plakette of the Europace-Partnermanagement.  
