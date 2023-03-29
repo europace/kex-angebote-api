@@ -447,7 +447,7 @@ This Query returns an [AnnahmeJob](#annahmejob). It contains the Status of the a
 
 For possible value for `MachbarkeitStatus` see [here](#machbarkeitstatus).
 
-For possible value for `VollstaendigkeitStatus` see [hier](#vollstaendigkeitstatus).
+For possible value for `VollstaendigkeitStatus` see [here](#vollstaendigkeitstatus).
 
 #### Vertriebskanal
 
