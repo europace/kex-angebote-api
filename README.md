@@ -240,6 +240,7 @@ The URL for calculating and accepting Angebote is:
 
 * The calculation of Angebote is only possible if the corresponding Vorgang includes a valid **Kreditbetrag** and **Laufzeit or Rate**. Should that not be the case the API user receives
   a [GraphQL-Error](#graphql-errors) with the status code `400`. The Vorgang has to be corrected before you can continue.
+* Please provide the correct value for the vertriebskanal. That is important in order to deliver e.g. the correct documents for **B2B** and **B2B2C** and to generate appropriate and valuable reporting.
 
 #### Request
 
@@ -309,13 +310,14 @@ The Query returns a list of [Angebote](#angebot).
 #### Hints
 
 * Currently the API only supports **Fernabsatzgeschäft**.
-* The vertriebskanal that was used to query the offers will be used when an offer is accepted, if no vertriebskanal was provided the default value **B2B2C** is used.
+* The vertriebskanal that was used to query the offers will be used when an offer is accepted, if no vertriebskanal was provided the default value **B2B2C** is used. That is important in order to deliver e.g. the correct documents for **B2B** and **B2B2C** and to generate appropriate and valuable reporting.
 * When accepting an offer the authenticated user needs to have a Handelsbeziehung for the corresponding bank, which allows the acceptance. Otherwise the user receives
   a [GraphQL-Error](#graphql-errors) with the status code `403`.
 * Accepting an offer is only possible if the Vorgang did not change in the meantime. Should there be updates between the calculation of offers and accepting an offer the user receives
   a [GraphQL-Error](#graphql-errors) with the status code `409`. In this case the calculation of the offers needs to be done again.
 * To optimize the process we might calculate alternative offers.
 * The Kundenbetreuer of a Vorgang is important for accepting an offer as the name and contact details will be sent to the bank.
+  
 
 #### Request
 
