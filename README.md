@@ -79,20 +79,20 @@ The URL for the Schaufensterkonditionen is:
 
 #### Hints
 
-* The calculation of Top-Schaufensterkondition is only possible if there is a valid **Auszahlungsbetrag** and **LaufzeitInMonaten**. 
-  Should that not be the case the API user receives a [GraphQL-Error](#graphql-errors) with the status code `400`.
+* The calculation of Top-Schaufensterkondition requires a valid `auszahlungsbetrag` and `laufzeitInMonaten`.
+  If the provided values are not valid, an [GraphQL-Error](#graphql-errors) with the status code `400` is returned.
 
 #### Request
 
 The GraphQL-Query is called `topSchaufensterkondition` and contains the following parameter:
 
-| Parameter Name     | Type                                       | Default Value                                      |
-|--------------------|--------------------------------------------|----------------------------------------------------|
-| partnerId          | [Partner-ID](#partner-id)                  | The Partner-ID of the API Client                   |
-| auszahlungsbetrag  | Euro!                                      | - (mandatory field, greater than 0)                | 
-| laufzeitInMonaten  | Int                                        | Duration in month (greater than 0)                 | 
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck)  | Calculation over all values of Finanzierungszweck  |
-| datenkontext       | [Datenkontext](#datenkontext)              | `TESTUMGEBUNG`                                     |
+| Parameter Name     | Type                                       | Default Value                                     | Condition      |
+|--------------------|--------------------------------------------|---------------------------------------------------|----------------|
+| partnerId          | [Partner-ID](#partner-id)                  | The Partner-ID of the API Client                  |                |
+| auszahlungsbetrag  | Euro!                                      | - (mandatory field)                               | greater than 0 | 
+| laufzeitInMonaten  | Int                                        |                                                   | greater than 0 |
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck)  | Calculation over all values of Finanzierungszweck |                |
+| datenkontext       | [Datenkontext](#datenkontext)              | `TESTUMGEBUNG`                                    |                |
 
 #### Response
 
@@ -152,20 +152,20 @@ The Query returns a [Schaufensterkondition](#schaufensterkondition).
 
 #### Hints
 
-* The calculation of Top-Schaufensterkondition is only possible if there is a valid **Auszahlungsbetrag** and **LaufzeitInMonaten**.
-  Should that not be the case the API user receives a [GraphQL-Error](#graphql-errors) with the status code `400`.
+* The calculation of Schaufensterkondition requires a valid `auszahlungsbetrag` and `laufzeitInMonaten`.
+  If the provided values are not valid, an [GraphQL-Error](#graphql-errors) with the status code `400` is returned.
 
 #### Request
 
 The GraphQL-Query is called `schaufensterkonditionen` and has the following parameter:
 
-| Parameter Name     | Type                                      | Default Value                       |
-|--------------------|-------------------------------------------|-------------------------------------|
-| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client    |
-| auszahlungsbetrag  | Euro!                                     | - (mandatory field, greater than 0) |
-| laufzeitInMonaten  | Int                                       | Duration in month (greater than 0)  |
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | `FREIE_VERWENDUNG`                  |
-| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                      |
+| Parameter Name     | Type                                      | Default Value                       | Condition      |
+|--------------------|-------------------------------------------|-------------------------------------|----------------+
+| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client    |                |
+| auszahlungsbetrag  | Euro!                                     | - (mandatory field)                 | greater than 0 |
+| laufzeitInMonaten  | Int                                       |                                     | greater than 0 |
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | `FREIE_VERWENDUNG`                  |                |
+| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                      |                |
 
 #### Response
 
