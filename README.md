@@ -77,17 +77,22 @@ The URL for the Schaufensterkonditionen is:
 
 ### Query Top-Schaufensterkondition
 
+#### Hints
+
+* The calculation of Top-Schaufensterkondition is only possible if there is a valid **Auszahlungsbetrag** and **LaufzeitInMonaten**. 
+  Should that not be the case the API user receives a [GraphQL-Error](#graphql-errors) with the status code `400`.
+
 #### Request
 
 The GraphQL-Query is called `topSchaufensterkondition` and contains the following parameter:
 
-| Parameter Name     | Type                                      | Default Value                                     |
-|--------------------|-------------------------------------------|---------------------------------------------------|
-| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client                  |
-| auszahlungsbetrag  | Euro!                                     | - (mandatory field)                               | 
-| laufzeitInMonaten  | Int                                       | -                                                 | 
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | Calculation over all values of Finanzierungszweck |
-| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                                    |
+| Parameter Name     | Type                                       | Default Value                                      |
+|--------------------|--------------------------------------------|----------------------------------------------------|
+| partnerId          | [Partner-ID](#partner-id)                  | The Partner-ID of the API Client                   |
+| auszahlungsbetrag  | Euro!                                      | - (mandatory field, greater than 0)                | 
+| laufzeitInMonaten  | Int                                        | Duration in month (greater than 0)                 | 
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck)  | Calculation over all values of Finanzierungszweck  |
+| datenkontext       | [Datenkontext](#datenkontext)              | `TESTUMGEBUNG`                                     |
 
 #### Response
 
@@ -145,17 +150,22 @@ The Query returns a [Schaufensterkondition](#schaufensterkondition).
 
 ### Query Schaufensterkonditionen
 
+#### Hints
+
+* The calculation of Top-Schaufensterkondition is only possible if there is a valid **Auszahlungsbetrag** and **LaufzeitInMonaten**.
+  Should that not be the case the API user receives a [GraphQL-Error](#graphql-errors) with the status code `400`.
+
 #### Request
 
 The GraphQL-Query is called `schaufensterkonditionen` and has the following parameter:
 
-| Parameter Name     | Type                                      | Default Value                    |
-|--------------------|-------------------------------------------|----------------------------------|
-| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client |
-| auszahlungsbetrag  | Euro!                                     | - (mandatory field)              |
-| laufzeitInMonaten  | Int                                       | -                                |
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | `FREIE_VERWENDUNG`               |
-| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                   |
+| Parameter Name     | Type                                      | Default Value                       |
+|--------------------|-------------------------------------------|-------------------------------------|
+| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client    |
+| auszahlungsbetrag  | Euro!                                     | - (mandatory field, greater than 0) |
+| laufzeitInMonaten  | Int                                       | Duration in month (greater than 0)  |
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | `FREIE_VERWENDUNG`                  |
+| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                      |
 
 #### Response
 
