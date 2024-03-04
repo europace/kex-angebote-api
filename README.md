@@ -61,11 +61,11 @@ More information about error codes can be found [here](https://docs.api.europace
 
 #### GraphQL Errors
 
-| Error Code | Message     | Description                                                                                     |
-|------------|-------------|-------------------------------------------------------------------------------------------------|
+| Error Code | Message     | Description                                                                                    |
+|------------|-------------|------------------------------------------------------------------------------------------------|
 | 400        | Bad Request | Request format is invalid (mandatory fields are missing, wrong parameter names or values, ...) |
-| 403        | Forbidden   | The authenticated user does not have sufficient rights                                          |
-| 409        | Conflict    | The Vorgang was updated after the offer was calculated and before the offer was accepted        |
+| 403        | Forbidden   | The authenticated user does not have sufficient rights                                         |
+| 409        | Conflict    | The Vorgang was updated after the offer was calculated and before the offer was accepted       |
 
 ## Schaufensterkonditionen
 
@@ -77,17 +77,22 @@ The URL for the Schaufensterkonditionen is:
 
 ### Query Top-Schaufensterkondition
 
+#### Hints
+
+* The calculation of Top-Schaufensterkondition requires a valid `auszahlungsbetrag` and `laufzeitInMonaten`.
+  If the provided values are not valid, an [GraphQL-Error](#graphql-errors) with the status code `400` is returned.
+
 #### Request
 
 The GraphQL-Query is called `topSchaufensterkondition` and contains the following parameter:
 
-| Parameter Name     | Type                                      | Default Value                                     |
-|--------------------|-------------------------------------------|---------------------------------------------------|
-| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client                  |
-| auszahlungsbetrag  | Euro!                                     | - (mandatory field)                               | 
-| laufzeitInMonaten  | Int                                       | -                                                 | 
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | Calculation over all values of Finanzierungszweck |
-| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                                    |
+| Parameter Name     | Type                                      | Default Value                                     | Details                      |
+|--------------------|-------------------------------------------|---------------------------------------------------|------------------------------|
+| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client                  |                              |
+| auszahlungsbetrag  | Euro!                                     | - (mandatory field)                               | Value must be greater than 0 | 
+| laufzeitInMonaten  | Int                                       | - (mandatory field)                               | Value must be greater than 0 |
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | Calculation over all values of Finanzierungszweck |                              |
+| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                                    |                              |
 
 #### Response
 
@@ -145,17 +150,22 @@ The Query returns a [Schaufensterkondition](#schaufensterkondition).
 
 ### Query Schaufensterkonditionen
 
+#### Hints
+
+* The calculation of Schaufensterkondition requires a valid `auszahlungsbetrag` and `laufzeitInMonaten`.
+  If the provided values are not valid, an [GraphQL-Error](#graphql-errors) with the status code `400` is returned.
+
 #### Request
 
 The GraphQL-Query is called `schaufensterkonditionen` and has the following parameter:
 
-| Parameter Name     | Type                                      | Default Value                    |
-|--------------------|-------------------------------------------|----------------------------------|
-| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client |
-| auszahlungsbetrag  | Euro!                                     | - (mandatory field)              |
-| laufzeitInMonaten  | Int                                       | -                                |
-| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | `FREIE_VERWENDUNG`               |
-| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                   |
+| Parameter Name     | Type                                      | Default Value                    | Details                      |
+|--------------------|-------------------------------------------|----------------------------------|------------------------------|
+| partnerId          | [Partner-ID](#partner-id)                 | The Partner-ID of the API Client |                              |
+| auszahlungsbetrag  | Euro!                                     | - (mandatory field)              | Value must be greater than 0 | 
+| laufzeitInMonaten  | Int                                       | - (mandatory field)              | Value must begreater than 0  |
+| finanzierungszweck | [Finanzierungszweck](#finanzierungszweck) | `FREIE_VERWENDUNG`               |                              |
+| datenkontext       | [Datenkontext](#datenkontext)             | `TESTUMGEBUNG`                   |                              |
 
 #### Response
 
@@ -240,7 +250,8 @@ The URL for calculating and accepting Angebote is:
 
 * The calculation of Angebote is only possible if the corresponding Vorgang includes a valid **Kreditbetrag** and **Laufzeit or Rate**. Should that not be the case the API user receives
   a [GraphQL-Error](#graphql-errors) with the status code `400`. The Vorgang has to be corrected before you can continue.
-* Please provide the correct value for the vertriebskanal. That is important in order to deliver e.g. the correct documents for **B2B** and **B2B2C** and to generate appropriate and valuable reporting.
+* Please provide the correct value for the vertriebskanal. That is important in order to deliver e.g. the correct documents for **B2B** and **B2B2C** and to generate appropriate and valuable
+  reporting.
 
 #### Request
 
@@ -310,23 +321,23 @@ The Query returns a list of [Angebote](#angebot).
 #### Hints
 
 * Currently the API only supports **Fernabsatzgeschäft**.
-* The vertriebskanal that was used to query the offers will be used when an offer is accepted, if no vertriebskanal was provided the default value **B2B2C** is used. That is important in order to deliver e.g. the correct documents for **B2B** and **B2B2C** and to generate appropriate and valuable reporting.
+* The vertriebskanal that was used to query the offers will be used when an offer is accepted, if no vertriebskanal was provided the default value **B2B2C** is used. That is important in order to
+  deliver e.g. the correct documents for **B2B** and **B2B2C** and to generate appropriate and valuable reporting.
 * When accepting an offer the authenticated user needs to have a Handelsbeziehung for the corresponding bank, which allows the acceptance. Otherwise the user receives
   a [GraphQL-Error](#graphql-errors) with the status code `403`.
 * Accepting an offer is only possible if the Vorgang did not change in the meantime. Should there be updates between the calculation of offers and accepting an offer the user receives
   a [GraphQL-Error](#graphql-errors) with the status code `409`. In this case the calculation of the offers needs to be done again.
 * To optimize the process we might calculate alternative offers.
 * The Kundenbetreuer of a Vorgang is important for accepting an offer as the name and contact details will be sent to the bank.
-  
 
 #### Request
 
 The GraphQL-Mutation is called `angebotAnnehmen`and has the following parameter:
 
-| Parameter Name | Type           | Default Value                 | Comment                                               |
-|----------------|----------------|-------------------------------|-------------------------------------------------------|
-| vorgangsnummer | String!        | - (mandatory field)           |                                                       |
-| angebotId      | String!        | - (mandatory field)           | The ID of the calculated offer that is to be accepted |
+| Parameter Name | Type    | Default Value       | Comment                                               |
+|----------------|---------|---------------------|-------------------------------------------------------|
+| vorgangsnummer | String! | - (mandatory field) |                                                       |
+| angebotId      | String! | - (mandatory field) | The ID of the calculated offer that is to be accepted |
 
 #### Response
 
@@ -377,7 +388,7 @@ This Mutation returns a `jobId`.
 The GraphQL-Query is called `annahmeJob` and has the following parameter:
 
 | Parameter Name | Type                      | Default Value                            | Comment                                                                      |
-|----------------|---------------------------|----------------------------------------- |------------------------------------------------------------------------------|
+|----------------|---------------------------|------------------------------------------|------------------------------------------------------------------------------|
 | jobId          | String!                   | - (mandatory field)                      | The ID of the job, which was returned when initiating the acceptance process |
 | jobOptions     | [JobOptions](#joboptions) | `{ includeMachbarkeitsstatus: [MACHBAR]` |                                                                              |
 
