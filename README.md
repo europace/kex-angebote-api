@@ -7,6 +7,8 @@
 These APIs allow the calculation of Schaufensterkonditionen as well as calculating and accepting Angebote based on a Vorgang.
 All APIs documented here are [GraphQL-APIs](https://docs.api.europace.de/privatkredit/graphql/).
 
+This API may contain advanced beta features that are still in development. Beta features may undergo modifications or be removed at a later release.
+
 > ⚠️ This API is continuously developed. Therefore we expect
 > all users to align with the "[Tolerant Reader Pattern](https://martinfowler.com/bliki/TolerantReader.html)", which requires clients to be
 > tolerant towards compatible API changes when reading and processing the data. This means:
@@ -252,6 +254,8 @@ The URL for calculating and accepting Angebote is:
   a [GraphQL-Error](#graphql-errors) with the status code `400`. The Vorgang has to be corrected before you can continue.
 * Please provide the correct value for the vertriebskanal. That is important in order to deliver e.g. the correct documents for **B2B** and **B2B2C** and to generate appropriate and valuable
   reporting.
+* To empower API users with insightful predictions and enhance API capabilities, a feasibility prediction score was added. Based on a prediction model this score (in %) is a **beta feature** that aims
+  at predicting the likelihood for a Vorgang to secure reliable machbare Angebote. In case of an error while calculating the feasibility score, the Angebot will be returned with an empty score field.
 
 #### Request
 
@@ -525,6 +529,7 @@ The attributes within a block can be specified in any order. There are the scala
         ratenschutz: Ratenschutz
         sofortkredit: Boolean
         vollstaendigkeit: Vollstaendigkeit
+        vorhersage: Vorhersage
     }
 
 #### AngebotGesamtkonditionen
@@ -656,6 +661,18 @@ The field `svg` contains the URL of the svg and not the content.
     {
         UNVOLLSTAENDIG
         VOLLSTAENDIG
+    }
+
+#### Vorhersage
+
+    {
+        machbarkeit: Machbarkeitsvorhersage
+    }
+
+##### Machbarkeitsvorhersage
+
+    {
+        score: Prozent
     }
 
 ### AnnahmeJob
