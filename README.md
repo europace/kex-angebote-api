@@ -541,6 +541,7 @@ The attributes within a block can be specified in any order. There are the scala
         konditionsspanne: Konditionsspanne
         laufzeitInMonaten: Int
         nettokreditbetrag: Euro
+        auszahlungsbetrag: Euro
         rateMonatlich: Euro
         sollzins: Prozent
     }
@@ -708,6 +709,7 @@ The field `svg` contains the URL of the svg and not the content.
         gesamtkreditbetrag: Euro
         laufzeitInMonaten: Int
         nettokreditbetrag: Euro
+        auszahlungsbetrag: Euro
         rateMonatlich: Euro
         sollzins: Prozent
     }
