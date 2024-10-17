@@ -531,6 +531,7 @@ The attributes within a block can be specified in any order. There are the scala
         sofortkredit: Boolean
         vollstaendigkeit: Vollstaendigkeit
         vorhersage: Vorhersage
+        bonitaetsrechnung: Bonitaetsrechnung
     }
 
 #### AngebotGesamtkonditionen
@@ -700,6 +701,7 @@ The field `svg` contains the URL of the svg and not the content.
         identifikationAntragsteller1: Identifikation
         identifikationAntragsteller2: Identifikation
         machbarkeit: Machbarkeit
+        bonitaetsrechnung: Bonitaetsrechnung
     }
 
 ##### AntragGesamtkonditionen
@@ -736,6 +738,28 @@ The field `svg` contains the URL of the svg and not the content.
     }
 
 ### Common
+
+#### Bonitaetsrechnung
+
+    {
+        einnahmen: BonitaetsrechnungGroup
+        ausgaben: BonitaetsrechnungGroup
+        total: String
+    }
+
+##### BonitaetsrechnungGroup
+
+    {
+        positions: [BonitaetsrechnungPosition]
+        total: String
+    }
+
+##### BonitaetsrechnungPosition
+
+    {
+        label: String
+        value: String
+    }
 
 #### Machbarkeit
 
