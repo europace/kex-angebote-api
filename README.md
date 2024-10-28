@@ -785,6 +785,10 @@ The field `svg` contains the URL of the svg and not the content.
 
     {
         praemieMonatlich: Euro
+        praemieBrutto: Euro
+        praemieNetto: Euro
+        versicherungssumme: Euro
+        versicherteRate: Euro
         versicherteRisikenAntragsteller1: [VersichertesRisiko!]!
         versicherteRisikenAntragsteller2: [VersichertesRisiko!]! 
     }
