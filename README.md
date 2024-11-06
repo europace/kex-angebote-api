@@ -571,31 +571,6 @@ The attributes within a block can be specified in any order. There are the scala
         schlussrate: Euro
     }
 
-##### Produktanbieter
-
-    {
-        anschrift: Anschrift
-        logo: Logo
-        name: String
-    }
-
-##### Anschrift
-
-    {
-        hausnummer: String
-        strasse: String
-        ort: String
-        plz: String
-    }
-
-##### Logo
-
-    {
-        svg: String
-    }    
-
-The field `svg` contains the URL of the svg and not the content.
-
 #### Anpassungen
 
     {
@@ -719,6 +694,7 @@ The field `svg` contains the URL of the svg and not the content.
 ##### AntragRatenkredit
 
     {
+        produktanbieter: Produktanbieter
         schlussrate: Euro
     }
 
@@ -781,12 +757,39 @@ The field `svg` contains the URL of the svg and not the content.
         NICHT_MACHBAR
     }
 
+
+#### Produktanbieter
+
+    {
+        anschrift: Anschrift
+        logo: Logo
+        name: String
+    }
+
+##### Anschrift
+
+    {
+        hausnummer: String
+        strasse: String
+        ort: String
+        plz: String
+    }
+
+##### Logo
+
+    {
+        svg: String
+    }    
+
+The field `svg` contains the URL of the svg and not the content.
+
 #### Ratenschutz
 
     {
         praemieMonatlich: Euro
         praemieBrutto: Euro
         praemieNetto: Euro
+        produktanbieter: [Produktanbieter]
         versicherungssumme: Euro
         versicherteRate: Euro
         versicherteRisikenAntragsteller1: [VersichertesRisiko!]!
