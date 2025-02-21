@@ -532,6 +532,7 @@ The attributes within a block can be specified in any order. There are the scala
         vollstaendigkeit: Vollstaendigkeit
         vorhersage: Vorhersage
         bonitaetsrechnung: Bonitaetsrechnung
+        bausparvertrag: Bausparvertrag
     }
 
 #### AngebotGesamtkonditionen
@@ -677,6 +678,7 @@ The attributes within a block can be specified in any order. There are the scala
         identifikationAntragsteller2: Identifikation
         machbarkeit: Machbarkeit
         bonitaetsrechnung: Bonitaetsrechnung
+        bausparvertrag: Bausparvertrag
     }
 
 ##### AntragGesamtkonditionen
@@ -714,6 +716,41 @@ The attributes within a block can be specified in any order. There are the scala
     }
 
 ### Common
+
+#### Bausparvertrag
+
+    {
+        tarifname: String
+        bausparsumme: Euro
+        laufzeitInMonaten: Int
+        zuteilungszeitpunkt: "YYYY-MM-DD"
+        jahresentgelt: Euro
+        abschlussgebuehr: Euro
+        abschlussgebuehrRelativToBausparsumme: Euro
+        sparphase: Sparphase
+        darlehensphase: Darlehensphase
+    }
+
+##### Sparphase
+
+    {
+        sparbeitragMonatlich: Euro
+        laufzeitInMonaten: Int
+        guthabenBeiZuteilung: Prozent
+        guthabenzins: Prozent
+    }
+
+##### Darlehensphase
+
+    {
+        darlehenssumme: Euro
+        rateMonatlich: Euro
+        laufzeitInMonaten: Int
+        sollzins: Prozent
+        effektivzins: Prozent
+        schlussrate: Euro
+        datumLetzteRate: "YYYY-MM-DD"
+    }
 
 #### Bonitaetsrechnung
 
