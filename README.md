@@ -266,7 +266,7 @@ If only the vorgangsnummer is provided, only complete offers will be returned.
 | Parameter Name | Type                              | Default Value                                                                                                     |
 |----------------|-----------------------------------|-------------------------------------------------------------------------------------------------------------------|
 | vorgangsnummer | String!                           | - (mandatory field)                                                                                               |
-| options        | [AngebotOptions](#angebotoptions) | `{ includeVollstaendigkeitsstatus: [VOLLSTAENDIG], includeMachbarkeitsstatus: [MACHBAR], vertriebskanal: B2B2C }` |
+| options        | [AngebotOptionsInput](#angebotoptionsinput) | `{ includeVollstaendigkeitsstatus: [VOLLSTAENDIG], includeMachbarkeitsstatus: [MACHBAR], vertriebskanal: B2B2C }` |
 
 #### Response
 
@@ -455,7 +455,7 @@ This Query returns an [AnnahmeJob](#annahmejob). It contains the Status of the a
 
 ## Request Datatypes
 
-### AngebotOptions
+### AngebotOptionsInput
 
     {
         includeMachbarkeitsstatus: [MachbarkeitStatus]
