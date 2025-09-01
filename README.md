@@ -673,7 +673,7 @@ The attributes within a block can be specified in any order. There are the scala
         gesamtkonditionen: AntragGesamtkonditionen
         ratenkredit: AntragRatenkredit
         ratenschutz: Ratenschutz
-        dokumente: [Dokument!]
+        dokumente: [Dokument!]!
         identifikationAntragsteller1: Identifikation
         identifikationAntragsteller2: Identifikation
         machbarkeit: Machbarkeit
@@ -703,7 +703,9 @@ The attributes within a block can be specified in any order. There are the scala
 ##### Dokument
 
     {
-        url: String
+        id: String!
+        name: String
+        url: String!
     }
 
 ##### Identifikation
