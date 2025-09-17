@@ -523,6 +523,9 @@ The attributes within a block can be specified in any order. There are the scala
 
     {
         anpassungen: Anpassungen
+        bausparvertrag: Bausparvertrag
+        bonitaetsrechnung: Bonitaetsrechnung
+        digitalisierungsmerkmale Digitalisierungsmerkmale!
         gesamtkonditionen: AngebotGesamtkonditionen
         id: String!
         machbarkeit: Machbarkeit
@@ -531,8 +534,6 @@ The attributes within a block can be specified in any order. There are the scala
         sofortkredit: Boolean
         vollstaendigkeit: Vollstaendigkeit
         vorhersage: Vorhersage
-        bonitaetsrechnung: Bonitaetsrechnung
-        bausparvertrag: Bausparvertrag
     }
 
 #### AngebotGesamtkonditionen
@@ -576,6 +577,26 @@ The attributes within a block can be specified in any order. There are the scala
 
     {
         angepasst: Boolean
+    }
+
+#### Digitalisierungsmerkmale
+
+    {
+        accountCheck AccountCheck!
+    }
+
+##### AccountCheck
+
+    {
+        modus AccountCheckModus!
+    }
+
+##### AccountCheckModus
+
+    {
+        NONE
+        OPTIONAL
+        REQUIRED
     }
 
 #### Vollstaendigkeit
