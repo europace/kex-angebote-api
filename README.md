@@ -525,7 +525,7 @@ The attributes within a block can be specified in any order. There are the scala
         anpassungen: Anpassungen
         bausparvertrag: Bausparvertrag
         bonitaetsrechnung: Bonitaetsrechnung
-        digitalisierungsmerkmale Digitalisierungsmerkmale!
+        digitalisierungsmerkmale: Digitalisierungsmerkmale!
         gesamtkonditionen: AngebotGesamtkonditionen
         id: String!
         machbarkeit: Machbarkeit
@@ -582,13 +582,13 @@ The attributes within a block can be specified in any order. There are the scala
 #### Digitalisierungsmerkmale
 
     {
-        accountCheck AccountCheck!
+        accountCheck: AccountCheck!
     }
 
 ##### AccountCheck
 
     {
-        modus AccountCheckModus!
+        modus: AccountCheckModus!
     }
 
 ##### AccountCheckModus
