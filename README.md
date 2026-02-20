@@ -257,6 +257,7 @@ The URL for calculating and accepting Angebote is:
 * To empower API users with insightful predictions and enhance API capabilities, a feasibility prediction score was added. Based on a prediction model, this score is a **beta feature** that aims at
   predicting the likelihood for a Vorgang to secure reliable machbare Angebote. The score is in percent. The higher the score value, the more likely the Vorgang will lead to
   machbare Angebote. In case of an error while calculating the feasibility score, the Angebot will be returned with an empty score field.
+* **New:** The `MachbarkeitStatus` enum has been extended with `MACHBAR_UNTER_VORBEHALT`. See [MachbarkeitStatus](#machbarkeitstatus) for important information about the current migration phase and deprecated behavior.
 
 #### Request
 
@@ -387,6 +388,7 @@ This Mutation returns a `jobId`.
 * If the offer cannot be accepted from the bank, the response will contain `status=SUCCESS` but not contain any Antrag.
 * A partner can only query jobs that were created by this partner otherwise a 403 FORBIDDEN is returned.
 * Only complete offers can be accepted, if an incomplete offer is requested, it will result in a 400 BAD REQUEST
+* The `includeMachbarkeitsstatus` parameter in [JobOptions](#joboptions) supports `MACHBAR_UNTER_VORBEHALT`. See [MachbarkeitStatus](#machbarkeitstatus) for important information about the current migration phase and deprecated behavior.
 
 #### Request
 
@@ -814,9 +816,32 @@ The attributes within a block can be specified in any order. There are the scala
 
     {
         MACHBAR
+        MACHBAR_UNTER_VORBEHALT
         NICHT_MACHBAR
     }
 
+> ⚠️ **IMPORTANT - Deprecation Warning**
+>
+> **Current Behavior in `includeMachbarkeitsstatus` (DEPRECATED - Migration Phase):**
+>
+> When you specify `includeMachbarkeitsstatus: [MACHBAR]` **without** including `MACHBAR_UNTER_VORBEHALT`:
+> * Offers with internal status `MACHBAR_UNTER_VORBEHALT` are **automatically mapped** to `MACHBAR` and **included in the response**
+> * You receive both genuine `MACHBAR` offers and `MACHBAR_UNTER_VORBEHALT` offers (shown as `MACHBAR`)
+>
+> **This automatic mapping behavior is DEPRECATED and will be removed in a future release.**
+>
+> **Future Behavior (Strict Filtering):**
+>
+> When you specify `includeMachbarkeitsstatus: [MACHBAR]` **without** including `MACHBAR_UNTER_VORBEHALT`:
+> * **Only** offers with status `MACHBAR` will be returned
+> * Offers with status `MACHBAR_UNTER_VORBEHALT` will be **filtered out** and **not included** in the response
+> * No automatic mapping will occur
+>
+> **Migration Action Required:**
+>
+> To ensure your application continues to receive all feasible offers after the migration:
+> * Update your API calls to explicitly include both values: `includeMachbarkeitsstatus: [MACHBAR, MACHBAR_UNTER_VORBEHALT]`
+> * Adjust your code to handle the `MACHBAR_UNTER_VORBEHALT` status explicitly
 
 #### Produktanbieter
 
