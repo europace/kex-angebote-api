@@ -822,22 +822,22 @@ The attributes within a block can be specified in any order. There are the scala
 
 > ⚠️ **IMPORTANT - Deprecation Warning**
 >
-> **Current Behavior in `includeMachbarkeitsstatus` (DEPRECATED - Migration Phase):**
+> **Current Behavior in `includeMachbarkeitsstatus` (DEPRECATED - Migration Phase ends June 1st, 2026):**
 >
 > When you specify `includeMachbarkeitsstatus: [MACHBAR]` **without** including `MACHBAR_UNTER_VORBEHALT`:
 > * Angebote with internal status `MACHBAR_UNTER_VORBEHALT` are **automatically mapped** to `MACHBAR` and **included in the response**
 > * You receive both genuine `MACHBAR` Angebote and `MACHBAR_UNTER_VORBEHALT` Angebote (shown as `MACHBAR`)
 >
-> **This automatic mapping behavior is DEPRECATED and will be removed in a future release.**
+> **This automatic mapping behavior is DEPRECATED and will be removed on June 1st, 2026.**
 >
-> **Future Behavior (Strict Filtering):**
+> **Future Behavior (Strict Filtering - effective June 1st, 2026):**
 >
 > When you specify `includeMachbarkeitsstatus: [MACHBAR]` **without** including `MACHBAR_UNTER_VORBEHALT`:
 > * **Only** Angebote with status `MACHBAR` will be returned
 > * Angebote with status `MACHBAR_UNTER_VORBEHALT` will be **filtered out** and **not included** in the response
 > * No automatic mapping will occur
 >
-> **Migration Action Required:**
+> **Migration Action Required (before June 1st, 2026):**
 >
 > To ensure your application continues to receive all feasible Angebote after the migration:
 > * Update your API calls to explicitly include both values: `includeMachbarkeitsstatus: [MACHBAR, MACHBAR_UNTER_VORBEHALT]`
