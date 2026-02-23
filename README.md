@@ -825,21 +825,21 @@ The attributes within a block can be specified in any order. There are the scala
 > **Current Behavior in `includeMachbarkeitsstatus` (DEPRECATED - Migration Phase):**
 >
 > When you specify `includeMachbarkeitsstatus: [MACHBAR]` **without** including `MACHBAR_UNTER_VORBEHALT`:
-> * Offers with internal status `MACHBAR_UNTER_VORBEHALT` are **automatically mapped** to `MACHBAR` and **included in the response**
-> * You receive both genuine `MACHBAR` offers and `MACHBAR_UNTER_VORBEHALT` offers (shown as `MACHBAR`)
+> * Angebote with internal status `MACHBAR_UNTER_VORBEHALT` are **automatically mapped** to `MACHBAR` and **included in the response**
+> * You receive both genuine `MACHBAR` Angebote and `MACHBAR_UNTER_VORBEHALT` Angebote (shown as `MACHBAR`)
 >
 > **This automatic mapping behavior is DEPRECATED and will be removed in a future release.**
 >
 > **Future Behavior (Strict Filtering):**
 >
 > When you specify `includeMachbarkeitsstatus: [MACHBAR]` **without** including `MACHBAR_UNTER_VORBEHALT`:
-> * **Only** offers with status `MACHBAR` will be returned
-> * Offers with status `MACHBAR_UNTER_VORBEHALT` will be **filtered out** and **not included** in the response
+> * **Only** Angebote with status `MACHBAR` will be returned
+> * Angebote with status `MACHBAR_UNTER_VORBEHALT` will be **filtered out** and **not included** in the response
 > * No automatic mapping will occur
 >
 > **Migration Action Required:**
 >
-> To ensure your application continues to receive all feasible offers after the migration:
+> To ensure your application continues to receive all feasible Angebote after the migration:
 > * Update your API calls to explicitly include both values: `includeMachbarkeitsstatus: [MACHBAR, MACHBAR_UNTER_VORBEHALT]`
 > * Adjust your code to handle the `MACHBAR_UNTER_VORBEHALT` status explicitly
 
