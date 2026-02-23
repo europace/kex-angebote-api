@@ -839,7 +839,7 @@ The attributes within a block can be specified in any order. There are the scala
 >
 > **Migration Action Required (before June 1st, 2026):**
 >
-> To ensure your application continues to receive all feasible Angebote after the migration:
+> To ensure your application continues to receive all Angebote as before (both `MACHBAR` and `MACHBAR_UNTER_VORBEHALT`) after the migration:
 > * Update your API calls to explicitly include both values: `includeMachbarkeitsstatus: [MACHBAR, MACHBAR_UNTER_VORBEHALT]`
 > * Adjust your code to handle the `MACHBAR_UNTER_VORBEHALT` status explicitly
 
